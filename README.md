@@ -4,5 +4,4 @@
 Clone the repo by typing `git clone https://github.com/BryanSmith00/Uma-Database-Project-Team-3` in your terminal.
 
 
-TODO: Change "music" table to "track"<br>
-      Add music files to track table 
+TODO: Add administrator permissions to schema

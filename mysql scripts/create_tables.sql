@@ -13,3 +13,20 @@ CREATE TABLE album (
     date_created date
 );
 
+CREATE TABLE permission (
+	permission_type_id INT PRIMARY KEY,
+    
+    permission_name CHAR(32),
+    permission_set INT
+);
+
+CREATE TABLE user (
+	user_id INT PRIMARY KEY,
+    
+    user_type INT,
+    date_created INT,
+    
+    pass CHAR(32),
+    handle CHAR(32),
+    username CHAR(32)
+);

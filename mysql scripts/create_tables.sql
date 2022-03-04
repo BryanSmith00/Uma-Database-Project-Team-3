@@ -30,3 +30,10 @@ CREATE TABLE user (
     handle CHAR(32),
     username CHAR(32)
 );
+
+CREATE TABLE playlist (
+  playlist_id int PRIMARY KEY,
+  playlist_name char(45) DEFAULT NULL,
+  playlist_author char(45) DEFAULT NULL,
+  playlist_songs blob
+);

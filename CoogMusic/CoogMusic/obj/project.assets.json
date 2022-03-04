@@ -853,19 +853,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\bryan\\.nuget\\packages\\": {}
+    "C:\\Users\\leake\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bryan\\Documents\\Programming\\Uma-Database-Project-Team-3\\CoogMusic\\CoogMusic\\CoogMusic.csproj",
+      "projectUniqueName": "C:\\Users\\leake\\3380_Project\\CoogMusic\\CoogMusic\\CoogMusic.csproj",
       "projectName": "CoogMusic",
-      "projectPath": "C:\\Users\\bryan\\Documents\\Programming\\Uma-Database-Project-Team-3\\CoogMusic\\CoogMusic\\CoogMusic.csproj",
-      "packagesPath": "C:\\Users\\bryan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bryan\\Documents\\Programming\\Uma-Database-Project-Team-3\\CoogMusic\\CoogMusic\\obj\\",
+      "projectPath": "C:\\Users\\leake\\3380_Project\\CoogMusic\\CoogMusic\\CoogMusic.csproj",
+      "packagesPath": "C:\\Users\\leake\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\leake\\3380_Project\\CoogMusic\\CoogMusic\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\bryan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\leake\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -914,7 +919,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

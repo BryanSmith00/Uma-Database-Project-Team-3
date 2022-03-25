@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coog Music</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Coog Music Temp</title>
+  <link rel="stylesheet" href="/style.css">
+
+</head>
+<body>
+
+  <div class="title">
+    <h2>Coog Music Login</h2>
+  </div>
+  
+  <form action="/scripts/login.php" method="post">
+  
+    <div class="container">
+      <div>
+        <label for="uname"><b>Username</b></label> <br>
+        <input type="text" placeholder="Enter Username" name="uname" required> <br>
+      </div>
+
+      <div>
+        <label for="psw"><b>Password</b></label> <br>
+        <input type="password" placeholder="Enter Password" name="psw" required> <br>
+      </div>
+
+      <div>
+        <button type="submit">Login</button>
+        <label>
+          <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label>
+      </div>
+    </div>
+
+  </form>
+
+</body>
+</html>

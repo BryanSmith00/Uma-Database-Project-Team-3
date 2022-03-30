@@ -6,7 +6,7 @@ app.use(express.static(__dirname));
 
 app.get('/', function(request, response) {
     response.statusCode = 200
-    response.sendFile(__dirname + "/index.html")
+    response.sendFile(__dirname + '/index.html')
 });
 
 app.post("/", (request, response) => {
@@ -17,3 +17,7 @@ app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
     console.log(__dirname);
 });
+
+
+
+

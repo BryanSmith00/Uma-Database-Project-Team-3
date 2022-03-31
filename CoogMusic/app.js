@@ -6,7 +6,7 @@ const port = 3000;
 app.get('/', function(request, response) {
     app.use(express.static(__dirname));
     response.statusCode = 200;
-    response.sendFile(__dirname + "/index.html");
+    response.sendFile(__dirname + '/views/index.html');
 });
 
 app.post("/", (request, response) => {
@@ -18,3 +18,5 @@ app.listen(port, () => {
     console.log(__dirname);
     console.log(__dirname + '\\styles');
 });
+
+

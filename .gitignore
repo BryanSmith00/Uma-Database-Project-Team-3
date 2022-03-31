@@ -202,6 +202,7 @@ ClientBin/
 *.pfx
 *.publishsettings
 node_modules/
+**.DS_Store
 orleans.codegen.cs
 
 # Since there are multiple workflows, uncomment next line to ignore bower_components
@@ -273,3 +274,4 @@ __pycache__/
 # tools/
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore
+.DS_Store

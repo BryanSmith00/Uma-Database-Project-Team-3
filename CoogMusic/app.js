@@ -6,12 +6,12 @@ const port = 3000;
 
 app.use(express.static(__dirname));
 app.use(bp.json())
-app.use(bp.urlencoded({ extended: true }))
+app.use(bp.urlencoded({ extended: false }))
 
 app.get('/', function(request, response) {
     response.statusCode = 200;
     //response.sendFile(__dirname + "/views/index.html");
-    response.sendFile(__dirname + "/public/php/test.html");
+    response.sendFile(__dirname + "/views/index.html");
 });
 
 app.get('/login', function(request, response) {
@@ -20,10 +20,13 @@ app.get('/login', function(request, response) {
     response.sendFile(__dirname + "/views/login.html");
 });
 
-app.post("/login", (request, response) => {
-    console.log(request.body.data)
+app.post("/login", (req, res) => {
+    console.log(req.body)
+    let username = req.body.username;
+    let password = req.body.password;
+    res.send(`Username: ${username} Password: ${password}`);
     //response.sendFile(__dirname + "/public/php/test.html")
-    postToPHP(request.body.data);
+    //postToPHP(request.body.data);
 });
 
 function postToPHP (data) {
@@ -31,7 +34,7 @@ function postToPHP (data) {
     var options = {
         host : 'localhost',
         port : 3000,
-        path : '/CoogMusic/views.login.php',
+        path : '/CoogMusic/login.php',
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json',
@@ -62,7 +65,6 @@ function postToPHP (data) {
     reqPost.end();
 
 }
-
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

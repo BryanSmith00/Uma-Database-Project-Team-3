@@ -28,6 +28,9 @@ app.post("/login", (req, res) => {
     //response.sendFile(__dirname + "/public/php/test.html")
     //postToPHP(request.body.data);
 });
+app.get('/music', (_, res) =>{
+    res.sendFile(__dirname + "/views/music-player.html")
+})
 
 function postToPHP (data) {
 

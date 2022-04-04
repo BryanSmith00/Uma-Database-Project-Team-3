@@ -11,5 +11,22 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
-  }
+  },
+  "name": "coogmusic",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BryanSmith00/Uma-Database-Project-Team-3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BryanSmith00/Uma-Database-Project-Team-3/issues"
+  },
+  "homepage": "https://github.com/BryanSmith00/Uma-Database-Project-Team-3#readme",
+  "description": ""
 }

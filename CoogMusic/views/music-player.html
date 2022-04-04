@@ -1,217 +1,73 @@
 <!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
-    />
-    <link rel="stylesheet" href="../public/stylesheets/music-player.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-      crossorigin="anonymous"
-    />
-    <title>Music Player</title>
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        padding: 0;
-        margin: 0;
-        text-align: center;
-        background-color: #b5b5b5;
-      }
 
-      .navbar {
-        background-color: black;
-        height: 5rem;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Music Player</title>
+  <link rel="icon" type="image/x-icon" href="../public/images/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-      .nav-link {
-        color: rgb(230, 227, 227);
-        cursor: pointer;
-        margin-right: 1.3em !important;
-        font-weight: 700;
-      }
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-      .nav-link:hover {
-        color: rgb(206, 53, 53);
-      }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
 
-      .navbar-brand img {
-        position: absolute;
-        z-index: 999;
-        top: 10%;
-        height: 9rem;
-        width: 9rem;
-      }
+  <link rel="stylesheet" href="../public/stylesheets/index.css" />
+  <link rel="stylesheet" href="../public/stylesheets/music-player.css" />
+</head>
 
-      .navbar-collapse {
-        justify-content: flex-end;
-      }
+<body>
 
-      .header {
-        background-image: linear-gradient(
-            black,
-            rgba(49, 3, 3, 0.8),
-            rgba(65, 5, 5, 0.8)
-          ),
-          url("../public/images/header.jpg");
-        background-size: cover;
-        background-position: center;
-        position: fixed;
-        background-repeat: no-repeat;
-      }
-
-      h3 {
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-
-      .bold {
-        font-weight: 700;
-      }
-
-      .container {
-        width: 40em;
-        height: 40em;
-        margin: 3.125rem auto 0 auto;
-      }
-
-      form {
-        display: block;
-        position: relative;
-        top: 9%;
-        margin: 0em;
-        width: 100%;
-        padding: 2.5rem;
-        box-sizing: border-box;
-        text-align: left;
-        background-color: black;
-        color: white;
-        border-radius: 3px;
-      }
-
-      .form-group {
-        display: block;
-        width: 100%;
-        margin: 0 auto 1.25rem auto;
-        padding: 0.25rem;
-        box-sizing: border-box;
-        line-height: 2.2rem;
-      }
-
-      .form-control {
-        display: block;
-        width: 100%;
-        height: 3rem;
-        padding: 0.375rem 0.75rem;
-        border: 1px solid #a6bdb9;
-        border-radius: 00.25rem;
-        font-family: inherit;
-        box-sizing: border-box;
-      }
-
-      label {
-        display: flex;
-        align-items: center;
-        line-height: 2.4rem;
-      }
-
-      input,
-      button {
-        margin: 0;
-        font-family: inherit;
-        font-size: inherit;
-        line-height: inherit;
-      }
-
-      .input-checkbox {
-        display: inline-block;
-        margin-right: 0.625rem;
-        min-height: 1.25rem;
-        min-width: 1.25rem;
-        box-sizing: border-box;
-      }
-
-      button {
-        border: none;
-      }
-
-      button:hover {
-        background-color: rgb(66, 204, 119);
-      }
-
-      .input-submit {
-        display: block;
-        width: 100%;
-        min-height: 50px;
-        padding: 0.75rem;
-        box-sizing: border-box;
-        font-weight: 700;
-        border-radius: 50px;
-        background-color: rgb(54, 175, 101);
-        color: white;
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-md">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">
-          <img
-            class="logo"
-            src="../public/images/coogMusic.png"
-            alt="Coog Music logo"
-          />
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-            <a class="nav-link" href="#">Sign up</a>
-            <a class="nav-link" href="/login">Sign in</a>
-            <a class="nav-link" href="/music">Music</a>
-          </div>
+  <nav class="navbar navbar-expand-md">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img class="logo" src="../public/images/coogMusic.png" alt="Coog Music logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" href="#">Sign up</a>
+          <a class="nav-link" href="/login">Sign in</a>
         </div>
       </div>
-    </nav>
-    <h1>Coog Music</h1>
-    <div class="music-container" id="music-container">
-      <div class="music-info">
-        <h5 id="title"></h5>
-        <!--need to make these not so horrible idk how -->
-        <div id="currTime">0</div>
-        <div id="durTime">0</div>
-        <!---->
-        <div class="progress-container" id="progress-container">
-          <div class="progress" id="progress"></div>
-        </div>
+    </div>
+  </nav>
+
+  <header class="player-header">
+    <div class="player-overlay"></div>
+
+    <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+      <source src="../public/videos/player-header.mp4" type="video/mp4">
+    </video>
+
+  </header>
+
+
+  <div class="music-container" id="music-container">
+    <div class="music-info">
+      <h4 id="title"></h4>
+      <!--need to make these not so horrible idk how -->
+      <div id="currTime">0</div>
+      <div id="durTime">0</div>
+      <!---->
+      <div class="progress-container" id="progress-container">
+        <div class="progress" id="progress"></div>
       </div>
+    </div>
 
-      <audio
-        src="https://www.bensound.com/bensound-music/bensound-epic.mp3"
-        id="audio"
-      ></audio>
+    <audio src="https://www.bensound.com/bensound-music/bensound-epic.mp3" id="audio"></audio>
 
+    <div class="navigation">
       <div class="img-container">
-        <img src="images/song-cover.png" alt="music-cover" id="cover" />
+        <img class="cover" src="/CoogMusic/public/images/song-cover.png" alt="music-cover" id="cover" />
       </div>
-      <div class="navigation">
+      <div>
         <button id="prev" class="action-btn">
           <i class="fas fa-backward"></i>
         </button>
@@ -223,6 +79,7 @@
         </button>
       </div>
     </div>
+    
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
@@ -234,170 +91,173 @@
       const prevBtn = document.getElementById("prev");
       const nextBtn = document.getElementById("next");
 
-      const audio = document.getElementById("audio");
-      const progress = document.getElementById("progress");
-      const progressContainer = document.getElementById("progress-container");
-      const title = document.getElementById("title");
-      const cover = document.getElementById("cover");
-      const currTime = document.querySelector("#currTime");
-      const durTime = document.querySelector("#durTime");
+    const audio = document.getElementById("audio");
+    const progress = document.getElementById("progress");
+    const progressContainer = document.getElementById("progress-container");
+    const title = document.getElementById("title");
+    const cover = document.getElementById("cover");
+    const currTime = document.querySelector("#currTime");
+    const durTime = document.querySelector("#durTime");
 
-      // Song titles, hard coded for now, populate from our db later
-      const songs = ["epic", "slowmotion", "ukulele"];
+    // Song titles, hard coded for now, populate from our db later
+    const songs = ["epic", "slowmotion", "ukulele"];
 
-      // Keep track of song, start at the first
-      let songIndex = 0;
+    // Keep track of song, start at the first
+    let songIndex = 0;
 
-      // Initially load song details into DOM, cover is hard coded for now
+    // Initially load song details into DOM, cover is hard coded for now
+    loadSong(songs[songIndex]);
+    // https://www.bensound.com/bensound-music/bensound-epic.mp3
+    // Update song details
+    function loadSong(song) {
+      title.innerText = song;
+      audio.src = `https://www.bensound.com/bensound-music/bensound-${song}.mp3`;
+      cover.src = `../public/images/song-cover.png`;
+    }
+
+    // Play song
+    function playSong() {
+      musicContainer.classList.add("play");
+      playBtn.querySelector("i.fas").classList.remove("fa-play");
+      playBtn.querySelector("i.fas").classList.add("fa-pause");
+
+      audio.play();
+    }
+
+    // Pause song
+    function pauseSong() {
+      musicContainer.classList.remove("play");
+      playBtn.querySelector("i.fas").classList.add("fa-play");
+      playBtn.querySelector("i.fas").classList.remove("fa-pause");
+
+      audio.pause();
+    }
+
+    // Previous song
+    function prevSong() {
+      songIndex--;
+
+      if (songIndex < 0) {
+        songIndex = songs.length - 1;
+      }
+
       loadSong(songs[songIndex]);
-      // https://www.bensound.com/bensound-music/bensound-epic.mp3
-      // Update song details
-      function loadSong(song) {
-        title.innerText = song;
-        audio.src = `https://www.bensound.com/bensound-music/bensound-${song}.mp3`;
-        cover.src = `../public/images/song-cover.png`;
+
+      playSong();
+    }
+
+    // Next song
+    function nextSong() {
+      songIndex++;
+
+      if (songIndex > songs.length - 1) {
+        songIndex = 0;
       }
 
-      // Play song
-      function playSong() {
-        musicContainer.classList.add("play");
-        playBtn.querySelector("i.fas").classList.remove("fa-play");
-        playBtn.querySelector("i.fas").classList.add("fa-pause");
+      loadSong(songs[songIndex]);
 
-        audio.play();
-      }
+      playSong();
+    }
 
-      // Pause song
-      function pauseSong() {
-        musicContainer.classList.remove("play");
-        playBtn.querySelector("i.fas").classList.add("fa-play");
-        playBtn.querySelector("i.fas").classList.remove("fa-pause");
+    // Update progress bar
+    function updateProgress(e) {
+      const { duration, currentTime } = e.srcElement;
+      const progressPercent = (currentTime / duration) * 100;
+      progress.style.width = `${progressPercent}%`;
+    }
 
-        audio.pause();
-      }
+    // Set progress bar
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
 
-      // Previous song
-      function prevSong() {
-        songIndex--;
+      audio.currentTime = (clickX / width) * duration;
+    }
 
-        if (songIndex < 0) {
-          songIndex = songs.length - 1;
-        }
+    //get duration & currentTime for Time of song
+    function DurTime(e) {
+      const { duration, currentTime } = e.srcElement;
+      var sec;
+      var sec_d;
 
-        loadSong(songs[songIndex]);
+      // define minutes currentTime
+      let min = currentTime == null ? 0 : Math.floor(currentTime / 60);
+      min = min < 10 ? "0" + min : min;
 
-        playSong();
-      }
-
-      // Next song
-      function nextSong() {
-        songIndex++;
-
-        if (songIndex > songs.length - 1) {
-          songIndex = 0;
-        }
-
-        loadSong(songs[songIndex]);
-
-        playSong();
-      }
-
-      // Update progress bar
-      function updateProgress(e) {
-        const { duration, currentTime } = e.srcElement;
-        const progressPercent = (currentTime / duration) * 100;
-        progress.style.width = `${progressPercent}%`;
-      }
-
-      // Set progress bar
-      function setProgress(e) {
-        const width = this.clientWidth;
-        const clickX = e.offsetX;
-        const duration = audio.duration;
-
-        audio.currentTime = (clickX / width) * duration;
-      }
-
-      //get duration & currentTime for Time of song
-      function DurTime(e) {
-        const { duration, currentTime } = e.srcElement;
-        var sec;
-        var sec_d;
-
-        // define minutes currentTime
-        let min = currentTime == null ? 0 : Math.floor(currentTime / 60);
-        min = min < 10 ? "0" + min : min;
-
-        // define seconds currentTime
-        function get_sec(x) {
-          if (Math.floor(x) >= 60) {
-            for (var i = 1; i <= 60; i++) {
-              if (Math.floor(x) >= 60 * i && Math.floor(x) < 60 * (i + 1)) {
-                sec = Math.floor(x) - 60 * i;
-                sec = sec < 10 ? "0" + sec : sec;
-              }
+      // define seconds currentTime
+      function get_sec(x) {
+        if (Math.floor(x) >= 60) {
+          for (var i = 1; i <= 60; i++) {
+            if (Math.floor(x) >= 60 * i && Math.floor(x) < 60 * (i + 1)) {
+              sec = Math.floor(x) - 60 * i;
+              sec = sec < 10 ? "0" + sec : sec;
             }
-          } else {
-            sec = Math.floor(x);
-            sec = sec < 10 ? "0" + sec : sec;
           }
-        }
-
-        get_sec(currentTime, sec);
-
-        // change currentTime DOM
-        currTime.innerHTML = min + ":" + sec;
-
-        // define minutes duration
-        let min_d = isNaN(duration) === true ? "0" : Math.floor(duration / 60);
-        min_d = min_d < 10 ? "0" + min_d : min_d;
-
-        function get_sec_d(x) {
-          if (Math.floor(x) >= 60) {
-            for (var i = 1; i <= 60; i++) {
-              if (Math.floor(x) >= 60 * i && Math.floor(x) < 60 * (i + 1)) {
-                sec_d = Math.floor(x) - 60 * i;
-                sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
-              }
-            }
-          } else {
-            sec_d = isNaN(duration) === true ? "0" : Math.floor(x);
-            sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
-          }
-        }
-
-        // define seconds duration
-
-        get_sec_d(duration);
-        // change duration DOM
-        durTime.innerHTML = min_d + ":" + sec_d;
-      }
-      // Event listeners
-      playBtn.addEventListener("click", () => {
-        const isPlaying = musicContainer.classList.contains("play");
-
-        if (isPlaying) {
-          pauseSong();
         } else {
-          playSong();
+          sec = Math.floor(x);
+          sec = sec < 10 ? "0" + sec : sec;
         }
-      });
+      }
 
-      // Change song
-      prevBtn.addEventListener("click", prevSong);
-      nextBtn.addEventListener("click", nextSong);
+      get_sec(currentTime, sec);
 
-      // Time/song update
-      audio.addEventListener("timeupdate", updateProgress);
+      // change currentTime DOM
+      currTime.innerHTML = min + ":" + sec;
 
-      // Click on progress bar
-      progressContainer.addEventListener("click", setProgress);
+      // define minutes duration
+      let min_d = isNaN(duration) === true ? "0" : Math.floor(duration / 60);
+      min_d = min_d < 10 ? "0" + min_d : min_d;
 
-      // Song ends
-      audio.addEventListener("ended", nextSong);
+      function get_sec_d(x) {
+        if (Math.floor(x) >= 60) {
+          for (var i = 1; i <= 60; i++) {
+            if (Math.floor(x) >= 60 * i && Math.floor(x) < 60 * (i + 1)) {
+              sec_d = Math.floor(x) - 60 * i;
+              sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
+            }
+          }
+        } else {
+          sec_d = isNaN(duration) === true ? "0" : Math.floor(x);
+          sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
+        }
+      }
 
-      // Time of song
-      audio.addEventListener("timeupdate", DurTime);
-    </script>
-  </body>
+      // define seconds duration
+
+      get_sec_d(duration);
+
+      // change duration DOM
+      durTime.innerHTML = min_d + ":" + sec_d;
+    }
+
+    // Event listeners
+    playBtn.addEventListener("click", () => {
+      const isPlaying = musicContainer.classList.contains("play");
+
+      if (isPlaying) {
+        pauseSong();
+      } else {
+        playSong();
+      }
+    });
+
+    // Change song
+    prevBtn.addEventListener("click", prevSong);
+    nextBtn.addEventListener("click", nextSong);
+
+    // Time/song update
+    audio.addEventListener("timeupdate", updateProgress);
+
+    // Click on progress bar
+    progressContainer.addEventListener("click", setProgress);
+
+    // Song ends
+    audio.addEventListener("ended", nextSong);
+
+    // Time of song
+    audio.addEventListener("timeupdate", DurTime);
+  </script>
+</body>
+
 </html>

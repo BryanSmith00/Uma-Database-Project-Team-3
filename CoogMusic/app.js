@@ -25,6 +25,8 @@ app.use(session({
 
 //---------------Passport---------------//
 
+require('./public/js/passport');
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -33,7 +35,7 @@ app.use((req, res, next) => {
     console.log(req.user);
     next();
 });
-    
+
 //--------------Routes--------------//
 //GET
 
@@ -62,39 +64,26 @@ app.get('/music', (req, res, next) =>{
 
 //Good login route
 app.get('/login-success', (req, res, next) =>{
-    res.sendFile(__dirname + "");
+    res.send('<h1>success</h1>');
+    next();
 })
 
 //Failed login route
 app.get('/login-fail', (req, res, next) =>{
     res.send("Your username or password was incorrect");
+    next();
 })
 
 
 //POST
 
 //Login page route
-app.post("/login", (req, res, next) => {
-    console.log(req.body)
-    let username = req.body.username;
-    let password = req.body.password;
-    //res.send(`Username: ${username} Password: ${password}`);
-    
-    connection.query("SELECT * FROM user WHERE username= ? AND pass = ?", [username, password], function (error, results, fields) {
-        if (error) throw error;
-
-        if(results.length > 0) {
-            res.send('succcessfully logged in');
-        }else{
-            res.send('username or password is incorrect');
-        }
-      });
-});
+//app.post("/login", passport.authenticate('local'), (req, res, next) => {});
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login-fail', successRedirect: '/login-success' }));
 
 
 //--------------Server--------------//
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
-    console.log(__dirname);
 }); 

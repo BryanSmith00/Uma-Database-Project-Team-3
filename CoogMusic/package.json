@@ -3,7 +3,10 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "mysql": "^2.18.1",
     "php": "^1.0.2"
   },
   "devDependencies": {

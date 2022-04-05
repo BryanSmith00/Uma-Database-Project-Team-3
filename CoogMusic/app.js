@@ -33,11 +33,6 @@ app.use(bp.urlencoded({ extended: false }))
 
 require('./public/js/passport');
 
-app.use((req, res, next) => {
-    //console.log(req.session);
-    //console.log(req.user);
-    next();
-});
 
 //--------------Routes--------------//
 //GET
@@ -45,7 +40,13 @@ app.use((req, res, next) => {
 //Landing page route
 app.get('/', function(req, res, next) {
     res.statusCode = 200;
-    res.sendFile(__dirname + "/views/index.html");
+    
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/homepage.html');
+    } else {
+        res.redirect('/login');
+    }
+    
 });
 
 //Login page route
@@ -84,6 +85,42 @@ app.get('/home', (req, res, next) => {
         res.redirect('/login');
     }
 });
+
+app.get('/admin', (req, res, next) => {
+   
+    // This is how you check if a user is authenticated
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/admin.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/songs', (req, res, next) => {
+   
+    // This is how you check if a user is authenticated
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/songs.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/albums', (req, res, next) => {
+   
+    // This is how you check if a user is authenticated
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/albums.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/logout', (req, res, next) => {
+    req.logout();
+    res.redirect('/');
+});
+
 
 //POST
 

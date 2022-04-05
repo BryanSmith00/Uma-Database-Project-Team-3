@@ -19,8 +19,9 @@ const strategy  = new LocalStrategy(verifyCallback);
 
 passport.use(strategy);
 
+// used to serialize the user for the session
 passport.serializeUser(function(user, done) {
-  done(null, user);
+    done(null, user[0]['username']); 
 });
 
 passport.deserializeUser((user, done) => {
@@ -31,12 +32,7 @@ passport.deserializeUser((user, done) => {
         if(results.length > 0) {
             return done(null, results);
         }
+        else
+            return done(null, false);
     });
-
-    /*
-    User.findById(userId)
-        .then((user) => {
-            done(null, user);
-        })
-        .catch(err => done(err))*/
 });

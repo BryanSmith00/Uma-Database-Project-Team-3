@@ -1,38 +1,41 @@
 const express = require('express');
-const session = require('express-session');
 const bp = require('body-parser')
 var passport = require('passport');
 const connection = require('./public/js/database');
 
 var app = express();
 const port = 3000;
-
-app.use(express.static(__dirname));
-app.use(bp.json())
-app.use(bp.urlencoded({ extended: false }))
+const session = require('express-session');
 
 //---------------Session stup---------------//
+
+app.set('trust proxy', 1) // trust first proxy
 
 app.use(session({
     secret: "tempsecret",
     resave: false,
     saveUninitialized: true,
     cookie: {
-        maxAge: 1000 * 365 * 60 * 60 * 24 // 1 year
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Additional middleware 
+app.use(express.static(__dirname));
+app.use(bp.json())
+app.use(bp.urlencoded({ extended: false }))
 
 
 //---------------Passport---------------//
 
 require('./public/js/passport');
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use((req, res, next) => {
-    console.log(req.session);
-    console.log(req.user);
+    //console.log(req.session);
+    //console.log(req.user);
     next();
 });
 
@@ -64,22 +67,31 @@ app.get('/music', (req, res, next) =>{
 
 //Good login route
 app.get('/login-success', (req, res, next) =>{
-    res.send('<h1>success</h1>');
-    next();
+    res.redirect('/home');
 })
 
 //Failed login route
-app.get('/login-fail', (req, res, next) =>{
+app.get('/login-failure', (req, res, next) =>{
     res.send("Your username or password was incorrect");
-    next();
 })
 
+app.get('/home', (req, res, next) => {
+    
+    // This is how you check if a user is authenticated and protect a route.  You could turn this into a custom middleware to make it less redundant
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/homepage.html');
+    } else {
+        res.redirect('/login');
+    }
+});
 
 //POST
 
 //Login page route
 //app.post("/login", passport.authenticate('local'), (req, res, next) => {});
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login-fail', successRedirect: '/login-success' }));
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
+    if (err) res.send(err); next(err);
+});
 
 
 //--------------Server--------------//

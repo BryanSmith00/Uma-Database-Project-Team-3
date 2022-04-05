@@ -10,7 +10,7 @@ const port = 3000;
 app.use(express.static(__dirname));
 app.use(bp.json())
 app.use(bp.urlencoded({ extended: false }))
-
+ 
 
 //--------------HTTP GET functions--------------//
 

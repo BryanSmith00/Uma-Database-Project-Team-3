@@ -60,7 +60,9 @@ app.post("/login", (req, res, next) => {
         if (error) throw error;
 
         if(results.length > 0) {
-            res.send('succcessfully logged in');
+            res.redirect("/views/admin.html")
+            
+            
         }else{
             res.send('username or password is incorrect');
         }

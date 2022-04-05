@@ -20,6 +20,12 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/views/index.html");
 });
 
+//Signup page GET
+app.get('/signup', function(req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/signup.html");
+});
+
 //Login page GET
 app.get('/login', function(req, res, next) {
     res.statusCode = 200;

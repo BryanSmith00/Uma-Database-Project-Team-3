@@ -76,8 +76,8 @@ app.get('/login-failure', (req, res, next) =>{
 })
 
 app.get('/home', (req, res, next) => {
-    
-    // This is how you check if a user is authenticated and protect a route.  You could turn this into a custom middleware to make it less redundant
+   
+    // This is how you check if a user is authenticated
     if (req.isAuthenticated()) {
         res.sendFile(__dirname + '/views/homepage.html');
     } else {

@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: #e4e7e9;
+  }
+
+#sidebarMenu{
+    background-color:  black;
+    padding: 10px;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 18px;
+}
+
+.nav-link:hover {
+    background-color: rgb(27, 27, 27);
+}
+
+.logo{
+    width: 90px;
+    height: 90px;
+}
+
+.nav-link:active, .active{
+    background-color: rgb(124, 121, 121) !important;
+}
+
+main{
+    width: 70%;
+    position: relative;
+    float: left;
+    left: 26%;
+    margin-top: 58px;
+    
+}
+
+.table{
+    background-color: white;
+    
+}
+
+thead{
+    background-color: rgb(41, 41, 41);
+    color: white;
+}
+

@@ -231,7 +231,7 @@ app.post("/signup", (req, res, next) => {
 });
 
 //Upload standalone track form route (w/out any validation)
-app.post("/upload-standalone-track", (req, res, next) => {
+app.post("/addsong", (req, res, next) => {
     console.log(req.body);
     let song_name = req.body.track;
     let song_file = req.body.trackfile;

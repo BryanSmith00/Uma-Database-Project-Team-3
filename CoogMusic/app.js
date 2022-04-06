@@ -128,6 +128,15 @@ app.get('/albums', (req, res, next) => {
     }
 });
 
+app.get('/queries', (req, res, next) => {
+   
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/queries.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
 app.get('/logout', (req, res, next) => {
     req.logout();
     res.redirect('/');
@@ -169,7 +178,7 @@ app.get('/songReport', (req, res, next) => {
 
 app.get('/albumReport', (req, res, next) => {
     if (req.isAuthenticated()) {
-        connection.query("SELECT album_id, album_title, release_date FROM album", function (error, results, fields) {
+        connection.query("SELECT album_id, album_title, release_date FROM album ORDER BY album_id ASC", function (error, results, fields) {
             if (error) throw error;
     
             if(results.length > 0) {
@@ -183,6 +192,15 @@ app.get('/albumReport', (req, res, next) => {
         res.redirect('/login');
     }
 });
+
+app.get('/addtrack', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/upload-standalone-track.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
 
 //POST
 
@@ -213,7 +231,7 @@ app.post("/signup", (req, res, next) => {
 });
 
 //Upload standalone track form route (w/out any validation)
-app.post("/upload-standalone-track", (req, res, next) => {
+app.post("/addsong", (req, res, next) => {
     console.log(req.body);
     let song_name = req.body.track;
     let song_file = req.body.trackfile;

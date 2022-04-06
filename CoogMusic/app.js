@@ -184,13 +184,74 @@ app.get('/albumReport', (req, res, next) => {
     }
 });
 
-
 //POST
 
 //Login page route
 //app.post("/login", passport.authenticate('local'), (req, res, next) => {});
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
     if (err) res.send(err); next(err);
+});
+
+//Signup page route (w/out any validation)
+app.post("/signup", (req, res, next) => {
+    //console.log(req.body);
+    let email = req.body.email;
+    let username = req.body.username;
+    let handle = req.body.handle;
+    let pass = req.body.password;
+    let user_type = req.body.artist_account == "artist_account" ? 1 : 0;
+    let user_perm = user_type;
+
+    let sql = `INSERT INTO user (username, handle, pass, user_type, user_perm) 
+    VALUES (${username}, ${handle}, ${pass}, ${user_type}, ${user_perm})`;
+
+    /*connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results.message);
+    });*/
+
+});
+
+//Upload standalone track form route (w/out any validation)
+app.post("/upload-standalone-track", (req, res, next) => {
+    console.log(req.body);
+    let song_name = req.body.track;
+    let song_file = req.body.trackfile;
+    let track_image = req.body.trackart;
+    //need to know what user is adding track to pass into table
+
+    let sql = `INSERT INTO track (song_name, song_file, track_image) 
+    VALUES (${song_name}, ${song_file}, ${track_image})`;
+
+    /*
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results.message);
+    });
+    */
+
+});
+
+//Upload album form route (w/out any validation)
+app.post("/upload-album", (req, res, next) => {
+    console.log(req.body);
+    let albumtitle = req.body.albumtitle;
+    let albumart = req.body.albumart;
+    let tracknames = req.body.trackname.slice(1);
+    let trackfiles = req.body.trackfile.slice(1);
+    let featuredartists = req.body.featuredartist.slice(1);
+    //need to know what user is adding track to pass into table
+
+    /*let sql = `INSERT INTO track (song_name, song_file, track_image) 
+    VALUES (${song_name}, ${song_file}, ${track_image})`;*/
+
+    /*
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results.message);
+    });
+    */
+
 });
 
 

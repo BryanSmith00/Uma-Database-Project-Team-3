@@ -1,6 +1,7 @@
 const express = require('express');
 const bp = require('body-parser')
 var passport = require('passport');
+var usersRouter = require('./public/js/users');
 const connection = require('./public/js/database');
 
 var app = express();
@@ -90,7 +91,7 @@ app.get('/admin', (req, res, next) => {
    
     // This is how you check if a user is authenticated
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/views/admin.html');
+        res.sendFile(__dirname + "/views/admin.html");
     } else {
         res.redirect('/login');
     }
@@ -100,7 +101,7 @@ app.get('/songs', (req, res, next) => {
    
     // This is how you check if a user is authenticated
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/views/songs.html');
+        res.sendFile(__dirname + "/views/songs.html");
     } else {
         res.redirect('/login');
     }
@@ -110,7 +111,7 @@ app.get('/albums', (req, res, next) => {
    
     // This is how you check if a user is authenticated
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/views/albums.html');
+        res.sendFile(__dirname + "/views/albums.html");
     } else {
         res.redirect('/login');
     }

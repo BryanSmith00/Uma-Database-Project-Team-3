@@ -55,29 +55,6 @@ app.get('/login', function(req, res, next) {
     res.sendFile(__dirname + "/views/login.html");
 });
 
-//Signup page GET
-app.get('/signup', function (req, res, next) {
-    res.statusCode = 200;
-    res.sendFile(__dirname + "/views/signup.html");
-});
-
-//Upload standalone track GET
-app.get('/upload-standalone-track', function (req, res, next) {
-    res.statusCode = 200;
-    res.sendFile(__dirname + "/views/upload-standalone-track.html");
-});
-
-//Upload album GET
-app.get('/upload-album', function (req, res, next) {
-    res.statusCode = 200;
-    res.sendFile(__dirname + "/views/upload-album.html");
-});
-
-//Music player GET
-app.get('/music', (req, res, next) =>{
-    res.sendFile(__dirname + "/views/music-player.html");
-})
-
 //Good login route
 app.get('/login-success', (req, res, next) =>{
     res.redirect('/home');
@@ -86,6 +63,29 @@ app.get('/login-success', (req, res, next) =>{
 //Failed login route
 app.get('/login-failure', (req, res, next) =>{
     res.send("Your username or password was incorrect");
+})
+
+//Signup page route
+app.get('/signup', function (req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/signup.html");
+});
+
+//Upload standalone track form route
+app.get('/upload-standalone-track', function (req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/upload-standalone-track.html");
+});
+
+//Upload album form route
+app.get('/upload-album', function (req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/upload-album.html");
+});
+
+//Music player route
+app.get('/music', (req, res, next) => {
+    res.sendFile(__dirname + "/views/music-player.html");
 })
 
 app.get('/home', (req, res, next) => {

@@ -122,6 +122,57 @@ app.get('/logout', (req, res, next) => {
     res.redirect('/');
 });
 
+app.get('/userReport', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        connection.query("SELECT user_id, username, date_created FROM user", function (error, results, fields) {
+            if (error) throw error;
+    
+            if(results.length > 0) {
+                res.send(results);
+            }
+            else{
+                res.send('<H1>There were no users in the table</H1>');
+            }
+        });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/songReport', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        connection.query("SELECT song_id, song_name, date_added, length, number_of_plays FROM track", function (error, results, fields) {
+            if (error) throw error;
+    
+            if(results.length > 0) {
+                res.send(results);
+            }
+            else{
+                res.send('<H1>There were no tracks in the table</H1>');
+            }
+        });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/albumReport', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        connection.query("SELECT album_id, album_title, release_date FROM album", function (error, results, fields) {
+            if (error) throw error;
+    
+            if(results.length > 0) {
+                res.send(results);
+            }
+            else{
+                res.send('<H1>There were no albums in the table</H1>');
+            }
+        });
+    } else {
+        res.redirect('/login');
+    }
+});
+
 
 //POST
 

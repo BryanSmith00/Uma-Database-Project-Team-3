@@ -56,13 +56,25 @@ app.get('/login', function(req, res, next) {
     res.sendFile(__dirname + "/views/login.html");
 });
 
-//Sign up page route
-app.get('/signup', function(req, res, next) {
+//Signup page GET
+app.get('/signup', function (req, res, next) {
     res.statusCode = 200;
     res.sendFile(__dirname + "/views/signup.html");
 });
 
-//Music player route
+//Upload standalone track GET
+app.get('/upload-standalone-track', function (req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/upload-standalone-track.html");
+});
+
+//Upload album GET
+app.get('/upload-album', function (req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/upload-album.html");
+});
+
+//Music player GET
 app.get('/music', (req, res, next) =>{
     res.sendFile(__dirname + "/views/music-player.html");
 })
@@ -117,6 +129,15 @@ app.get('/albums', (req, res, next) => {
     }
 });
 
+app.get('/queries', (req, res, next) => {
+   
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/queries.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
 app.get('/logout', (req, res, next) => {
     req.logout();
     res.redirect('/');
@@ -158,7 +179,7 @@ app.get('/songReport', (req, res, next) => {
 
 app.get('/albumReport', (req, res, next) => {
     if (req.isAuthenticated()) {
-        connection.query("SELECT album_id, album_title, release_date FROM album", function (error, results, fields) {
+        connection.query("SELECT album_id, album_title, release_date FROM album ORDER BY album_id ASC", function (error, results, fields) {
             if (error) throw error;
     
             if(results.length > 0) {
@@ -173,6 +194,14 @@ app.get('/albumReport', (req, res, next) => {
     }
 });
 
+app.get('/addtrack', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/upload-standalone-track.html');
+    } else {
+        res.redirect('/login');
+    }
+});
+
 
 //POST
 
@@ -180,6 +209,68 @@ app.get('/albumReport', (req, res, next) => {
 //app.post("/login", passport.authenticate('local'), (req, res, next) => {});
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
     if (err) res.send(err); next(err);
+});
+
+//Signup page route (w/out any validation)
+app.post("/signup", (req, res, next) => {
+    //console.log(req.body);
+    let email = req.body.email;
+    let username = req.body.username;
+    let handle = req.body.handle;
+    let pass = req.body.password;
+    let user_type = req.body.artist_account == "artist_account" ? 1 : 0;
+    let user_perm = user_type;
+
+    let sql = `INSERT INTO user (username, handle, pass, user_type, user_perm) 
+    VALUES (${username}, ${handle}, ${pass}, ${user_type}, ${user_perm})`;
+
+    /*connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results.message);
+    });*/
+
+});
+
+//Upload standalone track form route (w/out any validation)
+app.post("/addsong", (req, res, next) => {
+    console.log(req.body);
+    let song_name = req.body.track;
+    let song_file = req.body.trackfile;
+    let track_image = req.body.trackart;
+    //need to know what user is adding track to pass into table
+
+    let sql = `INSERT INTO track (song_name, song_file, track_image) 
+    VALUES (${song_name}, ${song_file}, ${track_image})`;
+
+    /*
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results.message);
+    });
+    */
+
+});
+
+//Upload album form route (w/out any validation)
+app.post("/upload-album", (req, res, next) => {
+    console.log(req.body);
+    let albumtitle = req.body.albumtitle;
+    let albumart = req.body.albumart;
+    let tracknames = req.body.trackname.slice(1);
+    let trackfiles = req.body.trackfile.slice(1);
+    let featuredartists = req.body.featuredartist.slice(1);
+    //need to know what user is adding track to pass into table
+
+    /*let sql = `INSERT INTO track (song_name, song_file, track_image) 
+    VALUES (${song_name}, ${song_file}, ${track_image})`;*/
+
+    /*
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results.message);
+    });
+    */
+
 });
 
 

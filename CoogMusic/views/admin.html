@@ -59,22 +59,7 @@
 
     </main>
       
-    <button name="submit" onclick="userQuery()">Run User Report</button>
-    
-    <script>
-        const connection = require('./database');
-
-        function userQuery(){
-            
-            connection.query("SELECT user_id, date_create, username FROM user", function (error, results, fields) {
-            
-            if (error) throw error;
-
-            loadTable()
-            });
-        }
-    </script>
-
+    <button name="submit" onclick="location.href='/userReport';">Run User Report</button>
 </body>
 
 </html>

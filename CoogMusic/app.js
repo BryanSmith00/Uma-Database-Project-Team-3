@@ -234,8 +234,8 @@ app.post("/signup", (req, res, next) => {
 app.post("/addsong", (req, res, next) => {
     console.log(req.body);
     let song_name = req.body.track;
-    let song_file = req.body.trackfile;
-    let track_image = req.body.trackart;
+    //let song_file = req.body.trackfile;
+    //let track_image = req.body.trackart;
     //need to know what user is adding track to pass into table
 
     let sql = `INSERT INTO track (song_name, song_file, track_image) 

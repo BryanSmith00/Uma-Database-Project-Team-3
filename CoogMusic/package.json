@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "nodemon app.js"
+    "test": "npm start"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
@@ -15,9 +15,6 @@
   "name": "coogmusic",
   "version": "1.0.0",
   "main": "app.js",
-  "scripts": {
-    "test": "npm start"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BryanSmith00/Uma-Database-Project-Team-3.git"

@@ -179,13 +179,13 @@
             <h5 class="bold form-group">Album Information:</h5>
 
             <div class="form-group">
-                <label class="bold" id="album-name-label" for="album-name">Album Name</label>
-                <input type="text" id="album-name" placeholder="Enter the album name." name="album-name" class="form-control" required>
+                <label class="bold" id="albumtitle-label" for="albumtitle">Album Title</label>
+                <input type="text" id="albumtitle" placeholder="Enter the album title." name="albumtitle" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label class="bold" id="album-art-label" for="album-art">Album Artwork</label>
-                <input type="file" accept=".jpg, .png, .tif" id="album-art" name="album-art" class="form-control-file">
+                <label class="bold" id="albumart-label" for="albumart">Album Artwork</label>
+                <input type="file" accept=".jpg, .png, .tif" id="albumart" name="albumart" class="form-control-file">
             </div>
 
             <br />
@@ -193,32 +193,20 @@
 
             <div class="container-fluid form-group dynamic-add-track-hidden" id="dynamic-add-track-hidden">
                 <div class="form-group">
-                    <label class="bold" id="track-name-label" for="track-name">Track Name</label>
-                    <input type="text" id="track-name" placeholder="Enter the track name." name="track-name" class="form-control" required>
+                    <label class="bold" id="trackname-label" for="trackname">Track Name</label>
+                    <input type="text" id="trackname" placeholder="Enter the track name." name="trackname" class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label class="bold" id="track-file-label" for="track-file">Track File</label>
-                    <input type="file" accept=".mp3" id="track-file" name="track-file" class="form-control-file" required>
+                    <label class="bold" id="trackfile-label" for="trackfile">Track File</label>
+                    <input type="file" accept=".mp3" id="trackfile" name="trackfile" class="form-control-file">
                 </div>
 
                 <div class="form-group">
-                    <label class="bold" id="featured-artist-label" for="featured-artist">Featured Artists</label>
-                    <input type="text" id="featured-artist" placeholder="Enter handles in a comma-separated list" name="featured-artist" class="form-control">
+                    <label class="bold" id="featuredartist-label" for="featuredartist">Featured Artists</label>
+                    <input type="text" id="featuredartist" placeholder="Enter handles in a comma-separated list" name="featuredartist" class="form-control">
                     <small>(e.g. &mdash; John Doe, Jane Doe, etc.) <br /></small>
                     <small class="text-warning">Featured artists must be registered Coog Music users!</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="bold" id="writers-label" for="writers">Writers</label>
-                    <input type="text" id="writers" placeholder="Enter names in a comma-separated list." name="writers" class="form-control">
-                    <small>(e.g. &mdash; John Doe, Jane Doe, etc.)</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="bold" id="producers-label" for="producers">Producers</label>
-                    <input type="text" id="producers" placeholder="Enter names in a comma-separated list." name="producers" class="form-control">
-                    <small>(e.g. &mdash; John Doe, Jane Doe, etc.)</small>
                 </div>
 
                 <div class="form-group">
@@ -248,6 +236,9 @@
             clone.id = 'dynamic-add-track';
             clone.classList.remove("dynamic-add-track-hidden");
             clone.classList.add("dynamic-add-track");
+
+            clone.querySelector('input[name="trackname"]').setAttribute('required', '');
+            clone.querySelector('input[name="trackfile"]').setAttribute('required', '');
 
             ele.before(clone);
         }

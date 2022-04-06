@@ -22,7 +22,7 @@
 
   <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">
+      <a class="navbar-brand" href="/">
         <img class="logo" src="../public/images/coogMusic.png" alt="Coog Music logo">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -34,6 +34,7 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
           <a class="nav-link" href="/signup">Sign up</a>
           <a class="nav-link" href="/login">Sign in</a>
+          <a class="nav-link" href="/music">Music</a>
         </div>
       </div>
     </div>
@@ -52,10 +53,11 @@
   <div class="music-container" id="music-container">
     <div class="music-info">
       <h4 id="title"></h4>
-      <!--need to make these not so horrible idk how -->
-      <div id="currTime">0</div>
-      <div id="durTime">0</div>
-      <!---->
+      <div class="time">
+        <div id="currTime">0</div>
+        <div id="durTime">0</div>
+      </div>
+      
       <div class="progress-container" id="progress-container">
         <div class="progress" id="progress"></div>
       </div>

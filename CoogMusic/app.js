@@ -221,32 +221,42 @@ app.post("/runquery", (req, res, next) => {
             var sort_type = 'user_id';
         if(req.body.sorttype == 'name')
             var sort_type = 'username';
-        if(req.body.sortype == 'date')
+        if(req.body.sorttype == 'date')
             var sort_type = 'date_created';
+        
+            var sql = `SELECT user_id, username, date_created FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
     }else 
     if(select_type == 'track'){
         if(req.body.sorttype == 'id')
             var sort_type = 'song_id';
         if(req.body.sorttype == 'name')
             var sort_type = 'song_name';
-        if(req.body.sortype == 'date')
+        if(req.body.sorttype == 'date')
             var sort_type = 'date_added';
+
+        var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
     }else{
         if(req.body.sorttype == 'id')
             var sort_type = 'album_id';
         if(req.body.sorttype == 'name')
             var sort_type = 'album_title';
-        if(req.body.sortype == 'date')
+        if(req.body.sorttype == 'date')
             var sort_type = 'release_date';
+
+        var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
     }
 
-    let sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
     connection.query(sql, function (error, results) {
         if (error) {
             res.send(error);
             throw error;
         }
-        res.send(results);
+
+        if(results.length > 0) {
+            res.send(results);
+        }
+        else
+            res.send('<h1>There were no results</h1>');
     });
 });
 

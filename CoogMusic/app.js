@@ -6,6 +6,7 @@ const connection = require('./public/js/database');
 var app = express();
 const port = 3000;
 const session = require('express-session');
+const { send } = require('express/lib/response');
 
 //---------------Session stup---------------//
 
@@ -208,6 +209,45 @@ app.get('/addtrack', (req, res, next) => {
 //app.post("/login", passport.authenticate('local'), (req, res, next) => {});
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
     if (err) res.send(err); next(err);
+});
+
+app.post("/runquery", (req, res, next) => {
+
+    let select_type = req.body.selecttype;
+    let order_type = req.body.ordertype;
+
+    if(select_type == 'user'){
+        if(req.body.sorttype == 'id')
+            var sort_type = 'user_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'username';
+        if(req.body.sortype == 'date')
+            var sort_type = 'date_created';
+    }else 
+    if(select_type == 'track'){
+        if(req.body.sorttype == 'id')
+            var sort_type = 'song_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'song_name';
+        if(req.body.sortype == 'date')
+            var sort_type = 'date_added';
+    }else{
+        if(req.body.sorttype == 'id')
+            var sort_type = 'album_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'album_title';
+        if(req.body.sortype == 'date')
+            var sort_type = 'release_date';
+    }
+
+    let sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            res.send(error);
+            throw error;
+        }
+        res.send(results);
+    });
 });
 
 //Signup page route (w/out any validation)

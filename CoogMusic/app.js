@@ -7,6 +7,7 @@ const connection = require('./public/js/database');
 var app = express();
 const port = 3000;
 const session = require('express-session');
+const { send } = require('express/lib/response');
 
 //---------------Session stup---------------//
 
@@ -211,6 +212,55 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login-fai
     if (err) res.send(err); next(err);
 });
 
+app.post("/runquery", (req, res, next) => {
+
+    let select_type = req.body.selecttype;
+    let order_type = req.body.ordertype;
+
+    if(select_type == 'user'){
+        if(req.body.sorttype == 'id')
+            var sort_type = 'user_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'username';
+        if(req.body.sorttype == 'date')
+            var sort_type = 'date_created';
+        
+            var sql = `SELECT user_id, username, date_created FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
+    }else 
+    if(select_type == 'track'){
+        if(req.body.sorttype == 'id')
+            var sort_type = 'song_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'song_name';
+        if(req.body.sorttype == 'date')
+            var sort_type = 'date_added';
+
+        var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
+    }else{
+        if(req.body.sorttype == 'id')
+            var sort_type = 'album_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'album_title';
+        if(req.body.sorttype == 'date')
+            var sort_type = 'release_date';
+
+        var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
+    }
+
+    connection.query(sql, function (error, results) {
+        if (error) {
+            res.send(error);
+            throw error;
+        }
+
+        if(results.length > 0) {
+            res.send(results);
+        }
+        else
+            res.send('<h1>There were no results</h1>');
+    });
+});
+
 //Signup page route (w/out any validation)
 app.post("/signup", (req, res, next) => {
     //console.log(req.body);
@@ -235,8 +285,8 @@ app.post("/signup", (req, res, next) => {
 app.post("/addsong", (req, res, next) => {
     console.log(req.body);
     let song_name = req.body.track;
-    let song_file = req.body.trackfile;
-    let track_image = req.body.trackart;
+    //let song_file = req.body.trackfile;
+    //let track_image = req.body.trackart;
     //need to know what user is adding track to pass into table
 
     let sql = `INSERT INTO track (song_name, song_file, track_image) 

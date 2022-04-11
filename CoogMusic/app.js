@@ -120,11 +120,11 @@ app.get('/songs', (req, res, next) => {
     }
 });
 
-app.get('/albums', (req, res, next) => {
+app.get('/playlists', (req, res, next) => {
    
     // This is how you check if a user is authenticated
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + "/views/albums.html");
+        res.sendFile(__dirname + "/views/playlists.html");
     } else {
         res.redirect('/login');
     }
@@ -212,75 +212,6 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login-fai
     if (err) res.send(err); next(err);
 });
 
-app.post("/runquery", (req, res, next) => {
-
-    let select_type = req.body.selecttype;
-    let order_type = req.body.ordertype;
-
-    if(select_type == 'user'){
-        if(req.body.sorttype == 'id')
-            var sort_type = 'user_id';
-        if(req.body.sorttype == 'name')
-            var sort_type = 'username';
-        if(req.body.sorttype == 'date')
-            var sort_type = 'date_created';
-        
-            var sql = `SELECT user_id, username, date_created FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
-    }else 
-    if(select_type == 'track'){
-        if(req.body.sorttype == 'id')
-            var sort_type = 'song_id';
-        if(req.body.sorttype == 'name')
-            var sort_type = 'song_name';
-        if(req.body.sorttype == 'date')
-            var sort_type = 'date_added';
-
-        var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
-    }else{
-        if(req.body.sorttype == 'id')
-            var sort_type = 'album_id';
-        if(req.body.sorttype == 'name')
-            var sort_type = 'album_title';
-        if(req.body.sorttype == 'date')
-            var sort_type = 'release_date';
-
-        var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
-    }
-
-    connection.query(sql, function (error, results) {
-        if (error) {
-            res.send(error);
-            throw error;
-        }
-
-        if(results.length > 0) {
-            res.send(results);
-        }
-        else
-            res.send('<h1>There were no results</h1>');
-    });
-});
-
-//Signup page route (w/out any validation)
-app.post("/signup", (req, res, next) => {
-    //console.log(req.body);
-    let email = req.body.email;
-    let username = req.body.username;
-    let handle = req.body.handle;
-    let pass = req.body.password;
-    let user_type = req.body.artist_account == "artist_account" ? 1 : 0;
-    let user_perm = user_type;
-
-    let sql = `INSERT INTO user (username, handle, pass, user_type, user_perm) 
-    VALUES (${username}, ${handle}, ${pass}, ${user_type}, ${user_perm})`;
-
-    /*connection.query(sql, function (error, results) {
-        if (error) throw error;
-        console.log(results.message);
-    });*/
-
-});
-
 //Upload standalone track form route (w/out any validation)
 app.post("/addsong", (req, res, next) => {
     console.log(req.body);
@@ -321,6 +252,80 @@ app.post("/upload-album", (req, res, next) => {
     });
     */
 
+});
+
+app.post("/runquery", (req, res, next) => {
+
+    let select_type = req.body.selecttype;
+    let order_type = req.body.ordertype;
+
+    if(select_type == 'user'){
+        if(req.body.sorttype == 'id')
+            var sort_type = 'user_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'username';
+        if(req.body.sorttype == 'date')
+            var sort_type = 'date_created';
+    }else 
+    if(select_type == 'track'){
+        if(req.body.sorttype == 'id')
+            var sort_type = 'song_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'song_name';
+        if(req.body.sorttype == 'date')
+            var sort_type = 'date_added';
+    }else{
+        if(req.body.sorttype == 'id')
+            var sort_type = 'playlist_id';
+        if(req.body.sorttype == 'name')
+            var sort_type = 'playlist_name';
+        if(req.body.sorttype == 'date')
+            var sort_type = 'created_at';
+    }
+
+    var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
+
+    connection.query(sql, function (error, results) {
+        if (error) {
+            res.send(error);
+            throw error;
+        }
+
+        if(results.length <= 0) res.send('<h1>There were no results</h1>');
+        else{
+            if(select_type == 'user'){
+                var tab = '<table style="width:50%"> <tr> <th>ID</th> <th>Name</th> <th>Date Created</th> </tr>';
+                for(let i = 0; i < results.length; i++){
+                    tab += '<tr>' + '<td>' + results[i].user_id + '</td><td>' + results[i].username + '</td><td>' + results[i].date_created + '</td></tr>';
+                }
+                tab += '</table>';
+            }else if(select_type == 'track'){
+                var tab = '<table style="width:50%"> <tr> <th>ID</th> <th>Name</th> <th>Date Created</th> </tr>';
+                for(let i = 0; i < results.length; i++){
+                    tab += '<tr>' + '<td>' + results[i].song_id + '</td><td>' + results[i].song_name + '</td><td>' + results[i].date_added + '</td></tr>';
+                }
+                tab += '</table>';
+            }else if(select_type == 'playlist'){
+                var tab = '<table style="width:50%"> <tr> <th>ID</th> <th>Name</th> <th>Date Created</th> </tr>';
+                for(let i = 0; i < results.length; i++){
+                    tab += '<tr>' + '<td>' + results[i].playlist_id + '</td><td>' + results[i].playlist_name + '</td><td>' + results[i].created_at + '</td></tr>';
+                }
+                tab += '</table>';
+            }
+
+            let text = `<!DOCTYPE html><html lang="en">
+            <head>
+                <meta charset="UTF-8"> <title>Query Results</title> <link rel="icon" type="image/x-icon" href="../public/images/favicon.ico"> <meta name="viewport" content="width=device-width, initial-scale=1"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> <link rel="stylesheet" href="../public/stylesheets/admin.css" /> <style>table, th, td {border:1px solid black;}</style>
+            </head>
+            <body>
+            <div>
+                ${tab}
+            </div>
+            </body>`;
+
+            res.send(text);
+        }
+    });
 });
 
 

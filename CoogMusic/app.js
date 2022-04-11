@@ -125,7 +125,7 @@ app.get('/admin', (req, res, next) => {
 
 app.get('/listener', function (req, res, next) {
     res.statusCode = 200;
-    
+
     if (req.isAuthenticated()) {
 
         var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
@@ -135,7 +135,27 @@ app.get('/listener', function (req, res, next) {
         connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
             if (error) throw error;
 
-            res.render('listener', { data: results[1], pl_data: results[0] });
+            res.render('listener', { data: results[1], pl_data: results[0], user: req.session.passport.user });
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/playlists', function (req, res, next) {
+    res.statusCode = 200;
+
+    if (req.isAuthenticated()) {
+
+        var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+
+        var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
+
+        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+            if (error) throw error;
+
+            res.render('playlist', { my_pls: results[0], other_pls: results[1], user: req.session.passport.user });
         });
 
     } else {

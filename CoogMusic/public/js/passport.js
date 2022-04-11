@@ -20,8 +20,8 @@ const strategy  = new LocalStrategy(verifyCallback);
 passport.use(strategy);
 
 // used to serialize the user for the session
-passport.serializeUser(function(user, done) {
-    done(null, user[0]['username']); 
+passport.serializeUser(function (user, done) {
+    done(null, user[0]['username']);
 });
 
 passport.deserializeUser((user, done) => {

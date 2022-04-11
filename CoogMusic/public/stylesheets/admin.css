@@ -73,7 +73,11 @@ main{
     width: 900px;
     background-color: white;
     margin-top: 20px;
-    
+}
+
+.modal-table {
+    width: 100%;
+    background-color: white;
 }
 
 thead{

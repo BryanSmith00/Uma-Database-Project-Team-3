@@ -5,7 +5,8 @@ var connection = mysql.createConnection({
     host: "team-3-3380.cbbxip0p57sn.us-east-2.rds.amazonaws.com",
     user: "admin",
     password: "*ZrYDzw*Puctowy\$nf42",
-    database: "coog_music"
+    database: "coog_music",
+    multipleStatements: true
     });
 
 connection.connect(function(err) {

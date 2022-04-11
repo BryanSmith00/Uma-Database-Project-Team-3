@@ -13,6 +13,9 @@ const { send } = require('express/lib/response');
 
 app.set('trust proxy', 1) // trust first proxy
 
+// Set EJS as templating engine
+app.set('view engine', 'ejs');
+
 app.use(session({
     secret: "tempsecret",
     resave: false,
@@ -38,6 +41,7 @@ require('./public/js/passport');
 
 //--------------Routes--------------//
 //GET
+
 
 //Landing page route
 app.get('/', function(req, res, next) {
@@ -74,15 +78,24 @@ app.get('/signup', function (req, res, next) {
 });
 
 //Upload standalone track form route
-app.get('/upload-standalone-track', function (req, res, next) {
-    res.statusCode = 200;
-    res.sendFile(__dirname + "/views/upload-standalone-track.html");
+app.get('/addtrack', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.sendFile(__dirname + '/views/upload-standalone-track.html');
+    } else {
+        res.redirect('/login');
+    }
 });
 
 //Upload album form route
 app.get('/upload-album', function (req, res, next) {
     res.statusCode = 200;
     res.sendFile(__dirname + "/views/upload-album.html");
+});
+
+//Create playlist form route
+app.get('/createplaylist', function (req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/create-playlist.html");
 });
 
 //Music player route
@@ -105,6 +118,26 @@ app.get('/admin', (req, res, next) => {
     // This is how you check if a user is authenticated
     if (req.isAuthenticated()) {
         res.sendFile(__dirname + "/views/admin.html");
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.get('/listener', function (req, res, next) {
+    res.statusCode = 200;
+    
+    if (req.isAuthenticated()) {
+
+        var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+
+        var sql2 = "SELECT song_name, published_by, number_of_plays FROM track";
+
+        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+            if (error) throw error;
+
+            res.render('listener', { data: results[1], pl_data: results[0] });
+        });
+
     } else {
         res.redirect('/login');
     }
@@ -190,14 +223,6 @@ app.get('/albumReport', (req, res, next) => {
                 res.send('<H1>There were no albums in the table</H1>');
             }
         });
-    } else {
-        res.redirect('/login');
-    }
-});
-
-app.get('/addtrack', (req, res, next) => {
-    if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/views/upload-standalone-track.html');
     } else {
         res.redirect('/login');
     }

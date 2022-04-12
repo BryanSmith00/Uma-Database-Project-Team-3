@@ -37,82 +37,69 @@ app.use(bp.urlencoded({ extended: false }));
 require("./public/js/passport");
 
 
-//--------------Routes--------------//
-//GET
+/* ------------------ GET Routes --------------------- */
 
+// --------- Initial views ---------- //
 //Landing page route
 app.get("/", function (req, res, next) {
   res.statusCode = 200;
   res.render("index");
 });
 
-app.get("/test", (req, res) => {
-  res.render("test", {
-    user_type: req.user !== undefined ? req.user[0].user_type : null,
-  });
-
+app.get('/home', (req, res, next) => {
+   
+    // This is how you check if a user is authenticated
+    if (req.isAuthenticated()) {
+        res.render('homepage', {user_type: req.user[0].user_type})
+    } else {
+        res.redirect('/login');
+    }
 });
+
 //Login page route
 app.get("/login", function (req, res, next) {
   res.statusCode = 200;
   res.render("login");
 });
 
-//Upload standalone track form route
+app.get("/logout", (req, res, next) => {
+  req.logout();
+  res.redirect("/");
+});
+
+//Good login route
+app.get("/login-success", (req, res, next) => {
+  res.redirect("/home");
+});
+
+//Failed login route
+app.get("/login-failure", (req, res, next) => {
+  res.send("Your username or password was incorrect");
+});
+
+// --------- END Initial views ----------- //
+
+
+// ---------- Listener & Musician Routes ---------- //
 app.get('/addtrack', (req, res, next) => {
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/views/upload-standalone-track.html');
+        res.render('upload-track');
     } else {
         res.redirect('/login');
     }
 });
 
-//Upload album form route
-app.get('/upload-album', function (req, res, next) {
-    res.statusCode = 200;
-    res.sendFile(__dirname + "/views/upload-album.html");
+// These 2 routes are synonymous 
+
+//Upload standalone track GET
+app.get("/upload-track", function (req, res, next) {
+  res.statusCode = 200;
+  res.render("upload-track", { user_type: req.user[0].user_type });
 });
-
-//Create playlist form route
-app.get('/createplaylist', function (req, res, next) {
-    res.statusCode = 200;
-    res.sendFile(__dirname + "/views/create-playlist.html");
+//Music player GET
+app.get("/music", (req, res, next) => {
+  res.render("music-player", { user_type: req.user[0].user_type });
 });
-
-//Music player route
-app.get('/music', (req, res, next) => {
-    res.sendFile(__dirname + "/views/music-player.html");
-})
-
-app.get('/home', (req, res, next) => {
-   
-    // This is how you check if a user is authenticated
-    if (req.isAuthenticated()) {
-        res.sendFile(__dirname + '/views/homepage.html');
-    } else {
-        res.redirect('/login');
-    }
-});
-
-
-app.get('/admin', function (req, res) {
-    res.statusCode = 200;
-
-    if (req.isAuthenticated()) {
-
-        var sql = "SELECT user_id, user_type, handle, username, date_created FROM user";
-
-        connection.query(`${sql}`, function (error, results) {
-            if (error) throw error;
-
-            res.render('admin', { users_report: results});
-        });
-
-    } else {
-        res.redirect('/login');
-    }
-});
-
 app.get('/songs', function (req, res) {
     res.statusCode = 200;
 
@@ -130,7 +117,6 @@ app.get('/songs', function (req, res) {
         res.redirect('/login');
     }
 });
-
 
 app.get('/listener', function (req, res, next) {
     res.statusCode = 200;
@@ -152,7 +138,6 @@ app.get('/listener', function (req, res, next) {
     }
 });
 
-
 app.get('/playlists', function (req, res, next) {
     res.statusCode = 200;
 
@@ -172,77 +157,33 @@ app.get('/playlists', function (req, res, next) {
         res.redirect('/login');
     }
 });
-
-//Signup page GET
-app.get("/signup", function (req, res, next) {
-  res.statusCode = 200;
-  res.sendFile(__dirname + "/views/signup.html");
+//Create playlist form route
+app.get('/createplaylist', function (req, res, next) {
+    res.statusCode = 200;
+    res.render('create-playlist', {user_type: req.user[0].user_type})
 });
 
-//Upload standalone track GET
-app.get("/upload-track", function (req, res, next) {
-  res.statusCode = 200;
-  res.render("upload-track", { user_type: req.user[0].user_type });
-});
 
-//Upload album GET
-app.get("/upload-album", function (req, res, next) {
-  res.statusCode = 200;
-  res.render("upload-album", { user_type: req.user[0].user_type });
-});
+// --------- END Listener & Musician Routes ---------- //
 
-//Music player GET
-app.get("/music", (req, res, next) => {
-  res.render("music-player", { user_type: req.user[0].user_type });
-});
 
-//Good login route
-app.get("/login-success", (req, res, next) => {
-  res.redirect("/home");
-});
+// ------------- Admin  ------------- //
+app.get('/admin', function (req, res) {
+    res.statusCode = 200;
 
-//Failed login route
-app.get("/login-failure", (req, res, next) => {
-  res.send("Your username or password was incorrect");
-});
+    if (req.isAuthenticated()) {
 
-app.get("/home", (req, res, next) => {
-  // This is how you check if a user is authenticated
-  if (req.isAuthenticated()) {
-    res.render("homepage", { user_type: req.user[0].user_type });
-  } else {
-    res.redirect("/login");
-  }
-});
+        var sql = "SELECT user_id, user_type, handle, username, date_created FROM user";
 
-app.get("/admin", (req, res, next) => {
-  // This is how you check if a user is authenticated
-  if (req.isAuthenticated()) {
-    if (req.user[0].user_type === 2) res.render("admin");
-    else {
-        res.redirect("/");
+        connection.query(`${sql}`, function (error, results) {
+            if (error) throw error;
+
+            res.render('admin', { users_report: results});
+        });
+
+    } else {
+        res.redirect('/login');
     }
-  } else {
-    res.redirect("/login");
-  }
-});
-
-app.get("/songs", (req, res, next) => {
-  // This is how you check if a user is authenticated
-  if (req.isAuthenticated()) {
-    res.render("songs", { user_type: req.user[0].user_type });
-  } else {
-    res.redirect("/login");
-  }
-});
-
-app.get("/playlists", (req, res, next) => {
-  // This is how you check if a user is authenticated
-  if (req.isAuthenticated()) {
-    res.render("playlists", { user_type: req.user[0].user_type });
-  } else {
-    res.redirect("/login");
-  }
 });
 
 app.get("/queries", (req, res, next) => {
@@ -253,10 +194,6 @@ app.get("/queries", (req, res, next) => {
   }
 });
 
-app.get("/logout", (req, res, next) => {
-  req.logout();
-  res.redirect("/");
-});
 
 app.get("/userReport", (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -314,16 +251,9 @@ app.get("/albumReport", (req, res, next) => {
     res.redirect("/login");
   }
 });
+// ------------ END Admin -------------- //
 
-app.get("/addtrack", (req, res, next) => {
-  if (req.isAuthenticated()) {
-    res.render("upload-track", { user_type: req.user[0].user_type });
-  } else {
-    res.redirect("/login");
-  }
-});
-
-
+/* --------------------- POST Routes --------------------- */ 
 //POST
 
 //Login page route

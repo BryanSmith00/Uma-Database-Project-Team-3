@@ -36,6 +36,7 @@ app.use(bp.urlencoded({ extended: false }));
 
 require("./public/js/passport");
 
+
 //--------------Routes--------------//
 //GET
 

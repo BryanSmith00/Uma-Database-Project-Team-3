@@ -47,24 +47,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <%
+                if(songs_report.length != 0){
+                songs_report.forEach(function(track){%>
+                    <tr>
+                        <td><%=track.song_id%></td>
+                        <td><%=track.song_name%></td>
+                        <td><%=track.published_by%></td>
+                        <td><%=track.date_added%></td>
+                    </tr>
+                <% });} %>
             </tbody>
         </table>
     </main>

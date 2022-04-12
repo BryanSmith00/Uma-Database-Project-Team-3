@@ -43,7 +43,14 @@ require('./public/js/passport');
 //GET
 
 
-//Landing page route
+//Landing page route for non users
+app.get('/', function(req, res, next) {
+    res.statusCode = 200;
+    res.sendFile(__dirname + "/views/index.html");
+});
+
+
+//Landing page for users
 app.get('/', function(req, res, next) {
     res.statusCode = 200;
     
@@ -52,7 +59,6 @@ app.get('/', function(req, res, next) {
     } else {
         res.redirect('/login');
     }
-    
 });
 
 //Login page route
@@ -113,15 +119,43 @@ app.get('/home', (req, res, next) => {
     }
 });
 
-app.get('/admin', (req, res, next) => {
-   
-    // This is how you check if a user is authenticated
+
+app.get('/admin', function (req, res) {
+    res.statusCode = 200;
+
     if (req.isAuthenticated()) {
-        res.sendFile(__dirname + "/views/admin.html");
+
+        var sql = "SELECT user_id, user_type, handle, username, date_created FROM user";
+
+        connection.query(`${sql}`, function (error, results) {
+            if (error) throw error;
+
+            res.render('admin', { users_report: results});
+        });
+
     } else {
         res.redirect('/login');
     }
 });
+
+app.get('/songs', function (req, res) {
+    res.statusCode = 200;
+
+    if (req.isAuthenticated()) {
+
+        var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
+
+        connection.query(`${sql}`, function (error, results) {
+            if (error) throw error;
+
+            res.render('songs', { songs_report: results});
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+});
+
 
 app.get('/listener', function (req, res, next) {
     res.statusCode = 200;
@@ -142,6 +176,7 @@ app.get('/listener', function (req, res, next) {
         res.redirect('/login');
     }
 });
+
 
 app.get('/playlists', function (req, res, next) {
     res.statusCode = 200;

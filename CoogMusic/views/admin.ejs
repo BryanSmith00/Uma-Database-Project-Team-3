@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -77,20 +76,24 @@
                 <tr> 
                     <th scope="col">ID</th>
                     <th scope="col">Role</th>
-                    <th scope="col">Date created</th>
                     <th scope="col">Handle</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Date created</th>
 
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <%
+                if(users_report.length != 0){
+                users_report.forEach(function(user){%>
+                    <tr>
+                        <td><%=user.user_id%></td>
+                        <td><%=user.user_type%></td>
+                        <td><%=user.handle%></td>
+                        <td><%=user.username%></td>
+                        <td><%=user.date_created%></td>
+                    </tr>
+                <% });} %>
             </tbody>
         </table>
 

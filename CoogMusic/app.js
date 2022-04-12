@@ -40,24 +40,11 @@ require("./public/js/passport");
 //GET
 
 //Landing page route
-
-/*
-//Landing page route for non users
-app.get('/', function(req, res, next) {
-    res.statusCode = 200;
-    res.sendFile(__dirname + "/views/index.html");
-});
-*/
-
 app.get("/", function (req, res, next) {
   res.statusCode = 200;
-
-  if (req.isAuthenticated()) {
-    res.render("homepage", { user_type: req.user[0].user_type });
-  } else {
-    res.redirect("/login");
-  }
+  res.render("index");
 });
+
 app.get("/test", (req, res) => {
   res.render("test", {
     user_type: req.user !== undefined ? req.user[0].user_type : null,

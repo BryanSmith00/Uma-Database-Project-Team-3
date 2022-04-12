@@ -1,0 +1,98 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Album - Coog Music</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <%- include('header') %> 
+    <link rel="stylesheet" href="../public/stylesheets/upload-playlist.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <form id="upload-album" action="/upload-album" method="post">
+            <h3> Upload Album </h3>
+            <h5 class="bold form-group">Album Information:</h5>
+
+            <div class="form-group">
+                <label class="bold" id="albumtitle-label" for="albumtitle">Album Title</label>
+                <input type="text" id="albumtitle" placeholder="Enter the album title." name="albumtitle" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label class="bold" id="albumart-label" for="albumart">Album Artwork</label>
+                <input type="file" accept=".jpg, .png, .tif" id="albumart" name="albumart" class="form-control-file">
+            </div>
+
+            <br />
+            <h5 class="bold form-group">Tracks:</h5>
+
+            <div class="container-fluid form-group dynamic-add-track-hidden" id="dynamic-add-track-hidden">
+                <div class="form-group">
+                    <label class="bold" id="trackname-label" for="trackname">Track Name</label>
+                    <input type="text" id="trackname" placeholder="Enter the track name." name="trackname" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label class="bold" id="trackfile-label" for="trackfile">Track File</label>
+                    <input type="file" accept=".mp3" id="trackfile" name="trackfile" class="form-control-file">
+                </div>
+
+                <div class="form-group">
+                    <label class="bold" id="featuredartist-label" for="featuredartist">Featured Artists</label>
+                    <input type="text" id="featuredartist" placeholder="Enter handles in a comma-separated list" name="featuredartist" class="form-control">
+                    <small>(e.g. &mdash; John Doe, Jane Doe, etc.) <br /></small>
+                    <small class="text-warning">Featured artists must be registered Coog Music users!</small>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" id="remove-track-btn" class="btn btn-danger btn-sm" onclick="deleteTrackSubForm(this)">Remove</button>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="button" id="add-track-btn" class="btn btn-success btn-sm" onclick="addTrackSubForm(this)">Add Track</button>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="submit" class="input-submit">Upload</button>
+            </div>
+
+
+
+        </form>
+    </div>
+
+
+    <script>
+        function addTrackSubForm(ele) {
+            let elem = document.getElementById('dynamic-add-track-hidden');
+            let clone = elem.cloneNode(true);
+
+            clone.id = 'dynamic-add-track';
+            clone.classList.remove("dynamic-add-track-hidden");
+            clone.classList.add("dynamic-add-track");
+
+            clone.querySelector('input[name="trackname"]').setAttribute('required', '');
+            clone.querySelector('input[name="trackfile"]').setAttribute('required', '');
+
+            ele.before(clone);
+        }
+
+        function deleteTrackSubForm(ele) {
+            ele.parentNode.parentNode.remove();
+        }
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
+
+
+</body>
+</html>

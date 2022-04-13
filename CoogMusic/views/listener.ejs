@@ -74,14 +74,13 @@
 
                     <!-- Modal Body / Playlist Table -->
                     <div class="modal-body">
-
-                        <%
-                        if(pl_data.length!=0){
-                        pl_data.forEach(function(playlist){
-                        %>
-
                         <table class="modal-table table-striped caption-top">
-                            <caption>Your Playlists</caption>
+
+                            <%
+                            if(pl_data.length!=0){ 
+                            pl_data.forEach(function(playlist){
+                            %>
+
                             <tbody>
                                 <tr>
                                     <th scope="row"><%=playlist.playlist_name%></th>
@@ -90,11 +89,12 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
 
                         <% });}  else { %>
                             <h5>No playlists</h5>
                         <% } %>
+                        
+                        </table>
                     </div>
 
 

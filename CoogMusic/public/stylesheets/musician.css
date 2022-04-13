@@ -1,3 +1,166 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+.player-header{
+  display: flex;
+  position: fixed;
+  background-color: black;
+  height: 100vh;
+  min-height: 25rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.player-header video{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.player-header .player-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(black, rgba(49, 3, 3, 0.8),rgba(65, 5, 5, 0.8));
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.music-container {
+  display: flex;
+  margin: 30px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: black;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
+  padding: 10px 10px;
+  z-index: 10;
+}
+
+
+.navigation {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.img-container {
+  position: relative;
+  float: left;
+  right: 37%;
+}
+
+.cover {
+  height: 60px;
+  width: 60px;
+}
+
+.music-container.play .img-container img {
+  animation-play-state: running;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.action-btn {
+  background-color: black;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: rgb(205, 163, 163);
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 20px;
+}
+
+.action-btn.action-btn-big {
+  width: 80px;
+  height: 80px;
+  background-image: linear-gradient(60deg,
+  rgb(234, 142, 142),rgb(230, 29, 29), rgb(159, 16, 16), black );
+  border-radius: 50%;
+  color: white;
+  font-size: 30px;
+}
+
+.action-btn:focus {
+  outline: 0;
+}
+
+.music-info {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Lato', sans-serif;
+  background-color: rgba(35, 35, 35, 0.5);
+  color: white;
+  font-weight: 500;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 10px 15px;
+  opacity: 0;
+  transform: translateY(0%);
+  transition: transform 0.3s ease-in, opacity 0.3s ease-in;
+  z-index: 0;
+}
+
+.music-container.play .music-info {
+  opacity: 1;
+  transform: translateY(-100%);
+}
+
+.music-info h4 {
+  margin: 0;
+}
+
+.progress-container {
+  background: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+  height: 4px;
+  width: 100%;
+}
+
+.progress {
+  background-color: #e30000;
+  border-radius: 5px;
+  height: 100%;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     width: 100vw;
@@ -16,6 +179,7 @@ body {
     bottom: 0;
     left: 0;
     font-size: 18px;
+    z-index: 999;
 }
 
 h2{
@@ -44,25 +208,8 @@ main{
     align-items: flex-start;
     position:fixed;
     float: left;
-    left: 30%;
+    left: 15%;
     
-}
-
-.table-menu{
-    display: flex;
-    justify-content: space-between;
-    width: 900px;
-    margin-top: 105px;
-    padding: 10px;
-    border: 1px solid rgb(226, 224, 224);
-    background-color: whitesmoke;
-}
-
-.table-buttons{
-    border-radius: 25px;
-    border: none;
-    font-weight: bold;
-
 }
 
 .query-button{
@@ -84,72 +231,3 @@ thead{
     background-color: rgb(41, 41, 41);
     color: white;
 }
-
-
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 0;
-    margin: 0;
-    background-color: #b5b5b5;
-  }
-  
-  .navbar {
-    background-color: black;
-    height: 5rem;
-  }
-  
-  .nav-link{
-    color: rgb(230, 227, 227);
-    cursor: pointer;
-    margin-right: 1.3em !important;
-    font-weight: 700;
-  }
-  
-  .nav-link:hover {
-    color: rgb(206, 53, 53);
-  }
-  
-  .navbar-brand img{
-    position: absolute;
-    z-index: 999;
-    top: 10%;
-    height: 9rem;
-    width: 9rem;
-  }
-  
-  .navbar-collapse {
-    justify-content: flex-end;
-  }
-  
-  .home-header {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    background-image: linear-gradient(
-    black, rgba(49, 3, 3, 0.8),rgba(65, 5, 5, 0.8)), url('..//images/header.jpg');
-    background-size: cover;
-    background-position: center;
-    position: fixed;
-    background-repeat: no-repeat;
-  }
-  
-  
-  .slogan{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 500px;
-    color: rgb(240, 240, 240);
-    font-weight: 900;
-    font-size: 110px;
-    margin-top: 75px;
-    font-family: 'Bebas Neue', sans-serif;
-  }
-  
-  .third{
-    color: red;
-    width: 220px;
-    background: black;
-    text-align: center;
-  }

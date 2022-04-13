@@ -45,6 +45,7 @@ require("./public/js/passport");
 /* ------------------ GET Routes --------------------- */
 
 // --------- Initial views ---------- //
+
 //Landing page route
 app.get("/", function (req, res, next) {
   res.statusCode = 200;
@@ -84,89 +85,6 @@ app.get("/login-failure", (req, res, next) => {
 // --------- END Initial views ----------- //
 
 // ---------- Listener & Musician Routes ---------- //
-app.get('/addtrack', (req, res, next) => {
-    if (req.isAuthenticated()) {
-        res.render('upload-track');
-    } else {
-        res.redirect('/login');
-    }
-});
-
-//Music player GET
-app.get("/music", (req, res, next) => {
-  res.render("music-player", { user_type: req.user[0].user_type });
-});
-app.get('/songs', function (req, res) {
-    res.statusCode = 200;
-
-    if (req.isAuthenticated()) {
-
-        var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
-
-        connection.query(`${sql}`, function (error, results) {
-            if (error) throw error;
-
-            res.render('songs', { songs_report: results});
-        });
-
-    } else {
-        res.redirect('/login');
-    }
-});
-
-app.get('/listener', function (req, res, next) {
-    res.statusCode = 200;
-
-    if (req.isAuthenticated()) {
-
-        var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
-
-        var sql2 = "SELECT song_name, published_by, number_of_plays FROM track";
-
-        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
-            if (error) throw error;
-
-            res.render('listener', { data: results[1], pl_data: results[0], user: req.session.passport.user });
-        });
-
-    } else {
-        res.redirect('/login');
-    }
-});
-
-
-app.get('/musician', function (req, res, next) {
-  res.statusCode = 200;
-
-  if (req.isAuthenticated()) {
-    res.render("upload-track");
-  } else {
-    res.redirect("/login");
-  }
-});
-
-//Music player GET
-app.get("/music", (req, res, next) => {
-  if(req.isAuthenticated())
-    res.render("music-player", { user_type: req.user[0].user_type });
-  else
-    res.redirect('/login')
-});
-app.get("/songs", function (req, res) {
-  res.statusCode = 200;
-
-  if (req.isAuthenticated()) {
-    var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
-
-    connection.query(`${sql}`, function (error, results) {
-      if (error) throw error;
-
-      res.render("songs", { songs_report: results });
-    });
-  } else {
-    res.redirect("/login");
-  }
-});
 
 app.get("/listener", function (req, res, next) {
   res.statusCode = 200;
@@ -212,6 +130,63 @@ app.get("/musician", function (req, res, next) {
   }
 });
 
+app.get('/addtrack', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.render('upload-track');
+    } else {
+        res.redirect('/login');
+    }
+});
+
+//Music player GET
+
+app.get("/music", (req, res, next) => {
+  res.render("music-player", { user_type: req.user[0].user_type });
+});
+
+app.get('/songs', function (req, res) {
+    res.statusCode = 200;
+
+    if (req.isAuthenticated()) {
+
+        var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
+
+        connection.query(`${sql}`, function (error, results) {
+            if (error) throw error;
+
+            res.render('songs', { songs_report: results});
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+});
+
+//Music player GET
+app.get("/music", (req, res, next) => {
+  if(req.isAuthenticated())
+    res.render("music-player", { user_type: req.user[0].user_type });
+  else
+    res.redirect('/login')
+});
+
+
+app.get("/songs", function (req, res) {
+  res.statusCode = 200;
+
+  if (req.isAuthenticated()) {
+    var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
+
+    connection.query(`${sql}`, function (error, results) {
+      if (error) throw error;
+
+      res.render("songs", { songs_report: results });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
 app.get("/playlists", function (req, res, next) {
   res.statusCode = 200;
 
@@ -234,6 +209,7 @@ app.get("/playlists", function (req, res, next) {
   }
 });
 
+
 app.get('/get-songs', (req, res) => {
   if(!req.isAuthenticated())
     res.redirect('/login')
@@ -250,12 +226,14 @@ app.get('/get-songs', (req, res) => {
       
   })
 })
+
 app.get("/music/:file_name", (req, res) => {
   res.sendFile(__dirname + `/music/${req.params.file_name}`);
 });
 app.get("/cover_art/:file_name", (req, res) => {
   res.sendFile(__dirname + `/cover_art/${req.params.file_name}`);
 });
+
 //Create playlist form route
 app.get("/createplaylist", function (req, res, next) {
   res.statusCode = 200;

@@ -140,10 +140,6 @@ app.get('/addtrack', (req, res, next) => {
 
 //Music player GET
 
-app.get("/music", (req, res, next) => {
-  res.render("music-player", { user_type: req.user[0].user_type });
-});
-
 app.get('/songs', function (req, res) {
     res.statusCode = 200;
 
@@ -214,8 +210,7 @@ app.get('/get-songs', (req, res) => {
   if(!req.isAuthenticated())
     res.redirect('/login')
   console.log('fetching songs')
-  const query =  `SELECT * FROM track
-                  WHERE published_by = "${req.user[0].username}"`
+  const query =  `SELECT * FROM track`
   connection.query(query, (err, results) => {
     if(err)
       console.log(err)
@@ -223,7 +218,6 @@ app.get('/get-songs', (req, res) => {
       console.log(results.message)
       res.send(results)
     }
-      
   })
 })
 

@@ -19,7 +19,7 @@ const main = async () => {
   const cover = document.getElementById("cover");
   const currTime = document.querySelector("#currTime");
   const durTime = document.querySelector("#durTime");
-
+  const default_img_path = "http://localhost:3000/cover_art/song-cover.png"
   // Song titles, hard coded for now, populate from our db later
   song_data = await getSongs();
   const songs = [];
@@ -44,7 +44,9 @@ const main = async () => {
     title.innerText = song.name;
     artist.innerText = song.artist;
     audio.src = song.file;
-    cover.src = cover_art;
+    cover.src = (cover_art === "" || cover_art === undefined || cover_art === null) ?
+                default_img_path :
+                cover_art
   }
 
   // Play song

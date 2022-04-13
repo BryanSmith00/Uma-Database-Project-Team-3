@@ -359,9 +359,8 @@ app.post("/addtrack", async (req, res, next) => {
   const cover_art = req.files.trackart;
   const cover_ext = cover_art.name.split(".")[1];
   const cover_art_path = `${__dirname}/cover_art/${stripped_song_title}.${cover_ext}`;
-  cover_art.mv(cover_art_path);
+    cover_art.mv(cover_art_path);
 
-  //need to know what user is adding track to pass into table
   // need to change song file in production
   const sql = `INSERT INTO track (song_file, song_name, length, number_of_plays, published_by, cover_art)
               VALUES ("http://localhost:3000/music/${stripped_song_title}.mp3", 
@@ -375,27 +374,6 @@ app.post("/addtrack", async (req, res, next) => {
         if (error) throw error;
         res.send('Uploaded sucessfully.')
     });
-});
-
-//Upload album form route (w/out any validation)
-app.post("/upload-album", (req, res, next) => {
-  console.log(req.body);
-  let albumtitle = req.body.albumtitle;
-  let albumart = req.body.albumart;
-  let tracknames = req.body.trackname.slice(1);
-  let trackfiles = req.body.trackfile.slice(1);
-  let featuredartists = req.body.featuredartist.slice(1);
-  //need to know what user is adding track to pass into table
-
-  /*let sql = `INSERT INTO track (song_name, song_file, track_image) 
-    VALUES (${song_name}, ${song_file}, ${track_image})`;*/
-
-  /*
-    connection.query(sql, function (error, results) {
-        if (error) throw error;
-        console.log(results.message);
-    });
-    */
 });
 
 app.post("/runquery", (req, res, next) => {
@@ -486,6 +464,25 @@ app.post("/runquery", (req, res, next) => {
       res.send(text);
     }
   });
+});
+
+//Upload album form route (w/out any validation)
+app.post("/my-playlists", (req, res, next) => {
+    console.log(req.user);
+    var playlist_name = req.body.playlistname;
+    var user_username = req.user[0].username;
+
+
+    let sql = `INSERT INTO playlist (playlist_name, user_username)
+               VALUES (\"${playlist_name}\", \"${user_username}\");`;
+
+
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results.message);
+    });
+
+    res.redirect("/my-playlists");
 });
 
 //--------------Server--------------//

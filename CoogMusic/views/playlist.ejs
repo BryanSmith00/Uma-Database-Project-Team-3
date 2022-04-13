@@ -66,14 +66,19 @@
                     <th scope="row" colspan="4">You have no playlists.</th>
                 </tr>
             <% } %>
-
-                <tr>
-                    <th scope="row" colspan="4">
-                        <button type="button" class="btn btn-outline-success">
-                            Create New Playlist
-                        </button>
-                    </th>
-                </tr>
+                
+                <form id="new-playlist" method="post" action="/my-playlists">
+                    <tr>
+                        <th scope="row" colspan="2">
+                            <input type="text" id="playlistname" placeholder="My new playlist..." name="playlistname" class="form-control" required></input>
+                        </th>
+                        <th>
+                            <button type="submit" id="submit" class="btn btn-outline-success">
+                                Create New Playlist
+                            </button>
+                        </th>
+                    </tr>
+                </form>
             </tbody>
         </table>
 

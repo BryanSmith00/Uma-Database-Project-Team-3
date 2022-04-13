@@ -7,7 +7,8 @@ const connection = require("./public/js/database");
 var app = express();
 const port = 3000;
 const session = require("express-session");
-const { send } = require("express/lib/response");
+const file_upload = require("express-fileupload");
+const music_metadata = require("music-metadata");
 
 //---------------Session stup---------------//
 
@@ -29,13 +30,17 @@ app.use(passport.session());
 
 //Additional middleware
 app.use(express.static(__dirname));
+app.use(
+  file_upload({
+    createParentPath: true,
+  })
+);
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: false }));
 
 //---------------Passport---------------//
 
 require("./public/js/passport");
-
 
 /* ------------------ GET Routes --------------------- */
 
@@ -46,14 +51,13 @@ app.get("/", function (req, res, next) {
   res.render("index");
 });
 
-app.get('/home', (req, res, next) => {
-   
-    // This is how you check if a user is authenticated
-    if (req.isAuthenticated()) {
-        res.render('homepage', {user_type: req.user[0].user_type})
-    } else {
-        res.redirect('/login');
-    }
+app.get("/home", (req, res, next) => {
+  // This is how you check if a user is authenticated
+  if (req.isAuthenticated()) {
+    res.render("homepage", { user_type: req.user[0].user_type });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 //Login page route
@@ -79,132 +83,150 @@ app.get("/login-failure", (req, res, next) => {
 
 // --------- END Initial views ----------- //
 
-
 // ---------- Listener & Musician Routes ---------- //
-app.get('/addtrack', (req, res, next) => {
-    if (req.isAuthenticated()) {
-        res.render('upload-track');
-    } else {
-        res.redirect('/login');
-    }
-});
-
-// These 2 routes are synonymous 
-
-//Upload standalone track GET
-app.get("/upload-track", function (req, res, next) {
-  res.statusCode = 200;
-  res.render("upload-track", { user_type: req.user[0].user_type });
-});
-//Music player GET
-app.get("/music", (req, res, next) => {
-  res.render("music-player", { user_type: req.user[0].user_type });
-});
-app.get('/songs', function (req, res) {
-    res.statusCode = 200;
-
-    if (req.isAuthenticated()) {
-
-        var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
-
-        connection.query(`${sql}`, function (error, results) {
-            if (error) throw error;
-
-            res.render('songs', { songs_report: results});
-        });
-
-    } else {
-        res.redirect('/login');
-    }
-});
-
-app.get('/listener', function (req, res, next) {
-    res.statusCode = 200;
-
-    if (req.isAuthenticated()) {
-
-        var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
-
-        var sql2 = "SELECT song_name, published_by, number_of_plays FROM track";
-
-        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
-            if (error) throw error;
-
-            res.render('listener', { data: results[1], pl_data: results[0], user: req.session.passport.user });
-        });
-
-    } else {
-        res.redirect('/login');
-    }
-});
-
-app.get('/musician', function (req, res, next) {
-  res.statusCode = 200;
-
+app.get("/addtrack", (req, res, next) => {
   if (req.isAuthenticated()) {
-
-      var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
-
-      var sql2 = "SELECT song_name, published_by, number_of_plays FROM track";
-
-      connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
-          if (error) throw error;
-
-          res.render('musician', { data: results[1], pl_data: results[0], user: req.session.passport.user });
-      });
-
+    res.render("upload-track");
   } else {
-      res.redirect('/login');
+    res.redirect("/login");
   }
 });
 
+//Music player GET
+app.get("/music", (req, res, next) => {
+  if(req.isAuthenticated())
+    res.render("music-player", { user_type: req.user[0].user_type });
+  else
+    res.redirect('/login')
+});
+app.get("/songs", function (req, res) {
+  res.statusCode = 200;
 
-app.get('/playlists', function (req, res, next) {
-    res.statusCode = 200;
+  if (req.isAuthenticated()) {
+    var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
 
-    if (req.isAuthenticated()) {
+    connection.query(`${sql}`, function (error, results) {
+      if (error) throw error;
 
-        var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+      res.render("songs", { songs_report: results });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
 
-        var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
+app.get("/listener", function (req, res, next) {
+  res.statusCode = 200;
 
-        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
-            if (error) throw error;
+  if (req.isAuthenticated()) {
+    var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
 
-            res.render('playlist', { my_pls: results[0], other_pls: results[1], user: req.session.passport.user });
-        });
+    var sql2 = "SELECT song_name, published_by, number_of_plays FROM track";
 
-    } else {
-        res.redirect('/login');
+    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+      if (error) throw error;
+
+      res.render("listener", {
+        data: results[1],
+        pl_data: results[0],
+        user: req.session.passport.user,
+      });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/musician", function (req, res, next) {
+  res.statusCode = 200;
+
+  if (req.isAuthenticated()) {
+    var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+
+    var sql2 = "SELECT song_name, published_by, number_of_plays FROM track";
+
+    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+      if (error) throw error;
+
+      res.render("musician", {
+        data: results[1],
+        pl_data: results[0],
+        user: req.session.passport.user,
+      });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/playlists", function (req, res, next) {
+  res.statusCode = 200;
+
+  if (req.isAuthenticated()) {
+    var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+
+    var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
+
+    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+      if (error) throw error;
+
+      res.render("playlist", {
+        my_pls: results[0],
+        other_pls: results[1],
+        user: req.session.passport.user,
+      });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get('/get-songs', (req, res) => {
+  if(!req.isAuthenticated())
+    res.send('Unauthorized. Please log in.')
+  console.log('fetching songs')
+  const query =  `SELECT * FROM track
+                  WHERE published_by = "${req.user[0].username}"`
+  connection.query(query, (err, results) => {
+    if(err)
+      console.log(err)
+    else{
+      console.log(results.message)
+      res.send(results)
     }
+      
+  })
+})
+app.get("/music/:file_name", (req, res) => {
+  res.sendFile(__dirname + `/music/${req.params.file_name}`);
+});
+app.get("/cover_art/:file_name", (req, res) => {
+  res.sendFile(__dirname + `/cover_art/${req.params.file_name}`);
 });
 //Create playlist form route
-app.get('/createplaylist', function (req, res, next) {
-    res.statusCode = 200;
-    res.render('create-playlist', {user_type: req.user[0].user_type})
+app.get("/createplaylist", function (req, res, next) {
+  res.statusCode = 200;
+  res.render("create-playlist", { user_type: req.user[0].user_type });
 });
-
 
 // --------- END Listener & Musician Routes ---------- //
 
-
 // ------------- Admin  ------------- //
-app.get('/admin', function (req, res) {
-    res.statusCode = 200;
+app.get("/admin", function (req, res) {
+  res.statusCode = 200;
 
-    if (req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
+    var sql =
+      "SELECT user_id, user_type, handle, username, date_created FROM user";
 
-        var sql = "SELECT user_id, user_type, handle, username, date_created FROM user";
+    connection.query(`${sql}`, function (error, results) {
+      if (error) throw error;
 
-        connection.query(`${sql}`, function (error, results) {
-            if (error) throw error;
-
-            res.render('admin', { users_report: results});
-        });
-
-    } else {
-        res.redirect('/login');
-    }
+      res.render("admin", { users_report: results });
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.get("/queries", (req, res, next) => {
@@ -214,7 +236,6 @@ app.get("/queries", (req, res, next) => {
     res.redirect("/login");
   }
 });
-
 
 app.get("/userReport", (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -274,7 +295,7 @@ app.get("/albumReport", (req, res, next) => {
 });
 // ------------ END Admin -------------- //
 
-/* --------------------- POST Routes --------------------- */ 
+/* --------------------- POST Routes --------------------- */
 //POST
 
 //Login page route
@@ -292,22 +313,37 @@ app.post(
 );
 
 //Upload standalone track form route (w/out any validation)
-app.post("/addsong", (req, res, next) => {
-  console.log(req.body);
-  let song_name = req.body.track;
-  //let song_file = req.body.trackfile;
-  //let track_image = req.body.trackart;
+app.post("/addtrack", async (req, res, next) => {
+  if(req.user[0].user_type !== 1 || !req.isAuthenticated())
+    res.send("Unauthorized. Please login to continue.")
+  const mp3_file = req.files.trackfile;
+  const stripped_song_title = req.body.trackname.replace(/^\s+|\s+$/g, "");
+  // couldve used the file name but having the track name enforces continuity and eases querying
+  const mp3_path = `${__dirname}/music/${stripped_song_title}.mp3`;
+  await mp3_file.mv(mp3_path);
+  const duration_minutes = 
+    ((await music_metadata.parseFile(mp3_path)).format.duration / 60).toFixed(2)
+  ;
+
+  const cover_art = req.files.trackart;
+  const cover_ext = cover_art.name.split(".")[1];
+  const cover_art_path = `${__dirname}/cover_art/${stripped_song_title}.${cover_ext}`;
+  cover_art.mv(cover_art_path);
+
   //need to know what user is adding track to pass into table
+  // need to change song file in production
+  const sql = `INSERT INTO track (song_file, song_name, length, number_of_plays, published_by, cover_art)
+              VALUES ("http://localhost:3000/music/${stripped_song_title}.mp3", 
+                      "${req.body.trackname}", 
+                      ${duration_minutes}, 
+                      0, 
+                      "${req.user[0].username}", 
+                      "http://localhost:3000/cover_art/${stripped_song_title}.${cover_ext}");`;
 
-  let sql = `INSERT INTO track (song_name, song_file, track_image) 
-    VALUES (${song_name}, ${song_file}, ${track_image})`;
-
-  /*
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
+        res.send('Uploaded sucessfully.')
     });
-    */
 });
 
 //Upload album form route (w/out any validation)

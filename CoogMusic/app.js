@@ -92,13 +92,6 @@ app.get('/addtrack', (req, res, next) => {
     }
 });
 
-// These 2 routes are synonymous 
-
-//Upload standalone track GET
-app.get("/upload-track", function (req, res, next) {
-  res.statusCode = 200;
-  res.render("upload-track", { user_type: req.user[0].user_type });
-});
 //Music player GET
 app.get("/music", (req, res, next) => {
   res.render("music-player", { user_type: req.user[0].user_type });
@@ -243,7 +236,7 @@ app.get("/playlists", function (req, res, next) {
 
 app.get('/get-songs', (req, res) => {
   if(!req.isAuthenticated())
-    res.send('Unauthorized. Please log in.')
+    res.redirect('/login')
   console.log('fetching songs')
   const query =  `SELECT * FROM track
                   WHERE published_by = "${req.user[0].username}"`

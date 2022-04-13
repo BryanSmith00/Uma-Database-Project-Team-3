@@ -187,7 +187,7 @@ app.get("/songs", function (req, res) {
   }
 });
 
-app.get("/playlists", function (req, res, next) {
+app.get("/my-playlists", function (req, res, next) {
   res.statusCode = 200;
 
   if (req.isAuthenticated()) {

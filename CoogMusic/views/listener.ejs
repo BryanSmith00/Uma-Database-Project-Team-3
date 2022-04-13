@@ -26,7 +26,7 @@
             <hr>
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item"><a class="nav-link text-white active" aria-current="page" href="/listener">Library</a></li>
-                <li><a class="nav-link text-white" href="/playlists">Playlists</a></li>
+                <li><a class="nav-link text-white" href="/my-playlists">Playlists</a></li>
                 <li><a class="nav-link text-white" href="/music">Music Player</a></li>
                 <li><a class="nav-link text-white" href="/Logout">Log out</a></li>
             </ul>
@@ -69,28 +69,34 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Which Playlist?</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Your Playlists</h5>
                     </div>
 
                     <!-- Modal Body / Playlist Table -->
                     <div class="modal-body">
+
+                        <%
+                        if(pl_data.length!=0){
+                        pl_data.forEach(function(playlist){
+                        %>
+
                         <table class="modal-table table-striped caption-top">
                             <caption>Your Playlists</caption>
                             <tbody>
-                            <%
-                            if(pl_data.length!=0){
-                            pl_data.forEach(function(playlist){
-                            %>
                                 <tr>
                                     <th scope="row"><%=playlist.playlist_name%></th>
                                     <td>
                                         <button type="button" class="btn btn-outline-success">Add</button>
                                     </td>
                                 </tr>
-                            <% });} %>
                             </tbody>
                         </table>
+
+                        <% });}  else { %>
+                            <h5>No playlists</h5>
+                        <% } %>
                     </div>
+
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>

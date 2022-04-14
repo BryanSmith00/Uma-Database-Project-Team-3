@@ -10,7 +10,7 @@ const main = async () => {
   const playBtn = document.getElementById("play");
   const prevBtn = document.getElementById("prev");
   const nextBtn = document.getElementById("next");
-
+  
   const audio = document.getElementById("audio");
   const progress = document.getElementById("progress");
   const progressContainer = document.getElementById("progress-container");
@@ -20,12 +20,13 @@ const main = async () => {
   const currTime = document.querySelector("#currTime");
   const durTime = document.querySelector("#durTime");
   const default_img_path = "http://localhost:3000/cover_art/song-cover.png"
-  // Song titles, hard coded for now, populate from our db later
+ 
+
   song_data = await getSongs();
   const songs = [];
   const cover_art = [];
 
-  song_data.forEach((elm) => {
+  song_data.forEach((elm, ind) => {
     songs.push({
       file: elm.song_file,
       name: elm.song_name,

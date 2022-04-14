@@ -53,12 +53,12 @@
                 <form id="<%=form_id%>" action="/add-to-playlist" method="post">
                     <input type="hidden" name="song_id" value="<%=track.song_id%>">
                     <tr id="<%=track.song_id%>">
-                        <td><%=track.song_id%></td>
+                        <td><%=track.song_name%></td>
                         <td><%=track.published_by%></td>
                         <td><%=track.number_of_plays%></td>
                         <td>
-                            <select name="playlist_id" class="form-select">
-                                <option value="null" selected>Add to playlist...</option>
+                            <select name="playlist_id" class="form-select" required>
+                                <option value="" selected>Add to playlist...</option>
                                 
                                 <% 
                                 pl_data.forEach(function(playlist){ 

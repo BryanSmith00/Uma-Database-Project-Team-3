@@ -91,7 +91,7 @@ app.get("/listener", function (req, res, next) {
 
   if (req.isAuthenticated()) {
     var sql1 = "SELECT song_id, song_name, published_by, number_of_plays FROM track";
-    var sql2 = `SELECT playlist_id, playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+    var sql2 = `SELECT playlist_id, playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
 
     connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
       if (error) throw error;
@@ -190,7 +190,7 @@ app.get("/my-playlists", function (req, res, next) {
   res.statusCode = 200;
 
   if (req.isAuthenticated()) {
-    var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+    var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
 
     var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
 
@@ -466,7 +466,7 @@ app.post("/runquery", (req, res, next) => {
 });
 
 app.post("/my-playlists", (req, res, next) => {
-    console.log(req.user);
+    //console.log(req.user);
     var playlist_name = req.body.playlistname;
     var user_username = req.user[0].username;
 
@@ -484,9 +484,10 @@ app.post("/my-playlists", (req, res, next) => {
 });
 
 app.post("/add-to-playlist", (req, res, next) => {
-    console.log(req.body);
+    //console.log(req.body);
     var playlist_id = req.body.playlist_id;
     var song_id = req.body.song_id;
+    var result_string = "Success!";
 
 
     let sql = `INSERT INTO contains_tracks
@@ -497,8 +498,10 @@ app.post("/add-to-playlist", (req, res, next) => {
 
 
     connection.query(sql, function (error, results) {
-        if (error) throw error;
-        console.log(results.message);
+        if (error) {
+            if (error.errno == 1062) return; //duplicate entry
+            else throw (error);
+        }
     });
 
     res.redirect("/listener");

@@ -26,7 +26,8 @@
             </div>
             <hr>
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a class="nav-link text-white active" aria-current="page" href="/admin">Users</a></li>
+                <li class="nav-item"><a class="nav-link text-white active" aria-current="page" href="/admin">Users</a>
+                </li>
                 <li><a class="nav-link text-white" href="/songs">Songs</a></li>
                 <li><a class="nav-link text-white" href="/admin-playlist">Playlists</a></li>
                 <li><a class="nav-link text-white" href="/queries">Run Queries</a></li>
@@ -38,42 +39,42 @@
     <main>
         <div class="table-menu">
             <div>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#myModal"
-                class="btn btn-success table-buttons">Create User</button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#myModal"
-                class="btn btn-danger table-buttons">Delete User</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#createUserModal"
+                    class="btn btn-success table-buttons">Create User</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#deleteUserModal"
+                    class="btn btn-danger table-buttons">Delete User</button>
             </div>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#myModal"  
-                class="btn query-button text-white table-buttons">Run Query</button>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#myModal"
+                class="btn query-button text-white table-buttons">Edit</button>
         </div>
 
-        <div class="modal" id="myModal">
+        <div class="modal" id="createUserModal" tabindex="-1" aria-labelledby="createUserLabel" aria-hidden="true">
             <div class="modal-dialog">
-              <div class="modal-content">
-          
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">Modal Heading</h4>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="createUserLabel">CREATE USER</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        Modal body..
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
-          
-                <!-- Modal body -->
-                <div class="modal-body">
-                  Modal body..
-                </div>
-          
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                </div>
-          
-              </div>
+
             </div>
-          </div>
-        
+        </div>
+
         <table class="table table-striped table-borderless">
             <thead>
-                <tr> 
+                <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Role</th>
                     <th scope="col">Handle</th>
@@ -83,23 +84,33 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                if(users_report.length != 0){
-                users_report.forEach(function(user){%>
+                <% if(users_report.length !=0){ users_report.forEach(function(user){%>
                     <tr>
-                        <td><%=user.user_id%></td>
-                        <td><%=user.user_type%></td>
-                        <td><%=user.handle%></td>
-                        <td><%=user.username%></td>
-                        <td><%=user.date_created%></td>
+                        <td>
+                            <%=user.user_id%>
+                        </td>
+                        <td>
+                            <%=user.user_type%>
+                        </td>
+                        <td>
+                            <%=user.handle%>
+                        </td>
+                        <td>
+                            <%=user.username%>
+                        </td>
+                        <td>
+                            <%=user.date_created%>
+                        </td>
                     </tr>
-                <% });} %>
+                    <% });} %>
             </tbody>
         </table>
 
 
     </main>
-      
+
+    <script>src="modals.ejs"</script>
+
 </body>
 
 </html>

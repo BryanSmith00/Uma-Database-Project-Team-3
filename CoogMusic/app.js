@@ -528,6 +528,22 @@ app.post("/add-to-playlist", (req, res, next) => {
     res.redirect("/listener");
 });
 
+app.post("/delete-playlist", (req, res, next) => {
+    console.log(req.body);
+    var playlist_id = req.body.playlist_id;
+
+
+    let sql = `DELETE FROM playlist WHERE playlist_ID = \"${playlist_id}\"`
+
+    connection.query(sql, function (error, results) {
+        if (error) throw (error);
+        console.log(results.message);
+    });
+
+    res.redirect("/my-playlists");
+});
+
+
 //--------------Server--------------//
 
 app.listen(port, () => {

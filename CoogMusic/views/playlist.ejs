@@ -78,11 +78,14 @@
                             <th scope="col">Playlist Name</th>
                             <th scope="col">Length</th>
                             <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <% if(my_pls.length!=0){
-                        my_pls.forEach(function(playlist){ %>
+                        my_pls.forEach(function(playlist){ 
+                        let pl_form_id = "delete-playlist-" + playlist.playlist_ID;
+                        %>
                         <tr>
                             <th scope="row"><%=playlist.playlist_name%></th>
                             <td><%=playlist.full_length%></td>
@@ -93,6 +96,12 @@
                                 >
                                     Open
                                 </button>
+                            </td>
+                            <td>
+                                <form id="<%=pl_form_id%>" action="/delete-playlist" method="post">
+                                    <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                                    <input type="submit" class="btn btn-outline-danger" value="Delete">
+                                </form>
                             </td>
                         </tr>
                         <% });} else { %>
@@ -119,7 +128,7 @@
                                         required
                                     />
                                 </th>
-                                <th>
+                                <th colspan="2">
                                     <button
                                         type="submit"
                                         id="submit"

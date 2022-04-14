@@ -95,9 +95,9 @@ app.get("/listener", function (req, res, next) {
   res.statusCode = 200;
 
   if (req.isAuthenticated()) {
-    var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+    var sql1 = `SELECT playlist_id, playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
 
-    var sql2 = "SELECT song_name, song_file, cover_art, published_by, number_of_plays FROM track";
+    var sql2 = "SELECT song_id, song_name, song_file, cover_art, published_by, number_of_plays FROM track";
 
     connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
       if (error) throw error;
@@ -193,7 +193,7 @@ app.get("/my-playlists", function (req, res, next) {
   res.statusCode = 200;
 
   if (req.isAuthenticated()) {
-    var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+    var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
 
     var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
 
@@ -487,7 +487,6 @@ app.post("/runquery", (req, res, next) => {
   });
 });
 
-//Upload album form route (w/out any validation)
 app.post("/my-playlists", (req, res, next) => {
     //console.log(req.user);
     var playlist_name = req.body.playlistname;
@@ -500,10 +499,33 @@ app.post("/my-playlists", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        //console.log(results.message);
+        console.log(results.message);
     });
 
     res.redirect("/my-playlists");
+});
+
+app.post("/add-to-playlist", (req, res, next) => {
+    //console.log(req.body);
+    var playlist_id = req.body.playlist_id;
+    var song_id = req.body.song_id;
+
+
+    let sql = `INSERT INTO contains_tracks
+                 (track_song_id, track_published_by, playlist_playlist_ID)
+               VALUES ( ${song_id},
+                        (SELECT published_by FROM track WHERE song_id=${song_id}),
+                       \"${playlist_id}\");`;
+
+
+    connection.query(sql, function (error, results) {
+        if (error) {
+            if (error.errno == 1062) return; //duplicate entry
+            else throw (error);
+        }
+    });
+
+    res.redirect("/listener");
 });
 
 //--------------Server--------------//

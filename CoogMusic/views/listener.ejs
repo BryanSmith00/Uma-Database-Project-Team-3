@@ -68,39 +68,61 @@
           <tr>
             <th scope="col">Track Name</th>
             <th scope="col">Artist</th>
-            <th scope="col"></th>
             <th scope="col">Number of Plays</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
 
         <tbody>
           <% if(data.length!=0){ JSON.parse(data).forEach(function(track, ind){ %>
-          <tr>
-            <td><%=track.song_name%></td>
-            <td><%=track.published_by%></td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                data-toggle="modal"
-                data-target="#addToPLModal"
-              >
-                Add To Playlist
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-danger"
-                onclick="play_selected(this.getAttribute('id'))"
-                data-toggle="modal"
-                data-target="#play-modal"
-                id="song-<%= ind %>"
-              >
-                <i class="fas fa-play"></i>
-              </button>
-            </td>
-            <td><%=track.number_of_plays%></td>
-          </tr>
+          <%let form_id = "add-to-playlist-" + track.song_id;%>
+          <form id="<%=form_id%>" action="/add-to-playlist" method="post">
+              <input type="hidden" name="song_id" value="<%=track.song_id%>">
+              <tr>
+                <td><%=track.song_name%></td>
+                <td><%=track.published_by%></td>
+                <td><%=track.number_of_plays%></td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    onclick="play_selected(this.getAttribute('id'))"
+                    data-toggle="modal"
+                    data-target="#play-modal"
+                    id="song-<%= ind %>"
+                  >
+                    <i class="fas fa-play"></i>
+                  </button>
+                </td>
+                <td>
+                    <select name="playlist_id" class="form-select" required>
+                        <option value="" selected>Add to playlist...</option>
+                                
+                        <% 
+                        pl_data.forEach(function(playlist){ 
+                        %>
+                        <option value="<%=playlist.playlist_id%>"><%=playlist.playlist_name%></option>
+                        <% }); %>
+                    </select>
+                    <!--
+                    <button
+                    type="button"
+                    class="btn btn-outline-success"
+                    data-toggle="modal"
+                    data-target="#addToPLModal">
+                        Add To Playlist
+                    </button>
+                    -->
+                </td>
+                <td>
+                    <input type="submit" class="btn btn-outline-success" form="<%=form_id%>" value="Add">
+                </td>
+              </tr>
+            </form>
           <% });} %>
+          
         </tbody>
       </table>
 

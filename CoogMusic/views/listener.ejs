@@ -15,7 +15,6 @@
 
 <body>
     <header>
-
         <div id="sidebarMenu" class="d-flex flex-column text-white">
             <div class=" d-flex align-items-center justify-content-around flex-column">
                 <a href="/" class="logo">
@@ -34,14 +33,14 @@
     </header>
 
     <main>
-
         <table class="table table-striped table-borderless">
             <thead>
                 <tr> 
                     <th scope="col">Track Name</th>
                     <th scope="col">Artist</th>
-                    <th scope="col"></th>
                     <th scope="col">Number of Plays</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
 
                 </tr>
             </thead>
@@ -50,16 +49,35 @@
             if(data.length!=0){
             data.forEach(function(track){
             %>
-                <tr>
-                    <td><%=track.song_name%></td>
-                    <td><%=track.published_by%></td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addToPLModal">
-                            Add To Playlist
-                        </button>
-                    </td>
-                    <td><%=track.number_of_plays%></td>
-                </tr>
+                <%let form_id = "add-to-playlist-" + track.song_id;%>
+                <form id="<%=form_id%>" action="/add-to-playlist" method="post">
+                    <input type="hidden" name="song_id" value="<%=track.song_id%>">
+                    <tr id="<%=track.song_id%>">
+                        <td><%=track.song_id%></td>
+                        <td><%=track.published_by%></td>
+                        <td><%=track.number_of_plays%></td>
+                        <td>
+                            <select name="playlist_id" class="form-select">
+                                <option value="null" selected>Add to playlist...</option>
+                                
+                                <% 
+                                pl_data.forEach(function(playlist){ 
+                                %>
+
+                                <option value="<%=playlist.playlist_id%>"><%=playlist.playlist_name%></option>
+                                <% }); %>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="submit" class="btn btn-outline-success" form="<%=form_id%>" value="Add">
+                            <!--
+                            <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addToPLModal">
+                                Add To Playlist
+                            </button>
+                            -->
+                        </td>
+                    </tr>
+                </form>
             <% });} %>
             </tbody>
         </table>
@@ -82,10 +100,10 @@
                             %>
 
                             <tbody>
-                                <tr>
+                                <tr id="<%=playlist.playlist_id%>">
                                     <th scope="row"><%=playlist.playlist_name%></th>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-success">Add</button>
+                                    <td> 
+                                        <input type="submit" class="btn btn-outline-success" value="Add">
                                     </td>
                                 </tr>
                             </tbody>
@@ -99,7 +117,7 @@
 
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <input type="reset" class="btn btn-danger" value="Cancel" data-dismiss="modal">
                     </div>
                 </div>
             </div>

@@ -55,7 +55,12 @@ app.get("/", function (req, res, next) {
 app.get("/home", (req, res, next) => {
   // This is how you check if a user is authenticated
   if (req.isAuthenticated()) {
-    res.render("homepage", { user_type: req.user[0].user_type });
+    if(req.user[0].user_type == 0)
+      res.redirect('/listener');
+    else if(req.user[0].user_type == 1)
+      res.redirect('/musician');
+    else
+      res.redirect('/admin');
   } else {
     res.redirect("/login");
   }
@@ -96,7 +101,7 @@ app.get("/listener", function (req, res, next) {
 
     connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
       if (error) throw error;
-      console.log(results[1])
+      //console.log(results[1])
       res.render("listener", {
         data: JSON.stringify(results[1]),
         pl_data: results[0],
@@ -206,17 +211,38 @@ app.get("/my-playlists", function (req, res, next) {
   }
 });
 
+app.get("/admin-playlist", function (req, res, next) {
+  res.statusCode = 200;
+
+  if (req.isAuthenticated()) {
+    var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+
+    var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
+
+    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+      if (error) throw error;
+
+      res.render("admin-playlist", {
+        my_pls: results[0],
+        other_pls: results[1],
+        user: req.session.passport.user,
+      });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
 
 app.get('/get-songs', (req, res) => {
   if(!req.isAuthenticated())
     res.redirect('/login')
-  console.log('fetching songs')
+  //console.log('fetching songs')
   const query =  `SELECT * FROM track`
   connection.query(query, (err, results) => {
     if(err)
       console.log(err)
     else{
-      console.log(results.message)
+      //console.log(results.message)
       res.send(results)
     }
   })
@@ -463,7 +489,7 @@ app.post("/runquery", (req, res, next) => {
 
 //Upload album form route (w/out any validation)
 app.post("/my-playlists", (req, res, next) => {
-    console.log(req.user);
+    //console.log(req.user);
     var playlist_name = req.body.playlistname;
     var user_username = req.user[0].username;
 
@@ -474,7 +500,7 @@ app.post("/my-playlists", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
+        //console.log(results.message);
     });
 
     res.redirect("/my-playlists");

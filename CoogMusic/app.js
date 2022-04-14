@@ -49,7 +49,7 @@ require("./public/js/passport");
 //Landing page route
 app.get("/", function (req, res, next) {
   res.statusCode = 200;
-  res.render("index");
+  res.render("index", {user_type: (req.user) ? req.user[0].user_type : null});
 });
 
 app.get("/home", (req, res, next) => {

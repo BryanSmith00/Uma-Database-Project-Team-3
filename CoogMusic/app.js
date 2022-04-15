@@ -58,7 +58,7 @@ app.get("/home", (req, res, next) => {
     if(req.user[0].user_type == 0)
       res.redirect('/listener');
     else if(req.user[0].user_type == 1)
-      res.redirect('/musician');
+      res.redirect('/musician-tracks');
     else
       res.redirect('/admin');
   } else {
@@ -114,20 +114,17 @@ app.get("/listener", function (req, res, next) {
   }
 });
 
-app.get("/musician", function (req, res, next) {
+app.get("/musician-tracks", function (req, res, next) {
   res.statusCode = 200;
 
   if (req.isAuthenticated()) {
-    var sql1 = `SELECT playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+    var sql1 = `SELECT * FROM track WHERE published_by=\'${req.session.passport.user}\'`;
 
-    var sql2 = "SELECT song_name, published_by, number_of_plays FROM track";
-
-    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+    connection.query(`${sql1}`, function (error, results, fields) {
       if (error) throw error;
 
-      res.render("musician", {
-        data: results[1],
-        pl_data: results[0],
+      res.render("musician-tracks", {
+        data: results,
         user: req.session.passport.user,
       });
     });
@@ -326,7 +323,7 @@ app.get("/songReport", (req, res, next) => {
     res.redirect("/login");
   }
 });
-
+//
 app.get("/albumReport", (req, res, next) => {
   if (req.isAuthenticated()) {
     connection.query(
@@ -378,18 +375,25 @@ app.post("/addtrack", async (req, res, next) => {
   ;
 
   const cover_art = req.files.trackart;
-  const cover_ext = cover_art.name.split(".")[1];
-  const cover_art_path = `${__dirname}/cover_art/${stripped_song_title}.${cover_ext}`;
-    cover_art.mv(cover_art_path);
+  if(cover_art !== undefined){
+    var cover_ext = cover_art.name.split(".")[1];
+    var cover_art_path = `${__dirname}/cover_art/${stripped_song_title}.${cover_ext}`;
 
-  // need to change song file in production
-  const sql = `INSERT INTO track (song_file, song_name, length, number_of_plays, published_by, cover_art)
+    var sql = `INSERT INTO track (song_file, song_name, length, published_by, cover_art)
+    VALUES ("http://localhost:3000/music/${stripped_song_title}.mp3", 
+            "${req.body.trackname}", 
+            ${duration_minutes}, 
+            "${req.user[0].username}", 
+            "http://localhost:3000/cover_art/${stripped_song_title}.${cover_ext}");`;
+
+    cover_art.mv(cover_art_path);
+  }else{
+      var sql = `INSERT INTO track (song_file, song_name, length, published_by)
               VALUES ("http://localhost:3000/music/${stripped_song_title}.mp3", 
                       "${req.body.trackname}", 
-                      ${duration_minutes}, 
-                      0, 
-                      "${req.user[0].username}", 
-                      "http://localhost:3000/cover_art/${stripped_song_title}.${cover_ext}");`;
+                      ${duration_minutes},  
+                      "${req.user[0].username}");`;
+  }
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
@@ -541,6 +545,21 @@ app.post("/delete-playlist", (req, res, next) => {
     });
 
     res.redirect("/my-playlists");
+});
+
+app.post("/delete-song", (req, res, next) => {
+  console.log(req.body);
+  var song_id = req.body.song_id;
+
+
+  let sql = `DELETE FROM track WHERE song_id = ${song_id}`
+
+  connection.query(sql, function (error, results) {
+      if (error) throw (error);
+      console.log(results.message);
+  });
+
+  res.redirect("/musician-tracks");
 });
 
 

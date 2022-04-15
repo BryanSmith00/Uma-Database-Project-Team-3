@@ -97,7 +97,7 @@ app.get("/listener", function (req, res, next) {
   if (req.isAuthenticated()) {
     var sql1 = `SELECT playlist_id, playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
 
-    var sql2 = "SELECT song_id, song_name, song_file, cover_art, published_by, number_of_plays FROM track";
+    var sql2 = "SELECT * FROM track";
 
     connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
       if (error) throw error;
@@ -533,7 +533,6 @@ app.post("/add-to-playlist", (req, res, next) => {
 });
 
 app.post("/delete-playlist", (req, res, next) => {
-    console.log(req.body);
     var playlist_id = req.body.playlist_id;
 
 
@@ -548,9 +547,7 @@ app.post("/delete-playlist", (req, res, next) => {
 });
 
 app.post("/delete-song", (req, res, next) => {
-  console.log(req.body);
   var song_id = req.body.song_id;
-
 
   let sql = `DELETE FROM track WHERE song_id = ${song_id}`
 
@@ -560,6 +557,70 @@ app.post("/delete-song", (req, res, next) => {
   });
 
   res.redirect("/musician-tracks");
+});
+
+app.post("/open-playlist", function (req, res, next) {
+
+    if (req.isAuthenticated()) {
+        var playlist_id = req.body.playlist_id;
+        var playlist_name = req.body.playlist_name;
+
+        var sql = `SELECT * FROM(track, contains_tracks, playlist)
+                   WHERE(
+                        playlist_ID = \"${playlist_id}\"
+                        && playlist_ID = contains_tracks.playlist_playlist_ID
+                        && track.song_id = contains_tracks.track_song_id
+                        )`;
+
+        connection.query(sql, function (error, results, fields) {
+            if (error) throw error;
+            res.render("open-playlist", {
+                pl_name: playlist_name,
+                data: JSON.stringify(results),
+                user: req.session.passport.user,
+            });
+        });
+    } else {
+        res.redirect("/login");
+    }
+
+});
+
+app.post("/remove-from-playlist", function (req, res, next) {
+
+    if (req.isAuthenticated()) {
+        var playlist_id = req.body.playlist_id;
+        var playlist_name = req.body.playlist_name;
+        var song_id = req.body.song_id;
+
+        var sql1 = `DELETE FROM contains_tracks
+                   WHERE (playlist_playlist_ID = \"${playlist_id}\"
+                          && track_song_id = ${song_id});`
+
+        connection.query(sql1, function (error, results, fields) {
+            if (error) throw error;
+        });
+
+        var sql2 = `SELECT * FROM(track, contains_tracks, playlist)
+                   WHERE(
+                        playlist_ID = \"${playlist_id}\"
+                        && playlist_ID = contains_tracks.playlist_playlist_ID
+                        && track.song_id = contains_tracks.track_song_id
+                        )`;
+
+        connection.query(sql2, function (error, results, fields) {
+            if (error) throw error;
+            res.render("open-playlist", {
+                pl_name: playlist_name,
+                data: JSON.stringify(results),
+                user: req.session.passport.user,
+            });
+        });
+
+    } else {
+        res.redirect("/login");
+    }
+
 });
 
 

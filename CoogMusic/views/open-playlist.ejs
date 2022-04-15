@@ -47,7 +47,7 @@
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
             <a
-              class="nav-link text-white active"
+              class="nav-link text-white"
               aria-current="page"
               href="/listener"
               >Library</a
@@ -64,6 +64,13 @@
     <main>
       <table class="table table-striped table-borderless">
         <thead>
+        <%let full_length = (data.length == 0 ? 0 : JSON.parse(data)[0].full_length).toFixed(2);%>
+          <tr>
+            <th class="text-center" scope="col" colspan="4"><%=pl_name%></th>
+            <th scope="col" colspan="1"><%=JSON.parse(data).length%> Track(s)</th>
+            <th scope="col" colspan="1"><%=full_length%></th>
+          </tr>
+          <tr><th colspan="6"></th></tr>
           <tr>
             <th scope="col">Track Name</th>
             <th scope="col">Artist</th>
@@ -71,15 +78,12 @@
             <th scope="col">Number of Plays</th>
             <th scope="col"></th>
             <th scope="col"></th>
-            <th scope="col"></th>
           </tr>
         </thead>
 
         <tbody>
-          <% if(data.length!=0){ JSON.parse(data).forEach(function(track, ind){ %>
-          <%let form_id = "add-to-playlist-" + track.song_id;%>
-          <form id="<%=form_id%>" action="/add-to-playlist" method="post">
-              <input type="hidden" name="song_id" value="<%=track.song_id%>">
+          <% if(data.length!=0){ JSON.parse(data).forEach(function(track, ind){ 
+          let form_id = "remove-" + track.playlist_ID; %>
               <tr>
                 <td><%=track.song_name%></td>
                 <td><%=track.published_by%></td>
@@ -98,81 +102,17 @@
                   </button>
                 </td>
                 <td>
-                    <select name="playlist_id" class="form-select" required>
-                        <option value="" selected>Add to playlist...</option>
-                                
-                        <% 
-                        pl_data.forEach(function(playlist){ 
-                        %>
-                        <option value="<%=playlist.playlist_id%>"><%=playlist.playlist_name%></option>
-                        <% }); %>
-                    </select>
-                    <!--
-                    <button
-                    type="button"
-                    class="btn btn-outline-success"
-                    data-toggle="modal"
-                    data-target="#addToPLModal">
-                        Add To Playlist
-                    </button>
-                    -->
-                </td>
-                <td>
-                    <input type="submit" class="btn btn-outline-success" form="<%=form_id%>" value="Add">
+                    <form id="<%=form_id%>" action="/remove-from-playlist" method="post">
+                        <input type="hidden" name="playlist_id" value="<%=track.playlist_ID%>">
+                        <input type="hidden" name="song_id" value="<%=track.song_id%>">
+                        <input type="hidden" name="playlist_name" value="<%=track.playlist_name%>">
+                        <input type="submit" class="btn btn-outline-danger" value="Remove">
+                    </form>
                 </td>
               </tr>
-            </form>
           <% });} %>
-          
         </tbody>
       </table>
-
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="addToPLModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="addToPLModalLabel"
-        aria-hidden="true"
-        data-backdrop="false"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Your Playlists</h5>
-            </div>
-
-            <!-- Modal Body / Playlist Table -->
-            <div class="modal-body">
-              <table class="modal-table table-striped caption-top">
-                <% if(pl_data.length!=0){ pl_data.forEach(function(playlist){ %>
-
-                <tbody>
-                  <tr>
-                    <th scope="row"><%=playlist.playlist_name%></th>
-                    <td>
-                      <button type="button" class="btn btn-outline-success">
-                        Add
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-
-                <% });} else { %>
-                <h5>No playlists</h5>
-                <% } %>
-              </table>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div
         class="modal fade"

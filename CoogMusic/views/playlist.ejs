@@ -85,12 +85,11 @@
                             <th scope="row"><%=playlist.playlist_name%></th>
                             <td><%=playlist.full_length.toFixed(2)%></td>
                             <td>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-success"
-                                >
-                                    Open
-                                </button>
+                                <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
+                                    <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                                    <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
+                                    <input type="submit" class="btn btn-outline-success" value="Open">
+                                </form>
                             </td>
                             <td>
                                 <form id="<%=pl_form_id%>" action="/delete-playlist" method="post">

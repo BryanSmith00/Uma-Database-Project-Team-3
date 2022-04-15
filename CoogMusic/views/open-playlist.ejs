@@ -66,11 +66,20 @@
         <thead>
         <%let full_length = (JSON.parse(data).length == 0 ? 0 : JSON.parse(data)[0].full_length).toFixed(2);%>
           <tr>
-            <th class="text-center" scope="col" colspan="4"><%=pl_name%></th>
+            <th scope="col" colspan="1">
+                <% if (user == pl_creator) { %>
+                    <button 
+                        class="btn btn-outline-primary btn-sm" 
+                        data-toggle="modal"
+                        data-target="#edit-name-modal">
+                            Edit
+                    </button>
+                <% } %>
+            </th>
+            <th class="text-center bold" scope="col" colspan="3"><%=pl_name%></th>
             <th scope="col" colspan="1"><%=JSON.parse(data).length%> Track(s)</th>
             <th scope="col" colspan="1"><%=full_length%></th>
           </tr>
-          <tr><th colspan="6"></th></tr>
           <tr>
             <th scope="col">Track Name</th>
             <th scope="col">Artist</th>
@@ -107,6 +116,7 @@
                         <input type="hidden" name="playlist_id" value="<%=track.playlist_ID%>">
                         <input type="hidden" name="song_id" value="<%=track.song_id%>">
                         <input type="hidden" name="playlist_name" value="<%=track.playlist_name%>">
+                        <input type="hidden" name="playlist_creator" value="<%=pl_creator%>">
                         <input type="submit" class="btn btn-outline-danger" value="Remove">
                     </form>
                 <% } %>
@@ -116,6 +126,40 @@
           <% });} %>
         </tbody>
       </table>
+
+      <!-- EDIT MODAL -->
+
+      <div
+        class="modal fade"
+        id="edit-name-modal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="edit-name-modal-label"
+        aria-hidden="true"
+        data-backdrop="false"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form id="edit-playlist" action="/edit-playlist" method="post">
+                <!-- Modal Body / Playlist Table -->
+                <div class="modal-body">
+                    <input type="text" class="form-control" name="playlist_name" placeholder="New playlist name..." value = "" required>
+                    <input type="hidden" name="playlist_id" value="<%=pl_id%>">
+                    <input type="hidden" name="playlist_creator" value="<%=pl_creator%>">
+                </div>
+
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" value="Update">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cancel
+                    </button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- END EDIT MODAL -->
 
       <div
         class="modal fade"

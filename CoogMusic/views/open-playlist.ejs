@@ -64,7 +64,7 @@
     <main>
       <table class="table table-striped table-borderless">
         <thead>
-        <%let full_length = (data.length == 0 ? 0 : JSON.parse(data)[0].full_length).toFixed(2);%>
+        <%let full_length = (JSON.parse(data).length == 0 ? 0 : JSON.parse(data)[0].full_length).toFixed(2);%>
           <tr>
             <th class="text-center" scope="col" colspan="4"><%=pl_name%></th>
             <th scope="col" colspan="1"><%=JSON.parse(data).length%> Track(s)</th>
@@ -102,13 +102,16 @@
                   </button>
                 </td>
                 <td>
+                <%if (user == track.user_username) {%>
                     <form id="<%=form_id%>" action="/remove-from-playlist" method="post">
                         <input type="hidden" name="playlist_id" value="<%=track.playlist_ID%>">
                         <input type="hidden" name="song_id" value="<%=track.song_id%>">
                         <input type="hidden" name="playlist_name" value="<%=track.playlist_name%>">
                         <input type="submit" class="btn btn-outline-danger" value="Remove">
                     </form>
+                <% } %>
                 </td>
+
               </tr>
           <% });} %>
         </tbody>

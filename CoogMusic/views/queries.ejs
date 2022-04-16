@@ -1,74 +1,122 @@
 <!DOCTYPE html>
 
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Queries</title>
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="../public/images/favicon.ico"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-    <meta charset="UTF-8">
-    <title>Queries</title>
-    <link rel="icon" type="image/x-icon" href="../public/images/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+        />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"
+        ></script>
+        <link rel="stylesheet" href="../public/stylesheets/admin.css" />
+    </head>
 
-    <link rel="stylesheet" href="../public/stylesheets/admin.css" />
-
-</head>
-
-<body>
-    <header>
-
-        <div id="sidebarMenu" class="d-flex flex-column text-white">
-            <div class=" d-flex align-items-center justify-content-around flex-column">
-                <a href="/" class="logo">
-                    <img class="logo" src="../public/images/coogMusic.png" alt="Coog Music logo">
-                </a>
-                <h2>Admin</h2>
+    <body>
+        <%- include('loading') %> 
+        <header>
+            <div id="sidebarMenu" class="d-flex flex-column text-white">
+                <div
+                    class="d-flex align-items-center justify-content-around flex-column"
+                >
+                    <a href="/" class="logo">
+                        <img
+                            class="logo"
+                            src="../public/images/coogMusic.png"
+                            alt="Coog Music logo"
+                        />
+                    </a>
+                    <h2>Admin</h2>
+                </div>
+                <hr />
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link text-white"
+                            aria-current="page"
+                            href="/admin"
+                            >Users</a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="/songs">Songs</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="/admin-playlist"
+                            >Playlists</a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link text-white active" href="/queries"
+                            >Run Queries</a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="/Logout"
+                            >Log out</a
+                        >
+                    </li>
+                </ul>
             </div>
-            <hr>
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a class="nav-link text-white" aria-current="page" href="/admin">Users</a></li>
-                <li><a class="nav-link text-white" href="/songs">Songs</a></li>
-                <li><a class="nav-link text-white" href="/admin-playlist">Playlists</a></li>
-                <li><a class="nav-link text-white active" href="/queries">Run Queries</a></li>
-                <li><a class="nav-link text-white" href="/Logout">Log out</a></li>
-            </ul>
-        </div>
-    </header>
+        </header>
 
-    <main>
-        <form id="form-query" action="/runquery" method="post">
-            <div class="form-group">
-              <label for="selecttype">Select:</label><br>
-              <select name="selecttype" id="selecttype">
-                <option value="user">Users</option>
-                <option value="track">Songs</option>
-                <option value="playlist">Playlists</option>
-              </select>
-            </div>
+        <main>
+            <form id="form-query" action="/runquery" method="post">
+                <div class="form-group">
+                    <label for="selecttype">Select:</label><br />
+                    <select name="selecttype" id="selecttype">
+                        <option value="user">Users</option>
+                        <option value="track">Songs</option>
+                        <option value="playlist">Playlists</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="sorttype">Sort by:</label><br>
-                <select name="sorttype" id="sorttype">
-                  <option value="id">ID</option>
-                  <option value="name">Name</option>
-                  <option value="date">Date Added</option>
-                </select>
-              </div>
+                <div class="form-group">
+                    <label for="sorttype">Sort by:</label><br />
+                    <select name="sorttype" id="sorttype">
+                        <option value="id">ID</option>
+                        <option value="name">Name</option>
+                        <option value="date">Date Added</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="ordertype">Order:</label><br>
-                <select name="ordertype" id="ordertype">
-                    <option value="ASC">Ascending</option>
-                    <option value="DESC">Descending</option>
-                </select>
-            </div>
-      
-            <div class="form-group">
-              <button type="run-query" id="run-query" class="input-submit">Run Query</button>
-            </div>
-      
-        </form>
-    </main>
-</body>
+                <div class="form-group">
+                    <label for="ordertype">Order:</label><br />
+                    <select name="ordertype" id="ordertype">
+                        <option value="ASC">Ascending</option>
+                        <option value="DESC">Descending</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button
+                        type="run-query"
+                        id="run-query"
+                        class="input-submit"
+                    >
+                        Run Query
+                    </button>
+                </div>
+            </form>
+        </main>
+        <script>
+            $(window).on("load", function () {
+                $("#loading").hide();
+            });
+        </script>
+    </body>
 </html>

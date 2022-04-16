@@ -167,6 +167,60 @@ app.get("/my-playlists", function (req, res, next) {
   }
 });
 
+app.get("/notifications", function (req, res, next) {
+    res.statusCode = 200;
+
+    if (req.isAuthenticated()) {
+        var sql = `SELECT * FROM notifications WHERE attached_user = \"${req.session.passport.user}\"`;
+
+        connection.query(sql, (err, results) => {
+            if (err) throw (err);
+            res.render("notifications", {
+                data: results,
+                user: req.session.passport.user,
+            });
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/admin-playlist", function (req, res, next) {
+  res.statusCode = 200;
+
+  if (req.isAuthenticated()) {
+    var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+
+    var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
+
+    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+      if (error) throw error;
+
+      res.render("admin-playlist", {
+        my_pls: results[0],
+        other_pls: results[1],
+        user: req.session.passport.user,
+      });
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get('/get-songs', (req, res) => {
+  if(!req.isAuthenticated())
+    res.redirect('/login')
+  //console.log('fetching songs')
+  const query =  `SELECT * FROM track`
+  connection.query(query, (err, results) => {
+    if(err)
+      console.log(err)
+    else{
+      //console.log(results.message)
+      res.send(results)
+    }
+  })
+})
 
 app.get("/music/:file_name", (req, res) => {
   res.sendFile(__dirname + `/music/${req.params.file_name}`);
@@ -615,6 +669,25 @@ app.post("/edit-playlist", function (req, res, next) {
         res.redirect("/login");
     }
 
+});
+
+app.post("/dismiss-notification", (req, res, next) => {
+    if (req.isAuthenticated()) {
+        var alert_id = req.body.alert_id;
+
+        let sql = `DELETE FROM notifications 
+                   WHERE alert_id = ${alert_id}`;
+
+        connection.query(sql, function (error, results) {
+            if (error) throw (error);
+            console.log(results.message);
+        });
+
+        res.redirect("/notifications");
+
+    } else {
+        res.redirect("/login");
+    }
 });
 
 

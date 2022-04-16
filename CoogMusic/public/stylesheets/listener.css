@@ -129,6 +129,16 @@ thead {
   opacity: 0.5;
   z-index: 1;
 }
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+
 #loading {
     position: fixed;
     display: block;

@@ -564,6 +564,7 @@ app.post("/open-playlist", function (req, res, next) {
     if (req.isAuthenticated()) {
         var playlist_id = req.body.playlist_id;
         var playlist_name = req.body.playlist_name;
+        var playlist_creator = req.body.playlist_creator;
 
         var sql = `SELECT * FROM(track, contains_tracks, playlist)
                    WHERE(
@@ -576,6 +577,8 @@ app.post("/open-playlist", function (req, res, next) {
             if (error) throw error;
             res.render("open-playlist", {
                 pl_name: playlist_name,
+                pl_creator: playlist_creator,
+                pl_id: playlist_id,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
             });
@@ -591,6 +594,7 @@ app.post("/remove-from-playlist", function (req, res, next) {
     if (req.isAuthenticated()) {
         var playlist_id = req.body.playlist_id;
         var playlist_name = req.body.playlist_name;
+        var playlist_creator = req.body.playlist_creator;
         var song_id = req.body.song_id;
 
         var sql1 = `DELETE FROM contains_tracks
@@ -612,7 +616,45 @@ app.post("/remove-from-playlist", function (req, res, next) {
             if (error) throw error;
             res.render("open-playlist", {
                 pl_name: playlist_name,
+                pl_creator: playlist_creator,
+                pl_id: playlist_id,
                 data: JSON.stringify(results),
+                user: req.session.passport.user,
+            });
+        });
+
+    } else {
+        res.redirect("/login");
+    }
+
+});
+
+app.post("/edit-playlist", function (req, res, next) {
+
+    if (req.isAuthenticated()) {
+        var playlist_id = req.body.playlist_id;
+        var playlist_name = req.body.playlist_name;
+        var playlist_creator = req.body.playlist_creator
+
+        var sql1 = `UPDATE playlist
+                   SET playlist_name = \"${playlist_name}\"
+                   WHERE playlist_ID = \"${playlist_id}\"`;
+
+
+        var sql2 = `SELECT * FROM(track, contains_tracks, playlist)
+                   WHERE(
+                        playlist_ID = \"${playlist_id}\"
+                        && playlist_ID = contains_tracks.playlist_playlist_ID
+                        && track.song_id = contains_tracks.track_song_id
+                        )`;
+
+        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+            if (error) throw error;
+            res.render("open-playlist", {
+                pl_name: playlist_name,
+                pl_creator: playlist_creator,
+                pl_id: playlist_id,
+                data: JSON.stringify(results[1]),
                 user: req.session.passport.user,
             });
         });

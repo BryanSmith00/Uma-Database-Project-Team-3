@@ -56,7 +56,6 @@
           <li>
             <a class="nav-link text-white" href="/my-playlists">Playlists</a>
           </li>
-          <li><a class="nav-link text-white" href="/music">Music Player</a></li>
           <li><a class="nav-link text-white" href="/Logout">Log out</a></li>
         </ul>
       </div>
@@ -68,6 +67,7 @@
           <tr>
             <th scope="col">Track Name</th>
             <th scope="col">Artist</th>
+            <th scope="col">Length</th>
             <th scope="col">Number of Plays</th>
             <th scope="col"></th>
             <th scope="col"></th>
@@ -83,6 +83,7 @@
               <tr>
                 <td><%=track.song_name%></td>
                 <td><%=track.published_by%></td>
+                <td><%=track.length%></td>
                 <td><%=track.number_of_plays%></td>
                 <td>
                   <button
@@ -273,7 +274,7 @@
       const cover = document.getElementById("cover");
       const currTime = document.querySelector("#currTime");
       const durTime = document.querySelector("#durTime");
-      const default_img_path = "http://localhost:3000/cover_art/song-cover.png";
+      const default_img_path = "http://localhost:3000/cover_art/default-cover.png";
        
       const songs = [];
       const cover_art = [];
@@ -298,7 +299,7 @@
         artist.innerText = song.artist;
         audio.src = song.file;
         cover.src =
-          cover_art === "" || cover_art === undefined || cover_art === null
+          cover_art === "" || cover_art === undefined || cover_art === null || cover_art === "https://reptilesmagazine.com/wp-content/themes/magone/assets/images/default-thumbnail.png "
             ? default_img_path
             : cover_art;
       }

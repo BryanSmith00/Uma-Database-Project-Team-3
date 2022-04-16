@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo&family=Lato:wght@700;400&family=PT+Sans+Narrow&display=swap');
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Lato', sans-serif;
     width: 100vw;
     height: 100vh;
     padding: 0;
@@ -46,21 +48,42 @@ main {
     position: relative;
     float: left;
     left: 30%;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    overflow-x: hidden;
 }
 
-.table-menu {
+.btn:focus{
+    box-shadow: none;
+}
+
+.create-user-menu{
+    text-align: center;
+}
+
+.create-user-button{
     display: flex;
-    justify-content: space-between;
-    width: 900px;
-    margin-top: 105px;
-    padding: 10px;
-    border: 1px solid rgb(226, 224, 224);
-    background-color: whitesmoke;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    width: 200px;
+    justify-content: flex-start;
 }
 
-.table-buttons {
-    border-radius: 25px;
+.create-user-title{
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.create-user-img{
+    width: 40px;
+    height: 40px;
+}
+
+.table-buttons{
     border: none;
+    width: 100px;
     font-weight: bold;
 }
 
@@ -72,6 +95,11 @@ main {
     width: 900px;
     background-color: white;
     margin-top: 20px;
+    text-align: center;
+}
+
+.songs-table{
+    margin-top: 70px;
 }
 
 .modal-table {
@@ -82,6 +110,127 @@ main {
 thead {
     background-color: rgb(41, 41, 41);
     color: white;
+}
+
+.coogModals{
+    font-family: 'Arimo', sans-serif;
+    box-sizing: border-box;
+}
+
+.coogModalHeader{
+    background-color: #edf1f4;
+    border-bottom: none;
+}
+
+.coogModalTitle{
+    display: flex;
+    justify-content: center;
+    font-weight: 700 !important;
+    margin-bottom: 15px;
+    
+    
+}
+
+.modalButton{
+    width: 100%;
+    border: none;
+    height: 50px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.createUserButton{
+    background-color: #00A598;
+    margin-bottom: 10px;
+}
+
+.createUserButton:hover{
+    background-color: #018d81;
+}
+
+.cancelButton,.cancelButton:hover{
+    background-color: #edf1f4;
+    color: #0671E2;
+}
+
+.coogModalBody{
+    height: 600px;
+    background-color: #edf1f4;
+    padding: 0 1rem 1rem 1rem
+}
+
+.coogModalFooter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 35px;
+    background-color: #edf1f4;
+}
+
+.modalContainer{
+    padding: 0 20px 20px 20px;
+}
+
+.form-control{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; 
+    width: 100%;
+    resize: none;
+    font-family: inherit;
+    font-size: inherit;
+    border: 1px solid #a6bdb9;
+    background-color: white;
+    border-radius: 2px;
+    overflow: auto;
+    margin: 0;
+    padding: 0.2rem 0.75rem;
+    box-sizing: border-box;
+    line-height: 2.2rem;
+}
+
+.form-group {
+    display: block;
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    box-sizing: border-box;
+    line-height: 1rem;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    line-height: 2.2rem;
+}
+
+select{
+    line-height: 2.2rem;
+}
+
+#userType{
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #a6bdb9;
+    border-radius: 2px;
+    padding: 0.375rem 0.75rem;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    z-index: 1;
+    display: grid;
+    grid-template-areas: "select";
+    align-items: center;
+    position: relative;
+}
+
+.modalButtons{
+    margin-top: 50px;
+}
+
+.buttons-row{
+    display: flex;
+    justify-content: space-around;
+    width: auto;
 }
 
 #loading {
@@ -104,3 +253,10 @@ thead {
     width: 3.5rem;
     z-index: 100;
 }
+
+
+
+
+
+
+

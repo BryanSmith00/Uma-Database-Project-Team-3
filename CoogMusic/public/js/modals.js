@@ -2,14 +2,23 @@ var createUserModal = document.getElementById('createUserModal')
 createUserModal.addEventListener('show.bs.modal', function (event) {
   
   var button = event.relatedTarget
-  var recipient = button.getAttribute('data-bs-whatever')
   
   var modalTitle = createUserModal.querySelector('.modal-title')
   var modalBodyInput = createUserModal.querySelector('.modal-body input')
 
-  modalTitle.textContent = 'New message to ' + recipient
-  modalBodyInput.value = recipient
+})
+
+var editUserModal = document.getElementById('editUserModal')
+editUserModal.addEventListener('show.bs.modal', function (event) {
+  
+  var button = event.relatedTarget
+  
+  var modalTitle = createUserModal.querySelector('.modal-title')
+  var modalBodyInput = createUserModal.querySelector('.modal-body input')
 
 })
+
+
+
 
 

@@ -1,159 +1,99 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    width: 100vw;
-    height: 100vh;
-    padding: 0;
-    margin: 0;
-    background-color: #e4e7e9;
-  }
-
-#sidebarMenu{
-    background-color:  black;
-    padding: 10px;
-    width: 300px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  background-color: #191A1F;
+  overflow-x: hidden;
 }
 
-h2{
-    font-weight: bold;
+#sidebarMenu {
+  background-color: black;
+  padding: 10px;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 18px;
+}
+
+h2 {
+  font-weight: bold;
 }
 
 .nav-link:hover {
-    background-color: rgb(27, 27, 27);
+  background-color: rgb(27, 27, 27);
 }
 
-.logo{
-    width: 90px;
-    height: 90px;
+.logo {
+  width: 90px;
+  height: 90px;
 }
 
-.nav-link:active, .active{
-    background-color: rgb(124, 121, 121) !important;
+.nav-link:active,
+.active {
+  background-color: rgb(124, 121, 121) !important;
 }
 
-main{
-    width: 80%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-    float: left;
-    left: 30%;
-    
+main {
+  width: 80%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  float: left;
+  left: 30%;
 }
 
-.table-menu{
-    display: flex;
-    justify-content: space-between;
-    width: 900px;
-    margin-top: 105px;
-    padding: 10px;
-    border: 1px solid rgb(226, 224, 224);
-    background-color: whitesmoke;
+.listener-table{
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
-.table-buttons{
-    border-radius: 25px;
-    border: none;
-    font-weight: bold;
+.table-menu {
+  display: flex;
+  justify-content: space-between;
+  width: 900px;
+  margin-top: 105px;
+  padding: 10px;
+  border: 1px solid rgb(226, 224, 224);
+  background-color: whitesmoke;
+}
+
+.table-buttons {
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
 
 }
 
-.query-button{
-    background-image: linear-gradient(60deg, #43bbf3, #3a7ec7);
+.query-button {
+  background-image: linear-gradient(60deg, #43bbf3, #3a7ec7);
 }
 
-.table{
-    width: 900px;
-    background-color: white;
-    margin-top: 20px;
+.table {
+  width: 900px;
+  background-color: white;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  text-align: center;
 }
 
 .modal-table {
-    width: 100%;
-    background-color: white;
+  width: 100%;
+  background-color: white;
 }
 
-thead{
-    background-color: rgb(41, 41, 41);
-    color: white;
+thead {
+  background-color: rgb(41, 41, 41);
+  color: white;
 }
 
-
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 0;
-    margin: 0;
-    background-color: #b5b5b5;
-  }
-  
-  .navbar {
-    background-color: black;
-    height: 5rem;
-  }
-  
-  .nav-link{
-    color: rgb(230, 227, 227);
-    cursor: pointer;
-    margin-right: 1.3em !important;
-    font-weight: 700;
-  }
-  
-  .nav-link:hover {
-    color: rgb(206, 53, 53);
-  }
-  
-  .navbar-brand img{
-    position: absolute;
-    z-index: 999;
-    top: 10%;
-    height: 9rem;
-    width: 9rem;
-  }
-  
-  .navbar-collapse {
-    justify-content: flex-end;
-  }
-  
-  .home-header {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    background-image: linear-gradient(
-    black, rgba(49, 3, 3, 0.8),rgba(65, 5, 5, 0.8)), url('..//images/header.jpg');
-    background-size: cover;
-    background-position: center;
-    position: fixed;
-    background-repeat: no-repeat;
-  }
-  
-  
-  .slogan{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 500px;
-    color: rgb(240, 240, 240);
-    font-weight: 900;
-    font-size: 110px;
-    margin-top: 75px;
-    font-family: 'Bebas Neue', sans-serif;
-  }
-  
-  .third{
-    color: red;
-    width: 220px;
-    background: black;
-    text-align: center;
-  }
-  .player-header{
+.player-header {
   display: flex;
   position: fixed;
   background-color: black;
@@ -164,7 +104,7 @@ body {
   overflow: hidden;
 }
 
-.player-header video{
+.player-header video {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -185,7 +125,7 @@ body {
   left: 0;
   height: 100%;
   width: 100%;
-  background-image: linear-gradient(black, rgba(49, 3, 3, 0.8),rgba(65, 5, 5, 0.8));
+  background-image: linear-gradient(black, rgba(49, 3, 3, 0.8), rgba(65, 5, 5, 0.8));
   opacity: 0.5;
   z-index: 1;
 }

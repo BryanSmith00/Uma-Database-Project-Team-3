@@ -49,7 +49,7 @@ main{
     left: 30%;
     margin-top: 100px;
     margin-bottom: 100px;
-    
+    overflow-x: hidden;
 }
 
 .btn:focus{
@@ -84,7 +84,6 @@ main{
     border: none;
     width: 100px;
     font-weight: bold;
-
 }
 
 .query-button{

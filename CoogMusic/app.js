@@ -208,6 +208,24 @@ app.get("/my-playlists", function (req, res, next) {
   }
 });
 
+app.get("/notifications", function (req, res, next) {
+    res.statusCode = 200;
+
+    if (req.isAuthenticated()) {
+        var sql = `SELECT * FROM notifications WHERE attached_user = \"${req.session.passport.user}\"`;
+
+        connection.query(sql, (err, results) => {
+            if (err) throw (err);
+            res.render("notifications", {
+                data: results,
+                user: req.session.passport.user,
+            });
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
+
 app.get("/admin-playlist", function (req, res, next) {
   res.statusCode = 200;
 
@@ -663,6 +681,25 @@ app.post("/edit-playlist", function (req, res, next) {
         res.redirect("/login");
     }
 
+});
+
+app.post("/dismiss-notification", (req, res, next) => {
+    if (req.isAuthenticated()) {
+        var alert_id = req.body.alert_id;
+
+        let sql = `DELETE FROM notifications 
+                   WHERE alert_id = ${alert_id}`;
+
+        connection.query(sql, function (error, results) {
+            if (error) throw (error);
+            console.log(results.message);
+        });
+
+        res.redirect("/notifications");
+
+    } else {
+        res.redirect("/login");
+    }
 });
 
 

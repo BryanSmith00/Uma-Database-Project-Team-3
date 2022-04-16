@@ -7,10 +7,10 @@ body {
     padding: 0;
     margin: 0;
     background-color: #e4e7e9;
-  }
+}
 
-#sidebarMenu{
-    background-color:  black;
+#sidebarMenu {
+    background-color: black;
     padding: 10px;
     width: 300px;
     position: fixed;
@@ -20,7 +20,7 @@ body {
     font-size: 18px;
 }
 
-h2{
+h2 {
     font-weight: bold;
 }
 
@@ -28,23 +28,24 @@ h2{
     background-color: rgb(27, 27, 27);
 }
 
-.logo{
+.logo {
     width: 90px;
     height: 90px;
 }
 
-.nav-link:active, .active{
+.nav-link:active,
+.active {
     background-color: rgb(124, 121, 121) !important;
 }
 
-main{
+main {
     width: 80%;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    position:relative;
+    position: relative;
     float: left;
     left: 30%;
     margin-top: 100px;
@@ -86,11 +87,11 @@ main{
     font-weight: bold;
 }
 
-.query-button{
+.query-button {
     background-image: linear-gradient(60deg, #43bbf3, #3a7ec7);
 }
 
-.table{
+.table {
     width: 900px;
     background-color: white;
     margin-top: 20px;
@@ -106,7 +107,7 @@ main{
     background-color: white;
 }
 
-thead{
+thead {
     background-color: rgb(41, 41, 41);
     color: white;
 }
@@ -230,6 +231,27 @@ select{
     display: flex;
     justify-content: space-around;
     width: auto;
+}
+
+#loading {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    opacity: 0.7;
+    background-color: #191a1f;
+    z-index: 99;
+}
+
+#loading-image {
+    position: absolute;
+    top: 40vh;
+    left: 50vw;
+    width: 3.5rem;
+    z-index: 100;
 }
 
 

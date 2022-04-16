@@ -13,11 +13,13 @@
         integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
         crossorigin="anonymous"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="../public/stylesheets/admin.css" />
 
 </head>
 
 <body>
+    <%- include('loading') %> 
     <header>
 
         <!-- Sidebar -->
@@ -61,7 +63,7 @@
 
                         <div class="modal-body coogModalBody">
                             <div class="modalContainer">
-                                <div class="coogModalTitle"><h3 class="modal-title" id="createUserLabel">Create new user</h4></div>
+                                <div class="coogModalTitle"><h4 class="modal-title" id="createUserLabel">Create new user</h4></div>
                                 <form id="createUserForm" action="" method="">
                                     <div class="form-group">
                                         <label class="bold" id="handle-label" for="handle">Handle</label>
@@ -221,9 +223,7 @@
                     </div>
                     </div>
                 </div>
-
             </div>
-        </div>
 
         
 
@@ -275,7 +275,11 @@
 
 
     </main>
-
+    <script>
+         $(window).on("load", function () {
+                $("#loading").hide();
+            });
+    </script>
     <script>src = "modals.ejs"</script>
 
 </body>

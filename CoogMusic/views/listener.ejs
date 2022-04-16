@@ -182,245 +182,261 @@
                   <div class="progress-container" id="progress-container">
                     <div class="progress" id="progress"></div>
                   </div>
-                </div>
+                                </div>
 
-                <audio src="" id="audio"></audio>
+                                <audio src="" id="audio"></audio>
 
-                <div class="navigation">
-                  <div class="img-container">
-                    <img
-                      class="cover"
-                      src="/CoogMusic/public/images/song-cover.png"
-                      alt="music-cover"
-                      id="cover"
-                    />
-                  </div>
-                  <div>
-                    <button id="prev" class="action-btn">
-                      <i class="fas fa-backward"></i>
-                    </button>
-                    <button id="play" class="action-btn action-btn-big">
-                      <i class="fas fa-play"></i>
-                    </button>
-                    <button id="next" class="action-btn">
-                      <i class="fas fa-forward"></i>
-                    </button>
-                  </div>
+                                <div class="navigation">
+                                    <div class="img-container">
+                                        <img
+                                            class="cover"
+                                            src="/CoogMusic/public/images/song-cover.png"
+                                            alt="music-cover"
+                                            id="cover"
+                                        />
+                                    </div>
+                                    <div>
+                                        <button id="prev" class="action-btn">
+                                            <i class="fas fa-backward"></i>
+                                        </button>
+                                        <button
+                                            id="play"
+                                            class="action-btn action-btn-big"
+                                        >
+                                            <i class="fas fa-play"></i>
+                                        </button>
+                                        <button id="next" class="action-btn">
+                                            <i class="fas fa-forward"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </main>
-    <script>
-      const background_vid = document.getElementById("background");
-      
-     
-      $("#play-modal").draggable({ handle: ".modal-content" });
+        </main>
 
-      const song_data = JSON.parse('<%- data %>');
-    //   const song_data = JSON.parse(data_string);
+        <script>
+            $(window).on("load", function () {
+                $("#loading").hide();
+            });
+            $("#play-modal").draggable({ handle: ".modal-content" });
+            const background_vid = document.getElementById("background");
 
-      const musicContainer = document.getElementById("music-container");
-      const playBtn = document.getElementById("play");
-      const prevBtn = document.getElementById("prev");
-      const nextBtn = document.getElementById("next");
+            const song_data = JSON.parse('<%- data %>');
 
-      const audio = document.getElementById("audio");
-      const progress = document.getElementById("progress");
-      const progressContainer = document.getElementById("progress-container");
-      const title = document.getElementById("title");
-      const artist = document.getElementById("artist");
-      const cover = document.getElementById("cover");
-      const currTime = document.querySelector("#currTime");
-      const durTime = document.querySelector("#durTime");
-      const default_img_path = "http://localhost:3000/cover_art/default-cover.png";
-       
-      const songs = [];
-      const cover_art = [];
-    
-      song_data.forEach((elm) => {
-        songs.push({
-          file: elm.song_file,
-          name: elm.song_name,
-          artist: elm.published_by,
-        });
-        cover_art.push(elm.cover_art);
-      });
-      // Keep track of song, start at the first
-      let songIndex = 0;
+            const musicContainer = document.getElementById("music-container");
+            const playBtn = document.getElementById("play");
+            const prevBtn = document.getElementById("prev");
+            const nextBtn = document.getElementById("next");
 
-      // Initially load song details into DOM, cover is hard coded for now
-      loadSong(songs[songIndex], cover_art[songIndex]);
+            const audio = document.getElementById("audio");
+            const progress = document.getElementById("progress");
+            const progressContainer =
+                document.getElementById("progress-container");
+            const title = document.getElementById("title");
+            const artist = document.getElementById("artist");
+            const cover = document.getElementById("cover");
+            const currTime = document.querySelector("#currTime");
+            const durTime = document.querySelector("#durTime");
+            const default_img_path =
+                "http://localhost:3000/cover_art/default-cover.png";
 
-      // Update song details, in dev rn
-      function loadSong(song, cover_art) {
-        title.innerText = song.name;
-        artist.innerText = song.artist;
-        audio.src = song.file;
-        cover.src =
-          cover_art === "" || cover_art === undefined || cover_art === null || cover_art === "https://reptilesmagazine.com/wp-content/themes/magone/assets/images/default-thumbnail.png "
-            ? default_img_path
-            : cover_art;
-      }
-      function play_selected(id) { 
-                background_vid.play()
-                const song_number = parseInt(id.split('-')[1])
-                songIndex = song_number
-                loadSong(songs[songIndex], cover_art[songIndex])
+            const songs = [];
+            const cover_art = [];
+
+            song_data.forEach((elm) => {
+                songs.push({
+                    file: elm.song_file,
+                    name: elm.song_name,
+                    artist: elm.published_by,
+                });
+                cover_art.push(elm.cover_art);
+            });
+            // Keep track of song, start at the first
+            let songIndex = 0;
+
+            // Initially load song details into DOM, cover is hard coded for now
+            loadSong(songs[songIndex], cover_art[songIndex]);
+
+            // Update song details, in dev rn
+            function loadSong(song, cover_art) {
+                title.innerText = song.name;
+                artist.innerText = song.artist;
+                audio.src = song.file;
+                cover.src =
+                    cover_art === "" ||
+                    cover_art === undefined ||
+                    cover_art === null ||
+                    cover_art ===
+                        "https://reptilesmagazine.com/wp-content/themes/magone/assets/images/default-thumbnail.png "
+                        ? default_img_path
+                        : cover_art;
+            }
+            function play_selected(id) {
+                background_vid.play();
+                const song_number = parseInt(id.split("-")[1]);
+                songIndex = song_number;
+                loadSong(songs[songIndex], cover_art[songIndex]);
                 playSong();
-            
-      }
-      // Play song
-      function playSong() {
-        musicContainer.classList.add("play");
-        playBtn.querySelector("i.fas").classList.remove("fa-play");
-        playBtn.querySelector("i.fas").classList.add("fa-pause");
-
-        audio.play();
-      }
-
-      // Pause song
-      function pauseSong() {
-        musicContainer.classList.remove("play");
-        playBtn.querySelector("i.fas").classList.add("fa-play");
-        playBtn.querySelector("i.fas").classList.remove("fa-pause");
-
-        audio.pause();
-      }
-
-      // Previous song
-      function prevSong() {
-        songIndex--;
-
-        if (songIndex < 0) {
-          songIndex = songs.length - 1;
-        }
-
-        loadSong(songs[songIndex], cover_art[songIndex]);
-
-        playSong();
-      }
-
-      // Next song
-      function nextSong() {
-        songIndex++;
-
-        if (songIndex > songs.length - 1) {
-          songIndex = 0;
-        }
-
-        loadSong(songs[songIndex], cover_art[songIndex]);
-
-        playSong();
-      }
-
-      // Update progress bar
-      function updateProgress(e) {
-        const { duration, currentTime } = e.srcElement;
-        const progressPercent = (currentTime / duration) * 100;
-        progress.style.width = `${progressPercent}%`;
-      }
-
-      // Set progress bar
-      function setProgress(e) {
-        const width = this.clientWidth;
-        const clickX = e.offsetX;
-        const duration = audio.duration;
-
-        audio.currentTime = (clickX / width) * duration;
-      }
-
-      //get duration & currentTime for Time of song
-      function DurTime(e) {
-        const { duration, currentTime } = e.srcElement;
-        var sec;
-        var sec_d;
-
-        // define minutes currentTime
-        let min = currentTime == null ? 0 : Math.floor(currentTime / 60);
-        min = min < 10 ? "0" + min : min;
-
-        // define seconds currentTime
-        function get_sec(x) {
-          if (Math.floor(x) >= 60) {
-            for (var i = 1; i <= 60; i++) {
-              if (Math.floor(x) >= 60 * i && Math.floor(x) < 60 * (i + 1)) {
-                sec = Math.floor(x) - 60 * i;
-                sec = sec < 10 ? "0" + sec : sec;
-              }
             }
-          } else {
-            sec = Math.floor(x);
-            sec = sec < 10 ? "0" + sec : sec;
-          }
-        }
+            // Play song
+            function playSong() {
+                musicContainer.classList.add("play");
+                playBtn.querySelector("i.fas").classList.remove("fa-play");
+                playBtn.querySelector("i.fas").classList.add("fa-pause");
 
-        get_sec(currentTime, sec);
-
-        // change currentTime DOM
-        currTime.innerHTML = min + ":" + sec;
-
-        // define minutes duration
-        let min_d = isNaN(duration) === true ? "0" : Math.floor(duration / 60);
-        min_d = min_d < 10 ? "0" + min_d : min_d;
-
-        function get_sec_d(x) {
-          if (Math.floor(x) >= 60) {
-            for (var i = 1; i <= 60; i++) {
-              if (Math.floor(x) >= 60 * i && Math.floor(x) < 60 * (i + 1)) {
-                sec_d = Math.floor(x) - 60 * i;
-                sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
-              }
+                audio.play();
             }
-          } else {
-            sec_d = isNaN(duration) === true ? "0" : Math.floor(x);
-            sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
-          }
-        }
 
-        // define seconds duration
+            // Pause song
+            function pauseSong() {
+                musicContainer.classList.remove("play");
+                playBtn.querySelector("i.fas").classList.add("fa-play");
+                playBtn.querySelector("i.fas").classList.remove("fa-pause");
 
-        get_sec_d(duration);
+                audio.pause();
+            }
 
-        // change duration DOM
-        durTime.innerHTML = min_d + ":" + sec_d;
-      }
+            // Previous song
+            function prevSong() {
+                songIndex--;
 
-      // Event listeners
-      playBtn.addEventListener("click", () => {
-        const isPlaying = musicContainer.classList.contains("play");
+                if (songIndex < 0) {
+                    songIndex = songs.length - 1;
+                }
 
-        if (isPlaying) {
-          pauseSong();
-        } else {
-          playSong();
-        }
-      });
+                loadSong(songs[songIndex], cover_art[songIndex]);
 
-      // Change song
-      prevBtn.addEventListener("click", prevSong);
-      nextBtn.addEventListener("click", nextSong);
+                playSong();
+            }
 
-      // Time/song update
-      audio.addEventListener("timeupdate", updateProgress);
+            // Next song
+            function nextSong() {
+                songIndex++;
 
-      // Click on progress bar
-      progressContainer.addEventListener("click", setProgress);
+                if (songIndex > songs.length - 1) {
+                    songIndex = 0;
+                }
 
-      // Song ends
-      audio.addEventListener("ended", nextSong);
+                loadSong(songs[songIndex], cover_art[songIndex]);
 
-      // Time of song
-      audio.addEventListener("timeupdate", DurTime);
-    </script>
+                playSong();
+            }
 
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    <!-- <script src="../public/js/music_player.js"></script> -->
-  </body>
+            // Update progress bar
+            function updateProgress(e) {
+                const { duration, currentTime } = e.srcElement;
+                const progressPercent = (currentTime / duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+            }
+
+            // Set progress bar
+            function setProgress(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+
+                audio.currentTime = (clickX / width) * duration;
+            }
+
+            //get duration & currentTime for Time of song
+            function DurTime(e) {
+                const { duration, currentTime } = e.srcElement;
+                var sec;
+                var sec_d;
+
+                // define minutes currentTime
+                let min =
+                    currentTime == null ? 0 : Math.floor(currentTime / 60);
+                min = min < 10 ? "0" + min : min;
+
+                // define seconds currentTime
+                function get_sec(x) {
+                    if (Math.floor(x) >= 60) {
+                        for (var i = 1; i <= 60; i++) {
+                            if (
+                                Math.floor(x) >= 60 * i &&
+                                Math.floor(x) < 60 * (i + 1)
+                            ) {
+                                sec = Math.floor(x) - 60 * i;
+                                sec = sec < 10 ? "0" + sec : sec;
+                            }
+                        }
+                    } else {
+                        sec = Math.floor(x);
+                        sec = sec < 10 ? "0" + sec : sec;
+                    }
+                }
+
+                get_sec(currentTime, sec);
+
+                // change currentTime DOM
+                currTime.innerHTML = min + ":" + sec;
+
+                // define minutes duration
+                let min_d =
+                    isNaN(duration) === true ? "0" : Math.floor(duration / 60);
+                min_d = min_d < 10 ? "0" + min_d : min_d;
+
+                function get_sec_d(x) {
+                    if (Math.floor(x) >= 60) {
+                        for (var i = 1; i <= 60; i++) {
+                            if (
+                                Math.floor(x) >= 60 * i &&
+                                Math.floor(x) < 60 * (i + 1)
+                            ) {
+                                sec_d = Math.floor(x) - 60 * i;
+                                sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
+                            }
+                        }
+                    } else {
+                        sec_d = isNaN(duration) === true ? "0" : Math.floor(x);
+                        sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
+                    }
+                }
+
+                // define seconds duration
+
+                get_sec_d(duration);
+
+                // change duration DOM
+                durTime.innerHTML = min_d + ":" + sec_d;
+            }
+
+            // Event listeners
+            playBtn.addEventListener("click", () => {
+                const isPlaying = musicContainer.classList.contains("play");
+
+                if (isPlaying) {
+                    pauseSong();
+                } else {
+                    playSong();
+                }
+            });
+
+            // Change song
+            prevBtn.addEventListener("click", prevSong);
+            nextBtn.addEventListener("click", nextSong);
+
+            // Time/song update
+            audio.addEventListener("timeupdate", updateProgress);
+
+            // Click on progress bar
+            progressContainer.addEventListener("click", setProgress);
+
+            // Song ends
+            audio.addEventListener("ended", nextSong);
+
+            // Time of song
+            audio.addEventListener("timeupdate", DurTime);
+        </script>
+
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"
+        ></script>
+    </body>
 </html>

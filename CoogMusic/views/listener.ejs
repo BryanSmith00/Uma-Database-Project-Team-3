@@ -50,19 +50,28 @@
         </div>
         <hr />
         <ul class="nav nav-pills flex-column">
-          
           <li class="nav-item">
             <a
-              class="nav-link text-white active"
+              class="nav-link text-white"
               aria-current="page"
               href="/listener"
-              >Library</a
-            >
+              >
+              <i class="fa fa-music"></i>
+              &nbsp;&nbsp;Library
+              </a>
           </li>
           <li>
-            <a class="nav-link text-white" href="/my-playlists">Playlists</a>
+            <a class="nav-link text-white" href="/my-playlists">
+              <i class="fa fa-list"></i>
+              &nbsp;&nbsp;Playlists
+            </a>
           </li>
-          <li><a class="nav-link text-white" href="/Logout">Log out</a></li>
+          <li>
+            <a class="nav-link text-white" href="/Logout">
+              <i class="fa fa-arrow-left"></i>
+              &nbsp;&nbsp;Log out
+            </a>
+          </li>
         </ul>
       </div>
     </header>
@@ -94,7 +103,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-outline-danger"
+                    class="btn btn-outline-danger btn-circle"
                     onclick="play_selected(this.getAttribute('id'))"
                     data-toggle="modal"
                     data-target="#play-modal"
@@ -113,18 +122,11 @@
                         <option value="<%=playlist.playlist_id%>"><%=playlist.playlist_name%></option>
                         <% }); %>
                     </select>
-                    <!--
-                    <button
-                    type="button"
-                    class="btn btn-outline-success"
-                    data-toggle="modal"
-                    data-target="#addToPLModal">
-                        Add To Playlist
-                    </button>
-                    -->
                 </td>
                 <td>
-                    <input type="submit" class="btn btn-outline-success" form="<%=form_id%>" value="Add">
+                    <button type="submit" class="btn btn-outline-success btn-circle" form="<%=form_id%>">
+                        <i class="fa fa-plus"></i>
+                    </button>
                 </td>
               </tr>
             </form>
@@ -132,53 +134,6 @@
           
         </tbody>
       </table>
-
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="addToPLModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="addToPLModalLabel"
-        aria-hidden="true"
-        data-backdrop="false"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Your Playlists</h5>
-            </div>
-
-            <!-- Modal Body / Playlist Table -->
-            <div class="modal-body">
-              <table class="modal-table table-striped caption-top">
-                <% if(pl_data.length!=0){ pl_data.forEach(function(playlist){ %>
-
-                <tbody>
-                  <tr>
-                    <th scope="row"><%=playlist.playlist_name%></th>
-                    <td>
-                      <button type="button" class="btn btn-outline-success">
-                        Add
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-
-                <% });} else { %>
-                <h5>No playlists</h5>
-                <% } %>
-              </table>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div
         class="modal fade"

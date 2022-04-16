@@ -167,8 +167,8 @@ body {
     height: 100vh;
     padding: 0;
     margin: 0;
-    background-color: #e4e7e9;
-  }
+    background-color: black;
+}
 
 #sidebarMenu{
     background-color:  black;
@@ -209,6 +209,7 @@ main{
     position:fixed;
     float: left;
     left: 15%;
+    background-color: black;
     
 }
 

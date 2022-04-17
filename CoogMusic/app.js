@@ -690,6 +690,22 @@ app.post("/dismiss-notification", (req, res, next) => {
     }
 });
 
+app.post("/edit-song", (req, res, next) => {
+    var track_id = req.body.track_id;
+    var track_name = req.body.track_name;
+
+    let sql = `UPDATE track
+               SET song_name = \"${track_name}\"
+               WHERE song_id = ${track_id}`;
+
+    connection.query(sql, function (error, results) {
+        if (error) throw (error);
+        console.log(results.message);
+    });
+
+    res.redirect("/musician-tracks");
+});
+
 
 //--------------Server--------------//
 

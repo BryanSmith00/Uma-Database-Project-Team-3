@@ -16,13 +16,18 @@
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
             crossorigin="anonymous"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+        />
         <script
             src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"
         ></script>
         <link rel="stylesheet" href="../public/stylesheets/admin.css" />
-       
+        <link rel="stylesheet" href="../public/stylesheets/listener.css" />
+
     </head>
 
     <body>
@@ -49,17 +54,23 @@
                             class="nav-link text-white active"
                             aria-current="page"
                             href="/musician-tracks"
-                            >My tracks</a
+                            >
+                            <i class="fa fa-music"></i>
+                            &nbsp;&nbsp;My tracks</a
                         >
                     </li>
                     <li>
                         <a class="nav-link text-white" href="/addtrack"
-                            >Upload a track</a
+                            >
+                            <i class="fa fa-plus"></i>
+                            &nbsp;&nbsp;Upload a track</a
                         >
                     </li>
                     <li>
                         <a class="nav-link text-white" href="/Logout"
-                            >Log out</a
+                            >
+                            <i class="fa fa-arrow-left"></i>
+                            &nbsp;&nbsp;Log out</a
                         >
                     </li>
                 </ul>
@@ -72,6 +83,7 @@
                     <tr>
                         <th scope="col">Track Name</th>
                         <th scope="col">Artist</th>
+                        <th scope="col">Length</th>
                         <th scope="col">Number of Plays</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -79,14 +91,16 @@
                 </thead>
                 <tbody>
                     <% if(data.length!=0){ data.forEach(function(track){ let
-                    pl_form_id = "delete-song-" + track.song_id; %>
+                    form_id = "delete-song-" + track.song_id; %>
                     <tr>
                         <td><%=track.song_name%></td>
                         <td><%=track.published_by%></td>
+                        <td><%=track.length%></td>
                         <td><%=track.number_of_plays%></td>
                         <td>
+                            <!--
                             <form
-                                id="<%=pl_form_id%>"
+                                id="<%=form_id%>"
                                 action="/edit-song"
                                 method="post"
                             >
@@ -95,16 +109,22 @@
                                     name="song_id"
                                     value="<%=track.song_id%>"
                                 />
-                                <input
+                                -->
+
+                                <button
                                     type="submit"
-                                    class="btn btn-outline-primary"
-                                    value="Edit"
-                                />
-                            </form>
+                                    class="btn btn-outline-dark btn-circle open-edit-name-modal"
+                                    data-toggle="modal"
+                                    data-target="#edit-name-modal"
+                                    data-id="<%=track.song_id%>"
+                                >
+                                    <i class="fa fa-pen"></i>
+                                </button>
+                            <!-- </form> -->
                         </td>
                         <td>
                             <form
-                                id="<%=pl_form_id%>"
+                                id="<%=form_id%>"
                                 action="/delete-song"
                                 method="post"
                             >
@@ -113,17 +133,51 @@
                                     name="song_id"
                                     value="<%=track.song_id%>"
                                 />
-                                <input
+                                <button
                                     type="submit"
-                                    class="btn btn-outline-danger"
-                                    value="Delete"
-                                />
+                                    class="btn btn-outline-danger btn-circle"
+                                >
+                                    <i class="fa fa-minus"></i>
+                                </button>
                             </form>
                         </td>
                     </tr>
                     <% });} %>
                 </tbody>
             </table>
+
+            <div
+            class="modal fade"
+            id="edit-name-modal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="edit-name-modal-label"
+            aria-hidden="true"
+            data-backdrop="false"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <form id="edit-playlist" action="/edit-song" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" id="track-id" name="track_id" value = "">
+                        <input type="text" class="form-control" name="track_name" placeholder="New track name..." value = "" required>
+                     </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-success btn-circle">
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <button type="reset" class="btn btn-outline-danger btn-circle" data-dismiss="modal">
+                            <i class="fa fa-ban"></i>
+                        </button>
+                    </div>
+                  </form>
+                </div>
+               </div>
+             </div>
+
+        <!-- END EDIT MODAL -->
+
         </main>
 
         <script
@@ -134,6 +188,13 @@
         <script>
             $(window).on("load", function () {
                 $("#loading").hide();
+            });
+
+            $(function(){
+              $(".open-edit-name-modal").click(function(){
+                 $('#track-id').val($(this).data('id'));
+                 $("#edit-name-modal").modal("show");
+              });
             });
         </script>
     </body>

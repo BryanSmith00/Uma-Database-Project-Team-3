@@ -101,7 +101,6 @@ app.get("/listener", function (req, res, next) {
 
     connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
       if (error) throw error;
-      //console.log(results[1])
       res.render("listener", {
         data: JSON.stringify(results[1]),
         pl_data: results[0],
@@ -216,7 +215,6 @@ app.get('/get-songs', (req, res) => {
     if(err)
       console.log(err)
     else{
-      //console.log(results.message)
       res.send(results)
     }
   })
@@ -511,7 +509,6 @@ app.post("/my-playlists", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
     });
 
     res.redirect("/my-playlists");
@@ -548,7 +545,6 @@ app.post("/delete-playlist", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw (error);
-        console.log(results.message);
     });
 
     res.redirect("/my-playlists");
@@ -695,7 +691,6 @@ app.post("/dismiss-notification", (req, res, next) => {
 
         connection.query(sql, function (error, results) {
             if (error) throw (error);
-            console.log(results.message);
         });
 
         res.redirect("/notifications");

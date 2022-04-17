@@ -1,5 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
+  <%
+    function pad2(n) {
+        return n.length == 2 ? n : "0" + n;
+    }
+
+    function length_prettify(song_len) {
+        var hour = Math.floor(song_len / 60).toString();
+
+        var min = Math.floor(song_len % 60).toString();
+        min = (hour === "0") ? min : pad2(min);
+
+        var sec = pad2(Math.floor(((song_len - Math.floor(song_len)) * 60)).toString());
+
+        return hour === "0" ? `${min}:${sec}` : `${hour}:${min}:${sec}`;
+    }
+  %>
+  
     <head>
         <meta charset="UTF-8" />
         <title>Playlists</title>
@@ -91,7 +109,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Playlist Name</th>
-                            <th scope="col">Length (Minutes)</th>
+                            <th scope="col">Length</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
@@ -102,7 +120,7 @@
                         "delete-playlist-" + playlist.playlist_ID; %>
                         <tr>
                             <td><%=playlist.playlist_name%></td>
-                            <td><%=playlist.full_length.toFixed(2)%></td>
+                            <td><%=length_prettify(playlist.full_length)%></td>
                             <td>
                                 <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
                                     <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
@@ -181,7 +199,7 @@
                     <tr>
                         <td><%=playlist.playlist_name%></td>
                         <td><%=playlist.user_username%></td>
-                        <td><%=playlist.full_length.toFixed(2)%></td>
+                        <td><%=length_prettify(playlist.full_length)%></td>
                         <td>
                             <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
                                 <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">

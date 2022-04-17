@@ -245,7 +245,7 @@ app.get("/admin", function (req, res) {
       res.render("admin", { users_report: results });
     });
   } else {
-    res.redirect("/");
+    res.redirect("/login");
   }
 });
 
@@ -279,7 +279,7 @@ app.get("/songs", function (req, res) {
   res.statusCode = 200;
 
   if (req.isAuthenticated() &&  req.user[0].user_type === 2) {
-    var sql = "SELECT song_id, song_name, published_by, date_added FROM track;";
+    var sql = "SELECT song_id, song_name, published_by, date_added, number_of_plays FROM track;";
 
     connection.query(`${sql}`, function (error, results) {
       if (error) throw error;
@@ -287,7 +287,7 @@ app.get("/songs", function (req, res) {
       res.render("songs", { songs_report: results });
     });
   } else {
-    res.redirect("/");
+    res.redirect("/login");
   }
 });
 app.get("/admin-playlist", function (req, res, next) {
@@ -565,6 +565,19 @@ app.post("/delete-song", (req, res, next) => {
   res.redirect("/musician-tracks");
 });
 
+app.post("/delete-song-admin", (req, res, next) => {
+  var song_id = req.body.song_id;
+
+  let sql = `DELETE FROM track WHERE song_id = ${song_id}`
+
+  connection.query(sql, function (error, results) {
+      if (error) throw (error);
+      console.log(results.message);
+  });
+
+  res.redirect("songs");
+});
+
 app.post("/open-playlist", function (req, res, next) {
 
     if (req.isAuthenticated()) {
@@ -704,6 +717,24 @@ app.post("/edit-song", (req, res, next) => {
     });
 
     res.redirect("/musician-tracks");
+});
+
+app.post("/edit-song-admin", (req, res, next) => {
+  var track_id = req.body.track_id;
+  var track_name = req.body.track_name;
+  var number_of_plays = req.body.number_of_plays;
+  var date_added = req.body.date_added;
+
+  let sql = `UPDATE track
+             SET song_name = \"${track_name}\", number_of_plays = \"${number_of_plays}\", date_added = \"${date_added}\"
+             WHERE song_id = ${track_id}`;
+  
+  connection.query(sql, function (error, results) {
+      if (error) throw (error);
+      console.log(results.message);
+  });
+
+  res.redirect("songs");
 });
 
 

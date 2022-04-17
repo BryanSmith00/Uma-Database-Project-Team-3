@@ -1,15 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo&family=Lato:wght@700;400&family=PT+Sans+Narrow&display=swap');
 
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     width: 100vw;
     height: 100vh;
     padding: 0;
     margin: 0;
-    background-color: #e4e7e9;
-}
-
-#sidebarMenu {
+    background-color: #191A1F;
+    overflow-x: hidden;
+  }
+  
+  #sidebarMenu {
     background-color: black;
     padding: 10px;
     width: 300px;
@@ -18,20 +19,25 @@ body {
     bottom: 0;
     left: 0;
     font-size: 18px;
-}
-
-h2 {
+  }
+  
+  h2 {
     font-weight: bold;
-}
-
-.nav-link:hover {
+  }
+  
+  .nav-link:hover {
     background-color: rgb(27, 27, 27);
-}
-
-.logo {
+  }
+  
+  .logo {
     width: 90px;
     height: 90px;
-}
+  }
+  
+  .nav-link:active,
+  .active {
+    background-color: rgb(124, 121, 121) !important;
+  }
 
 .nav-link:active,
 .active {
@@ -48,10 +54,41 @@ main {
     position: relative;
     float: left;
     left: 30%;
+  }
+  
+  .listener-table{
     margin-top: 100px;
     margin-bottom: 100px;
-    overflow-x: hidden;
-}
+  }
+  
+  .table-menu {
+    display: flex;
+    justify-content: space-between;
+    width: 900px;
+    margin-top: 105px;
+    padding: 10px;
+    border: 1px solid rgb(226, 224, 224);
+    background-color: whitesmoke;
+  }
+  
+  .table-buttons {
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+  
+  }
+  
+  .query-button {
+    background-image: linear-gradient(60deg, #43bbf3, #3a7ec7);
+  }
+  
+  .table {
+    width: 900px;
+    background-color: white;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    text-align: center;
+  }
 
 .btn:focus{
     box-shadow: none;
@@ -81,33 +118,21 @@ main {
     height: 40px;
 }
 
-.table-buttons{
-    border: none;
-    width: 100px;
-    font-weight: bold;
-}
-
 .query-button {
     background-image: linear-gradient(60deg, #43bbf3, #3a7ec7);
-}
-
-.table {
-    width: 900px;
-    background-color: white;
-    margin-top: 20px;
-    text-align: center;
 }
 
 .songs-table{
     margin-top: 70px;
 }
 
-.modal-table {
-    width: 100%;
-    background-color: white;
+thead {
+    background-color: rgb(41, 41, 41);
+    color: white;
 }
 
-thead {
+.modal-table {
+    width: 100%;
     background-color: rgb(41, 41, 41);
     color: white;
 }
@@ -118,7 +143,8 @@ thead {
 }
 
 .coogModalHeader{
-    background-color: #edf1f4;
+    background-color: rgb(41, 41, 41);
+    color: white;
     border-bottom: none;
 }
 
@@ -139,8 +165,31 @@ thead {
     font-size: 18px;
 }
 
+.coogModalBody{
+    height: 520px;
+    background-color: rgb(41, 41, 41);
+    color: white;
+    padding: 0 1rem 0 1rem
+}
+
+.coogModalFooter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 35px;
+    background-color: rgb(41, 41, 41);
+    color: white;
+}
+
+.modalContainer{
+    padding: 0 20px 0 20px;
+}
+
+.modalButtons{
+    margin-top: 50px;
+}
+
 .createUserButton{
-    background-color: #00A598;
     margin-bottom: 10px;
 }
 
@@ -151,24 +200,6 @@ thead {
 .cancelButton,.cancelButton:hover{
     background-color: #edf1f4;
     color: #0671E2;
-}
-
-.coogModalBody{
-    height: 600px;
-    background-color: #edf1f4;
-    padding: 0 1rem 1rem 1rem
-}
-
-.coogModalFooter{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 35px;
-    background-color: #edf1f4;
-}
-
-.modalContainer{
-    padding: 0 20px 20px 20px;
 }
 
 .form-control{
@@ -223,14 +254,9 @@ select{
     position: relative;
 }
 
-.modalButtons{
-    margin-top: 50px;
-}
-
 .buttons-row{
     display: flex;
     justify-content: space-around;
-    width: auto;
 }
 
 #loading {

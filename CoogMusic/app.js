@@ -89,25 +89,25 @@ app.get("/login-failure", (req, res, next) => {
 // ---------- Listener & Musician Routes ---------- //
 
 app.get("/listener", function (req, res, next) {
-    res.statusCode = 200;
+  res.statusCode = 200;
 
-    if (req.isAuthenticated() && req.user[0].user_type === 0) {
-        var sql1 = `SELECT playlist_id, playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
+  if (req.isAuthenticated() && req.user[0].user_type === 0) {
+    var sql1 = `SELECT playlist_id, playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
 
-        var sql2 = "SELECT * FROM track";
+    var sql2 = "SELECT * FROM track";
 
-        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
-            if (error) throw error;
-            //console.log(results[1])
-            res.render("listener", {
-                data: JSON.stringify(results[1]),
-                pl_data: results[0],
-                user: req.session.passport.user,
-            });
-        });
-    } else {
-        res.redirect("/");
-    }
+    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+      if (error) throw error;
+      res.render("listener", {
+        data: JSON.stringify(results[1]),
+        pl_data: results[0],
+        user: req.session.passport.user,
+      }
+      );
+    });
+  } else {
+    res.redirect("/");
+  }
 });
 
 app.get("/musician-tracks", function (req, res, next) {
@@ -197,19 +197,6 @@ app.get("/admin-playlist", function (req, res, next) {
     } else {
         res.redirect("/login");
     }
-});
-
-app.get("/get-songs", (req, res) => {
-    if (!req.isAuthenticated()) res.redirect("/login");
-    //console.log('fetching songs')
-    const query = `SELECT * FROM track`;
-    connection.query(query, (err, results) => {
-        if (err) console.log(err);
-        else {
-            //console.log(results.message)
-            res.send(results);
-        }
-    });
 });
 
 app.get("/music/:file_name", (req, res) => {
@@ -390,7 +377,6 @@ app.post("/addtrack", async (req, res, next) => {
     });
 });
 app.post("/plays", (req, _) => {
-    console.log(req.body);
     const plays = req.body;
     const song_ids = Object.keys(plays);
     song_ids.forEach((key) => {
@@ -502,7 +488,6 @@ app.post("/my-playlists", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
     });
 
     res.redirect("/my-playlists");
@@ -535,8 +520,7 @@ app.post("/delete-playlist", (req, res, next) => {
     let sql = `DELETE FROM playlist WHERE playlist_ID = \"${playlist_id}\"`;
 
     connection.query(sql, function (error, results) {
-        if (error) throw error;
-        console.log(results.message);
+        if (error) throw (error);
     });
 
     res.redirect("/my-playlists");
@@ -673,8 +657,7 @@ app.post("/dismiss-notification", (req, res, next) => {
                    WHERE alert_id = ${alert_id}`;
 
         connection.query(sql, function (error, results) {
-            if (error) throw error;
-            console.log(results.message);
+            if (error) throw (error);
         });
 
         res.redirect("/notifications");

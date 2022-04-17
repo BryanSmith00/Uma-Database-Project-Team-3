@@ -73,7 +73,7 @@
 
         <main>
             <!-- Playlist Library -->
-            <table class="table table-striped table-borderless caption-top">
+            <table class="table table-dark table-hover table-striped table-borderless listener-table">
                 <caption>
                     Playlist Library
                 </caption>
@@ -87,18 +87,21 @@
                 </thead>
                 <tbody>
                     <% if(other_pls.length!=0){
-                    other_pls.forEach(function(playlist){ %>
+                        other_pls.forEach(function(playlist){ let pl_form_id =
+                        "delete-playlist-" + playlist.playlist_ID; %>
                     <tr>
                         <th scope="row"><%=playlist.playlist_name%></th>
                         <td><%=playlist.user_username%></td>
-                        <td><%=playlist.full_length%></td>
+                        <td><%=playlist.full_length.toFixed(2)%></td>
                         <td>
-                            <button
-                                type="button"
-                                class="btn btn-outline-success"
-                            >
-                                Open
-                            </button>
+                            <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
+                                <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
+                                <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                                <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
+                                <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success">
+                                    Open
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     <% });} else { %>

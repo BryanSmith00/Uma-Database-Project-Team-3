@@ -83,7 +83,7 @@
           <tr>
             <th scope="col">Track Name</th>
             <th scope="col">Artist</th>
-            <th scope="col">Length (minutes)</th>
+            <th scope="col">Length</th>
             <th scope="col">Number of Plays</th>
             <th scope="col"></th>
             <th scope="col">Action</th>
@@ -99,7 +99,7 @@
               <tr>
                 <td><%=track.song_name%></td>
                 <td><%=track.published_by%></td>
-                <td><%=track.length%></td>
+                <td><%=parseInt(track.length)%>m <%=parseInt(((track.length - parseInt(track.length))) * 60) %>s </td>
                 <td><%=track.number_of_plays%></td>
                 <td>
                   <button
@@ -108,7 +108,7 @@
                     onclick="play_selected(this.getAttribute('id'))"
                     data-toggle="modal"
                     data-target="#play-modal"
-                    id="song-<%= ind %>"
+                    id="song-<%= ind %>-<%= track.song_id%>"
                   >
                     <i class="fas fa-play"></i>
                   </button>
@@ -246,13 +246,15 @@
 
             const songs = [];
             const cover_art = [];
+            const plays = {}
 
             song_data.forEach((elm) => {
                 songs.push({
                     file: elm.song_file,
                     name: elm.song_name,
                     artist: elm.published_by,
-                });
+                })
+                   
                 cover_art.push(elm.cover_art);
             });
             // Keep track of song, start at the first
@@ -277,10 +279,13 @@
             }
             function play_selected(id) {
                 background_vid.play();
-                const song_number = parseInt(id.split("-")[1]);
+                const curr_song = id.split("-")
+                const song_number = parseInt(curr_song[1]);
+                const song_id = curr_song[2]
                 songIndex = song_number;
                 loadSong(songs[songIndex], cover_art[songIndex]);
                 playSong();
+                plays[song_id] = (song_id in plays) ? plays[song_id] + 1 : 1
             }
             // Play song
             function playSong() {
@@ -432,6 +437,17 @@
 
             // Time of song
             audio.addEventListener("timeupdate", DurTime);
+
+            window.addEventListener('beforeunload', async () => {
+                
+                fetch("http://localhost:3000/plays", {
+                  method: 'POST',
+                  body: JSON.stringify(plays),
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                })
+            })
         </script>
 
         <script

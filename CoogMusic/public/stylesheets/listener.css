@@ -262,44 +262,6 @@ select{
   justify-content: space-around;
 }
 
-
-.player-header {
-  display: flex;
-  position: fixed;
-  background-color: black;
-  height: 35vh;
-  min-height: 10rem;
-  width: auto;
-  min-width: 498px;
-  overflow: hidden;
-}
-
-.player-header video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: 0;
-  -ms-transform: translateX(-50%) translateY(-50%);
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-}
-
-.player-header .player-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-image: linear-gradient(black, rgba(49, 3, 3, 0.8), rgba(65, 5, 5, 0.8));
-  opacity: 0.5;
-  z-index: 1;
-}
-
 .btn-circle {
     width: 30px;
     height: 30px;

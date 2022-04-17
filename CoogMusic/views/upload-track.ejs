@@ -12,6 +12,11 @@
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
             crossorigin="anonymous"
         />
+
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+        />
         <%- include('header') %>
         <script
             src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -19,7 +24,7 @@
             crossorigin="anonymous"
         ></script>
         <link rel="stylesheet" href="../public/stylesheets/upload-track.css" />
-        <link rel="stylesheet" href="../public/stylesheets/admin.css" />
+        <link rel="stylesheet" href="../public/stylesheets/listener.css" />
     </head>
 
     <body>
@@ -44,81 +49,86 @@
                         <a
                             class="nav-link text-white"
                             aria-current="page"
-                            href="/musician-tracks"
-                            >My tracks</a
+                            href="/musician-tracks"><i class="fa fa-music"></i>
+                            &nbsp;&nbsp;My tracks</a
                         >
                     </li>
                     <li>
                         <a class="nav-link text-white active" href="/addtrack"
-                            >Upload a track</a
+                            ><i class="fa fa-plus"></i>
+                            &nbsp;&nbsp;Upload a track</a
                         >
                     </li>
                     <li>
                         <a class="nav-link text-white" href="/Logout"
-                            >Log out</a
+                            ><i class="fa fa-arrow-left"></i>
+                            &nbsp;&nbsp;Log out</a
                         >
                     </li>
                 </ul>
             </div>
         </header>
 
-        <div class="container">
-            <form
-                id="upload-standalone-track"
-                enctype="multipart/form-data"
-                method="post"
-                action="/addtrack"
-                onsubmit="upload()"
-            >
-                <h3>Upload Track</h3>
-                <div class="form-group">
-                    <label class="bold" id="trackname-label" for="trackname"
-                        >Track Name</label
-                    >
-                    <input
-                        type="text"
-                        id="trackname"
-                        placeholder="Enter the track name."
-                        name="trackname"
-                        class="form-control"
-                        required
-                    />
-                </div>
+        <main>
+            <div class="container">
+                <form
+                    id="upload-standalone-track"
+                    enctype="multipart/form-data"
+                    method="post"
+                    action="/addtrack"
+                    onsubmit="upload()"
+                >
+                    <h3>Upload Track</h3>
+                    <div class="form-group">
+                        <label class="bold" id="trackname-label" for="trackname"
+                            >Track Name</label
+                        >
+                        <input
+                            type="text"
+                            id="trackname"
+                            placeholder="Enter the track name."
+                            name="trackname"
+                            class="form-control"
+                            required
+                        />
+                    </div>
+    
+                    <div class="form-group">
+                        <label class="bold" id="track-file-label" for="track-file"
+                            >Track File</label
+                        >
+                        <input
+                            type="file"
+                            accept=".mp3"
+                            id="track-file"
+                            name="trackfile"
+                            class="form-control-file"
+                            required
+                        />
+                    </div>
+    
+                    <div class="form-group">
+                        <label class="bold" id="trackart-label" for="trackart"
+                            >Track Artwork</label
+                        >
+                        <input
+                            type="file"
+                            accept=".png, .jpg, .tif"
+                            id="trackart"
+                            name="trackart"
+                            class="form-control-file"
+                        />
+                    </div>
+    
+                    <div class="form-group">
+                        <button type="submit" id="submit" class="input-submit">
+                            Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-                <div class="form-group">
-                    <label class="bold" id="track-file-label" for="track-file"
-                        >Track File</label
-                    >
-                    <input
-                        type="file"
-                        accept=".mp3"
-                        id="track-file"
-                        name="trackfile"
-                        class="form-control-file"
-                        required
-                    />
-                </div>
-
-                <div class="form-group">
-                    <label class="bold" id="trackart-label" for="trackart"
-                        >Track Artwork</label
-                    >
-                    <input
-                        type="file"
-                        accept=".png, .jpg, .tif"
-                        id="trackart"
-                        name="trackart"
-                        class="form-control-file"
-                    />
-                </div>
-
-                <div class="form-group">
-                    <button type="submit" id="submit" class="input-submit">
-                        Upload
-                    </button>
-                </div>
-            </form>
-        </div>
+        </main>
         <script></script>
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

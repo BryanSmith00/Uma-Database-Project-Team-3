@@ -75,7 +75,7 @@ button {
 }
 
 button:hover {
-    background-color: rgb(66, 204, 119);
+    background-color: #821523;
 }
 
 .input-submit {
@@ -86,7 +86,7 @@ button:hover {
     box-sizing: border-box;
     font-weight: 700;
     border-radius: 50px;
-    background-color: rgb(54, 175, 101);
+    background-color: #c21f35;
     color: white;
 }
 

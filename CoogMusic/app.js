@@ -160,7 +160,6 @@ app.get("/my-playlists", function (req, res, next) {
 
         connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
             if (error) throw error;
-
             res.render("playlist", {
                 my_pls: results[0],
                 other_pls: results[1],

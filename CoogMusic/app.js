@@ -171,6 +171,7 @@ app.get("/my-playlists", function (req, res, next) {
     }
 });
 
+
 app.get("/my-favorites", function (req, res, next) {
     res.statusCode = 200;
 
@@ -274,24 +275,7 @@ app.get("/queries", (req, res, next) => {
     }
 });
 
-app.get("/userReport", (req, res, next) => {
-    if (req.isAuthenticated()) {
-        connection.query(
-            "SELECT user_id, username, date_created FROM user",
-            function (error, results, fields) {
-                if (error) throw error;
 
-                if (results.length > 0) {
-                    res.send(results);
-                } else {
-                    res.send("<H1>There were no users in the table</H1>");
-                }
-            }
-        );
-    } else {
-        res.redirect("/");
-    }
-});
 app.get("/songs", function (req, res) {
     res.statusCode = 200;
 
@@ -430,92 +414,34 @@ app.post("/plays", (req, _) => {
         );
     });
 });
+
+//More reports, playlists and notifications
 app.post("/runquery", (req, res, next) => {
     let select_type = req.body.selecttype;
     let order_type = req.body.ordertype;
 
-    if (select_type == "user") {
-        if (req.body.sorttype == "id") var sort_type = "user_id";
-        if (req.body.sorttype == "name") var sort_type = "username";
-        if (req.body.sorttype == "date") var sort_type = "date_created";
-    } else if (select_type == "track") {
-        if (req.body.sorttype == "id") var sort_type = "song_id";
-        if (req.body.sorttype == "name") var sort_type = "song_name";
-        if (req.body.sorttype == "date") var sort_type = "date_added";
-    } else {
-        if (req.body.sorttype == "id") var sort_type = "playlist_id";
+    if (select_type == "playlists") {
+        if (req.body.sorttype == "id") var sort_type = "playlist_ID";
         if (req.body.sorttype == "name") var sort_type = "playlist_name";
         if (req.body.sorttype == "date") var sort_type = "created_at";
-    }
+    } else if (select_type == "notifications") {
+        if (req.body.sorttype == "id") var sort_type = "alert_id";
+        if (req.body.sorttype == "name") var sort_type = "message";
+        if (req.body.sorttype == "date") var sort_type = "date_added";
+    } 
 
-    var sql = `SELECT * FROM ${select_type} ORDER BY ${sort_type} ${order_type}`;
+    var sql = `SELECT * FROM ${select_type}`;
 
-    connection.query(sql, function (error, results) {
+    connection.query(`${sql}`, function (error, results) {
         if (error) {
             res.send(error);
             throw error;
         }
-
-        if (results.length <= 0) res.send("<h1>There were no results</h1>");
-        else {
-            if (select_type == "user") {
-                var tab =
-                    '<table style="width:50%"> <tr> <th>ID</th> <th>Name</th> <th>Date Created</th> </tr>';
-                for (let i = 0; i < results.length; i++) {
-                    tab +=
-                        "<tr>" +
-                        "<td>" +
-                        results[i].user_id +
-                        "</td><td>" +
-                        results[i].username +
-                        "</td><td>" +
-                        results[i].date_created +
-                        "</td></tr>";
-                }
-                tab += "</table>";
-            } else if (select_type == "track") {
-                var tab =
-                    '<table style="width:50%"> <tr> <th>ID</th> <th>Name</th> <th>Date Created</th> </tr>';
-                for (let i = 0; i < results.length; i++) {
-                    tab +=
-                        "<tr>" +
-                        "<td>" +
-                        results[i].song_id +
-                        "</td><td>" +
-                        results[i].song_name +
-                        "</td><td>" +
-                        results[i].date_added +
-                        "</td></tr>";
-                }
-                tab += "</table>";
-            } else if (select_type == "playlist") {
-                var tab =
-                    '<table style="width:50%"> <tr> <th>ID</th> <th>Name</th> <th>Date Created</th> </tr>';
-                for (let i = 0; i < results.length; i++) {
-                    tab +=
-                        "<tr>" +
-                        "<td>" +
-                        results[i].playlist_id +
-                        "</td><td>" +
-                        results[i].playlist_name +
-                        "</td><td>" +
-                        results[i].created_at +
-                        "</td></tr>";
-                }
-                tab += "</table>";
-            }
-
-            let text = `<!DOCTYPE html><html lang="en">
-            <head>
-                <meta charset="UTF-8"> <title>Query Results</title> <link rel="icon" type="image/x-icon" href="../public/images/favicon.ico"> <meta name="viewport" content="width=device-width, initial-scale=1"> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> <link rel="stylesheet" href="../public/stylesheets/admin.css" /> <style>table, th, td {border:1px solid black;}</style>
-            </head>
-            <body>
-            <div>
-                ${tab}
-            </div>
-            </body>`;
-
-            res.send(text);
+        if (results.length <= 0) {
+            res.send("<h1>There were no results</h1>");
+        }
+        else if (select_type == "playlist") {
+            res.render("playlist-report", { playlistreport: results });
         }
     });
 });
@@ -566,6 +492,21 @@ app.post("/delete-playlist", (req, res, next) => {
 
     res.redirect("/my-playlists");
 });
+
+
+//Admin delete playlist
+app.post("/delete-playlist-admin", (req, res, next) => {
+    var playlist_id = req.body.playlist_id;
+
+    let sql = `DELETE FROM playlist WHERE playlist_ID = \"${playlist_id}\"`;
+
+    connection.query(sql, function (error, results) {
+        if (error) throw (error);
+    });
+
+    res.redirect("/queries");
+});
+
 
 app.post("/delete-song", (req, res, next) => {
     var song_id = req.body.song_id;

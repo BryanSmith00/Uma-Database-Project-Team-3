@@ -14,8 +14,11 @@
         />
 
         <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+            integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
         />
         <%- include('header') %>
         <script
@@ -28,7 +31,7 @@
     </head>
 
     <body>
-        <%- include('loading') %> 
+        <%- include('loading') %>
         <header>
             <div id="sidebarMenu" class="d-flex flex-column text-white">
                 <div
@@ -49,20 +52,21 @@
                         <a
                             class="nav-link text-white"
                             aria-current="page"
-                            href="/musician-tracks"><i class="fa fa-music"></i>
-                            &nbsp;&nbsp;My tracks</a
+                            href="/musician-tracks"
+                            ><i class="fa fa-music"></i> &nbsp;&nbsp;My
+                            tracks</a
                         >
                     </li>
                     <li>
                         <a class="nav-link text-white active" href="/addtrack"
-                            ><i class="fa fa-plus"></i>
-                            &nbsp;&nbsp;Upload a track</a
+                            ><i class="fa fa-plus"></i> &nbsp;&nbsp;Upload a
+                            track</a
                         >
                     </li>
                     <li>
                         <a class="nav-link text-white" href="/Logout"
-                            ><i class="fa fa-arrow-left"></i>
-                            &nbsp;&nbsp;Log out</a
+                            ><i class="fa fa-arrow-left"></i> &nbsp;&nbsp;Log
+                            out</a
                         >
                     </li>
                 </ul>
@@ -92,11 +96,18 @@
                             required
                         />
                     </div>
-    
+
                     <div class="form-group">
-                        <label class="bold" id="track-file-label" for="track-file"
+                        <label
+                            class="bold"
+                            id="track-file-label"
+                            for="track-file"
                             >Track File</label
                         >
+                        <label for="track-file" class="form-control-file">
+                            <i class="fa fa-file-audio fa-xl"></i><span style="font-weight: 600;"> Select your song &nbsp;</span>
+                        </label>
+                        <span id="audio-file-sel"></span>
                         <input
                             type="file"
                             accept=".mp3"
@@ -106,20 +117,26 @@
                             required
                         />
                     </div>
-    
+
                     <div class="form-group">
-                        <label class="bold" id="trackart-label" for="trackart"
-                            >Track Artwork</label
-                        >
-                        <input
-                            type="file"
-                            accept=".png, .jpg, .tif"
-                            id="trackart"
-                            name="trackart"
-                            class="form-control-file"
-                        />
+                        <label class="bold" id="trackart-label"
+                            >Track Artwork</label>
+                        
+                        <label for="trackart" class="form-control-file"> 
+                            <i class="fa fa-file-image fa-xl"></i><span style="font-weight: 600;"> Select your art &nbsp;</span>
+                        </label>
+                            <span id="cover-file-sel"></span>
+                            <input
+                                type="file"
+                                accept=".png, .jpg, .tif"
+                                id="trackart"
+                                name="trackart"
+                            />
+                            
+                            
+                        
                     </div>
-    
+
                     <div class="form-group">
                         <button type="submit" id="submit" class="input-submit">
                             Upload
@@ -127,7 +144,6 @@
                     </div>
                 </form>
             </div>
-
         </main>
         <script></script>
         <script
@@ -136,6 +152,16 @@
             crossorigin="anonymous"
         ></script>
         <script>
+            $('#track-file').bind('change', function() {
+                let name = ($(this).val()).split("\\")[2]
+                
+                $('#audio-file-sel').html(name)
+            })
+            $('#trackart').bind('change', function() {
+                let name = ($(this).val()).split("\\")[2]
+                
+                $('#cover-file-sel').html(name)
+            })
             $(window).on("load", function () {
                 $("#loading").hide();
             });

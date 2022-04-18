@@ -32,12 +32,21 @@
             </div>
             <hr>
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a class="nav-link text-white active" aria-current="page" href="/admin">Users</a>
+                <li class="nav-item">
+                    <a class="nav-link text-white active" aria-current="page" href="/admin">Users</a>
                 </li>
-                <li><a class="nav-link text-white" href="/songs">Songs</a></li>
-                <li><a class="nav-link text-white" href="/admin-playlist">Playlists</a></li>
-                <li><a class="nav-link text-white" href="/queries">More</a></li>
-                <li><a class="nav-link text-white" href="/Logout">Log out</a></li>
+                <li>
+                    <a class="nav-link text-white" href="/songs">Songs</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white" href="/admin-playlist">Playlists</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white" href="/queries">Queries</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white" href="/Logout">Log out</a>
+                </li>
             </ul>
         </div>
     </header>
@@ -45,7 +54,7 @@
     <main>
         <div class="create-user-menu">
             <button type="button" data-bs-toggle="modal" data-bs-target="#createUserModal"
-                class="btn create-user-button">
+                class="btn btn-outline-primary create-user-button">
                 <img class="create-user-img" src="../public/images/create-user.png">
                 <span class="create-user-title">Create User</span>
             </button>
@@ -64,44 +73,46 @@
                         <div class="modal-body coogModalBody">
                             <div class="modalContainer">
                                 <div class="coogModalTitle"><h4 class="modal-title" id="createUserLabel">Create new user</h4></div>
-                                <form id="createUserForm" action="" method="">
+                                <form id="createUserForm" action="/create-user" method="POST">
+                                    
                                     <div class="form-group">
-                                        <label class="bold" id="handle-label" for="handle">Handle</label>
+
+                                        <label for="user_type">Choose User Type</label>
+    
+                                        <div className="select">
+                                            <select id="user_type">
+                                                <option value="" disabled selected>Select Type</option>
+                                                <option value="2">Admin</option>
+                                                <option value="1">Musician</option>
+                                                <option value="0">Listener</option>
+                                            </select>
+                                            <span className="focus"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="bold" id="handle" for="handle">Handle</label>
                                         <input type="text" id="handle" placeholder="Handle"
                                         name="handle" autofocus="autofocus" onfocus="" class="form-control" required>
                                     </div>
 
-                                <div class="form-group">
-                                    <label class="bold" id="username" for="username">Username</label>
-                                    <input type="username" id="username" placeholder="Your Username" name="username"
-                                        class="form-control" required>
-                                </div>
-
-                                <div class="form-group">
-
-                                    <label for="userType">Choose User Type</label>
-
-                                    <div className="select">
-                                        <select id="userType">
-                                            <option value="" disabled selected>Select Type</option>
-                                            <option value="Admin">Admin</option>
-                                            <option value="Musician">Musician</option>
-                                            <option value="Listener">Listener</option>
-                                        </select>
-                                        <span className="focus"></span>
+                                    <div class="form-group">
+                                        <label class="bold" id="username" for="username">Username</label>
+                                        <input type="username" id="username" placeholder="Your Username" name="username"
+                                            class="form-control" required>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="bold" id="password" for="password">Password</label>
-                                    <input type="password" id="password" placeholder="Password" name="password"
-                                        class="form-control" required>
-                                </div>
-                                <div class="modalButtons">
-                                    <button type="button" class="btn btn-primary modalButton createUserButton">Create</button>
-                                    <button type="button" class="btn btn-secondary modalButton cancelButton"
-                                    data-bs-dismiss="modal">Cancel</button>
-                                </div>  
+                                    <div class="form-group">
+                                        <label class="bold" id="password" for="password">Password</label>
+                                        <input type="password" id="password" placeholder="Password" name="password"
+                                            class="form-control" required>
+                                    </div>
+
+                                    <div class="modalButtons">
+                                        <button type="submit" class="btn btn-primary modalButton createUserButton">Create</button>
+                                        <button type="button" class="btn btn-secondary modalButton cancelButton"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    </div>  
 
                             </form>
                         </div>
@@ -112,137 +123,23 @@
             </div>
         </div>
 
-        <!-- Edit User modal-->
-        <div class="modal" id="editUserModal" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-
-                    <div class="modal-header coogModalHeader">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body coogModalBody">
-                        <div class="modalContainer">
-                            <div class="coogModalTitle"><h3 class="modal-title" id="editUserLabel">Edit User</h3></div>
-                            <form id="editUserForm" action="" method="">
-                                <div class="form-group">
-                                    <label class="bold" id="handle-label" for="handle">Handle</label>
-                                    <input type="text" id="handle" placeholder="Handle"
-                                    name="handle" autofocus="autofocus" onfocus="" class="form-control" required>
-                                </div>
-
-                            <div class="form-group">
-                                <label class="bold" id="username" for="username">Username</label>
-                                <input type="username" id="username" placeholder="Your Username" name="username"
-                                    class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="userType">Choose User Type</label>
-                                <div className="select">
-                                    <select id="userType">
-                                        <option value="" disabled selected>Select Type</option>
-                                        <option value="Admin">Admin</option>
-                                        <option value="Musician">Musician</option>
-                                        <option value="Listener">Listener</option>
-                                    </select>
-                                    <span className="focus"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="bold" id="password" for="password">Password</label>
-                                <input type="password" id="password" placeholder="Password" name="password"
-                                    class="form-control" required>
-                            </div>
-                            <div class="modalButtons">
-                                <button type="button" class="btn btn-primary modalButton createUserButton">Save</button>
-                                <button type="button" class="btn btn-secondary modalButton cancelButton"
-                                data-bs-dismiss="modal">Cancel</button>
-                            </div>  
-
-                        </form>
-                    </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <!-- User Details-->
-        <div class="modal" id="userDetailsModal" tabindex="-1" aria-labelledby="userDetailsLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-
-                    <div class="modal-header coogModalHeader">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body coogModalBody">
-                        <div class="modalContainer">
-                            <div class="coogModalTitle"><h3 class="modal-title" id="editUserLabel">User Details</h3></div>
-                            <form id="userDetails" action="" method="">
-                                <div class="form-group">
-                                    <label class="bold" id="handle-label" for="handle">Handle</label>
-                                    <input type="text" id="handle" placeholder="Handle"
-                                    name="handle" autofocus="autofocus" onfocus="" class="form-control" required>
-                                </div>
-
-                            <div class="form-group">
-                                <label class="bold" id="username" for="username">Username</label>
-                                <input type="username" id="username" placeholder="Your Username" name="username"
-                                    class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="userType">Choose User Type</label>
-                                <div className="select">
-                                    <select id="userType">
-                                        <option value="" disabled selected>Select Type</option>
-                                        <option value="Admin">Admin</option>
-                                        <option value="Musician">Musician</option>
-                                        <option value="Listener">Listener</option>
-                                    </select>
-                                    <span className="focus"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="bold" id="password" for="password">Password</label>
-                                <input type="password" id="password" placeholder="Password" name="password"
-                                    class="form-control" required>
-                            </div>
-                            <div class="modalButtons">
-                                <button type="button" class="btn btn-primary modalButton createUserButton">Save</button>
-                                <button type="button" class="btn btn-secondary modalButton cancelButton"
-                                data-bs-dismiss="modal">Cancel</button>
-                            </div>  
-
-                        </form>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-
         <!-- Users table-->
-        <table class="table border table-borderless table-striped table-hover">
+        <table class="table table-dark table-hover table-striped table-borderless table-hover">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Role</th>
-                    <!--<th scope="col">Handle</th>-->
-                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Handle</th>
                     <th scope="col">Date created</th>
                     <th scope="col">Action</th>
+                    
 
                 </tr>
             </thead>
             <tbody>
-                <% if(users_report.length !=0){ users_report.forEach(function(user){%>
+                <% if(users_report.length != 0){ users_report.forEach(function(user){ let
+                        form_id = "delete-user-" + user.user_id; %>
                     <tr>
                         <td>
                             <%=user.user_id%>
@@ -250,23 +147,44 @@
                         <td>
                             <%=user.user_type%>
                         </td>
-                        <!--<td>
-                            <%=user.handle%>
-                        </td>-->
                         <td>
                             <%=user.username%>
+                        </td>
+                        <td>
+                            <%=user.handle%>
                         </td>
                         <td>
                             <%=user.date_created%>
                         </td>
                         <td>
                             <div class="buttons-row">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#editUserModal"
-                            class="btn query-button text-white table-buttons">Edit</button>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#userDetailsModal"
-                            class="btn btn-warning text-white table-buttons">Info</button>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#deleteUserModal"
-                            class="btn btn-danger table-buttons">Delete</button>
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-primary open-edit-name-modal"
+                                    data-toggle="modal"
+                                    data-target="#edit-name-modal"
+                                    data-id="<%=user.user_id%>"
+                                >
+                                Edit
+                                    <i class="fa fa-pen"></i>
+                                </button>
+                                <form
+                                id="<%=form_id%>"
+                                action="/delete-user"
+                                method="post"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="user_id"
+                                    value="<%=user.user_id%>"
+                                />
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger"
+                                >
+                                Delete
+                                </button>
+                            </form>
                             </div>
                         </td>
                     </tr>
@@ -274,14 +192,84 @@
             </tbody>
         </table>
 
+        <!-- Edit User Modal -->
+        <div
+            class="modal fade"
+            id="edit-name-modal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="edit-name-modal-label"
+            aria-hidden="true"
+            data-backdrop="false"
+        >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header coogModalHeader">
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+                </div>
+
+                <div class="modal-body coogModalBody">
+                    <div class="modalContainer">
+                        <div class="coogModalTitle">
+                            <h3 class="modal-title" id="editSongLabel">
+                                Edit User
+                            </h3>
+                        </div>
+                        <form id="edit-user" action="/edit-user" method="post">
+
+                            <div class="form-group">
+                                <input type="hidden" id="user-id" name="user_id" value = "">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="bold" id="role" for="role">New Role</label>
+                                <input type="text" class="form-control" name="role" placeholder="New Role" value = "" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="bold" id="handle" for="handle">New Handle</label>
+                                <input type="text" class="form-control" name="handle" placeholder="New Handle" value = "" required>
+                            </div>
+        
+                            <div class="modalButtons">
+                                <button type="submit" class="btn btn-primary modalButton createUserButton">
+                                    Save
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary modalButton cancelButton"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Edit User Modal -->
 
     </main>
+
+    <script src="../public/js/modals.js"></script>
+
     <script>
-         $(window).on("load", function () {
-                $("#loading").hide();
-            });
+        $(window).on("load", function () {
+            $("#loading").hide();
+        });
+
+        $(function(){
+          $(".open-edit-name-modal").click(function(){
+             $('#user-id').val($(this).data('id'));
+             $("#edit-name-modal").modal("show");
+          });
+        });
     </script>
-    <script>src = "modals.ejs"</script>
 
 </body>
 

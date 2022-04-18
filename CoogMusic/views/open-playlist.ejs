@@ -82,6 +82,12 @@
               </a>
           </li>
           <li>
+            <a class="nav-link text-white" href="/my-favorites">
+              <i class="fa fa-heart"></i>
+              &nbsp;&nbsp;My Favorites
+            </a>
+          </li>
+          <li>
             <a class="nav-link text-white" href="/my-playlists">
               <i class="fa fa-list"></i>
               &nbsp;&nbsp;Playlists
@@ -103,7 +109,7 @@
         <%let full_length = (JSON.parse(data).length == 0 ? length_prettify(0) : length_prettify(JSON.parse(data)[0].full_length));%>
           <tr>
             <th scope="col" colspan="1">
-                <% if (user == pl_creator) { %>
+                <% if (user == pl_creator && is_private == 0) { %>
                     <button 
                         class="btn btn-outline-light btn-sm btn-circle" 
                         data-toggle="modal"
@@ -112,7 +118,8 @@
                     </button>
                 <% } %>
             </th>
-            <th class="text-center bold" scope="col" colspan="3"><%=pl_name%></th>
+            <%var name = (is_private == 1) ? "My Favorites" : pl_name%>
+            <th class="text-center bold" scope="col" colspan="3"><%=name%></th>
             <th scope="col" colspan="1"><%=JSON.parse(data).length%> Track(s)</th>
             <th scope="col" colspan="1"><%=full_length%></th>
           </tr>
@@ -127,7 +134,6 @@
         </thead>
 
         <tbody>
-          <% console.log(data); %>
           <% if(data.length!=0){ JSON.parse(data).forEach(function(track, ind){ 
           let form_id = "remove-" + track.playlist_ID; %>
               <tr>
@@ -154,6 +160,7 @@
                         <input type="hidden" name="song_id" value="<%=track.song_id%>">
                         <input type="hidden" name="playlist_name" value="<%=track.playlist_name%>">
                         <input type="hidden" name="playlist_creator" value="<%=pl_creator%>">
+                        <input type="hidden" name="is_private" value="<%=is_private%>">
                         <button type="submit" class="btn btn-outline-danger btn-circle">
                             <i class="fa fa-minus"></i>
                         </button>

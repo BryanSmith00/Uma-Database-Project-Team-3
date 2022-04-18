@@ -178,13 +178,12 @@ app.get("/my-favorites", function (req, res, next) {
         var sql = `SELECT * FROM(track, contains_tracks, user, playlist)
                     WHERE(playlist_playlist_ID = user.personal_playlist_ID
                           && playlist_ID=playlist_playlist_ID
-                          && user.username=\"${req.user[0].username}\"
+                          && username=\"${req.user[0].username}\"
                           && track_song_id=song_id)
                     ORDER BY created_at`;
 
         connection.query(sql, function (error, results, fields) {
             if (error) throw error;
-            console.log(results)
             res.render("open-playlist", {
                 pl_name: "My Favorites",
                 pl_creator: req.user[0].username,
@@ -535,7 +534,6 @@ app.post("/my-playlists", (req, res, next) => {
 });
 
 app.post("/add-to-playlist", (req, res, next) => {
-  console.log(req.body)
     var playlist_id = req.body.playlist_id;
     var song_id = req.body.song_id;
 

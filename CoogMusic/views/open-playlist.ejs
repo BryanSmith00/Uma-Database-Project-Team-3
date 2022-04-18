@@ -76,10 +76,17 @@
                         </a>
                     </li>
                     <li>
+                        <% if (is_private == 1) { %>
+                        <a class="nav-link text-white active" href="/my-favorites">
+                            <i class="fa fa-heart"></i>
+                            &nbsp;&nbsp;My Favorites
+                        </a>
+                        <% } else { %>
                         <a class="nav-link text-white" href="/my-favorites">
                             <i class="fa fa-heart"></i>
                             &nbsp;&nbsp;My Favorites
                         </a>
+                        <% } %>                        
                     </li>
                     <li>
                         <a class="nav-link text-white" href="/my-playlists">

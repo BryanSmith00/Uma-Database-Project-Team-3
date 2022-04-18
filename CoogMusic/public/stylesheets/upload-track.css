@@ -17,7 +17,9 @@ h3 {
     height: 40em;
     margin: 3.125rem auto 0 auto;
 }
-
+input[type="file"] {
+    display: none;
+}
 form {
     display: block;
     position: relative;
@@ -30,7 +32,7 @@ form {
     text-align: left;
     background-color: black;
     color: white;
-    border-radius: 3px;
+    border-radius: 20px;
 }
 
 .form-group {
@@ -52,11 +54,21 @@ form {
     font-family: inherit;
     box-sizing: border-box;
 }
-
+.form-control-file{
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 15px;
+    background-color: #fff;
+    color: #000
+}
+.form-control-file:hover{
+    background-color: #bab6b7;
+}
 label {
     display: flex;
     align-items: center;
     line-height: 2.4rem;
+    padding: 5px;
 }
 
 input,
@@ -88,7 +100,7 @@ button {
 }
 
 button:hover {
-    background-color: rgb(47, 144, 84);
+    background-color: #821523;
 }
 
 .input-submit {
@@ -100,7 +112,7 @@ button:hover {
     box-sizing: border-box;
     font-weight: 700;
     border-radius: 50px;
-    background-color: rgb(54, 175, 101);
+    background-color: #c21f35;
     color: white;
 }
 #loading {

@@ -123,6 +123,7 @@
               <tr>
                 <td>
                     <form id="<%=personal_pl_id%>" action="/add-to-playlist" method="post">
+                        <input type="hidden" name="song_id" value="<%= track.song_id %> "/>
                         <input type="hidden" name="playlist_id" value="<%=personal_pl_id%>">
                         <button type="submit" class="btn btn-outline-danger btn-circle">
                             <i class="fa fa-heart"></i>
@@ -239,7 +240,7 @@
                                             id="cover"
                                         />
                                     </div>
-                                    <div>
+                                    <div class="controls">
                                         <button id="prev" class="action-btn">
                                             <i class="fas fa-backward"></i>
                                         </button>
@@ -451,6 +452,7 @@
                 get_sec_d(duration);
 
                 // change duration DOM
+
                 durTime.innerHTML = min_d + ":" + sec_d;
             }
 

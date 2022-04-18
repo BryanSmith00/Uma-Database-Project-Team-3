@@ -18,6 +18,16 @@ editUserModal.addEventListener('show.bs.modal', function (event) {
 
 })
 
+var usersDetailsModal = document.getElementById('usersDetailsModal')
+usersDetailsModal.addEventListener('show.bs.modal', function (event) {
+  
+  var button = event.relatedTarget
+  
+  var modalTitle = usersDetailsModal.querySelector('.modal-title')
+  var modalBodyInput = usersDetailsModal.querySelector('.modal-body input')
+
+})
+
 
 
 

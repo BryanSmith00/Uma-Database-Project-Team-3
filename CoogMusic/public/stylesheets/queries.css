@@ -1,12 +1,12 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Arimo', sans-serif;
     width: 100vw;
     height: 100vh;
     padding: 0;
     margin: 0;
     background-color: #e5e5e5;
     overflow-x: hidden;
-  }
+}
 
 #sidebarMenu {
     background-color: black;
@@ -17,10 +17,13 @@ body {
     bottom: 0;
     left: 0;
     font-size: 18px;
+    z-index: 999;
 }
 
-h2 {
+h3 {
     font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
 }
 
 .nav-link:hover {
@@ -38,10 +41,13 @@ h2 {
 }
 
 main {
-    width: 80%;
+    width: 100%;
+    height: 100%;
     position: relative;
-    float: left;
-    left: 30%;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
 }
 
 .table-buttons {
@@ -66,10 +72,6 @@ main {
     background-color: white;
 }
 
-.song-table{
-    margin-top: 163px;
-}
-
 
 thead{
     background-color: rgb(41, 41, 41);
@@ -85,24 +87,6 @@ td{
     box-shadow: none !important;
 }
 
-
-.create-user-menu {
-    margin-top: 100px;
-    margin-bottom: 20px;
-}
-
-.create-user-button {
-    width: 160px;
-    background-color: #13b47b;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.create-user-button:hover{
-    background-color: #109365;
-    color: white;
-}
 
 .coogModals {
     font-family: 'Arimo', sans-serif;
@@ -145,12 +129,17 @@ td{
 }
 
 .submit-button {
+    width: 200px;
     background-color: #13b47b;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
     margin-bottom: 10px;
 }
 
 .submit-button:hover {
     background-color: #109365;
+    color: white;
 }
 
 .cancelButton,
@@ -180,15 +169,15 @@ td{
 .form-group {
     display: block;
     width: 100%;
-    margin: 0 auto 1rem auto;
+    margin: 0 auto 2rem auto;
     box-sizing: border-box;
-    line-height: 1rem;
+    line-height: 0.5rem;
 }
 
 label {
     display: flex;
     align-items: center;
-    line-height: 2.2rem;
+    line-height: 1rem;
 }
 
 select {
@@ -229,4 +218,24 @@ select {
     left: 50vw;
     width: 3.5rem;
     z-index: 100;
+}
+
+.container{
+    position: relative;
+    background-color: #bfbfbf;
+    float: left;
+    left: 180px;
+    width: 40em;
+    height: 30em;
+}
+
+.form-buttons{
+    display: block;
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    box-sizing: border-box;
+}
+
+.form-queries{
+    padding: 40px;
 }

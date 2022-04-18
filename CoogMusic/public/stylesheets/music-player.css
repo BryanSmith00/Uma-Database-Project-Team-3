@@ -3,14 +3,13 @@
 * {
     box-sizing: border-box;
 }
-/* 
+
 .player-header{
   display: flex;
   position: fixed;
   background-color: black;
-  height: 100vh;
-  min-height: 25rem;
-  width: 100%;
+  width: 800px;
+  height: 550px;
   overflow: hidden;
 }
 
@@ -18,16 +17,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
+  height: 100%;
   z-index: 0;
   -ms-transform: translateX(-50%) translateY(-50%);
   -moz-transform: translateX(-50%) translateY(-50%);
   -webkit-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
 }
+
 
 .player-header .player-overlay {
   position: absolute;
@@ -38,11 +35,11 @@
   background-image: linear-gradient(black, rgba(49, 3, 3, 0.8),rgba(65, 5, 5, 0.8));
   opacity: 0.5;
   z-index: 1;
-} */
+} 
 
 .music-container {
     display: flex;
-    position: relative;
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;

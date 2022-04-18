@@ -36,7 +36,7 @@
                 </li>
                 <li><a class="nav-link text-white" href="/songs">Songs</a></li>
                 <li><a class="nav-link text-white" href="/admin-playlist">Playlists</a></li>
-                <li><a class="nav-link text-white" href="/queries">Run Queries</a></li>
+                <li><a class="nav-link text-white" href="/queries">More</a></li>
                 <li><a class="nav-link text-white" href="/Logout">Log out</a></li>
             </ul>
         </div>
@@ -51,7 +51,7 @@
             </button>
         </div>
 
-        <!-- Create user -->
+        <!-- Create user modal -->
         <div class="modal coogModals" id="createUserModal" tabindex="-1" aria-labelledby="createUserLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <!-- Edit User-->
+        <!-- Edit User modal-->
         <div class="modal" id="editUserModal" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -224,11 +224,12 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         
 
         <!-- Users table-->
-        <table class="table table-striped table-borderless">
+        <table class="table border table-borderless table-striped table-hover">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -263,7 +264,7 @@
                             <button type="button" data-bs-toggle="modal" data-bs-target="#editUserModal"
                             class="btn query-button text-white table-buttons">Edit</button>
                             <button type="button" data-bs-toggle="modal" data-bs-target="#userDetailsModal"
-                            class="btn btn-warning text-white table-buttons">Details</button>
+                            class="btn btn-warning text-white table-buttons">Info</button>
                             <button type="button" data-bs-toggle="modal" data-bs-target="#deleteUserModal"
                             class="btn btn-danger table-buttons">Delete</button>
                             </div>

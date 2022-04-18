@@ -6,11 +6,11 @@ body {
     height: 100vh;
     padding: 0;
     margin: 0;
-    background-color: #191A1F;
+    background-color: #dedede;
     overflow-x: hidden;
-  }
-  
-  #sidebarMenu {
+}
+
+#sidebarMenu {
     background-color: black;
     padding: 10px;
     width: 300px;
@@ -19,25 +19,20 @@ body {
     bottom: 0;
     left: 0;
     font-size: 18px;
-  }
-  
-  h2 {
+}
+
+h2 {
     font-weight: bold;
-  }
-  
-  .nav-link:hover {
+}
+
+.nav-link:hover {
     background-color: rgb(27, 27, 27);
-  }
-  
-  .logo {
+}
+
+.logo {
     width: 90px;
     height: 90px;
-  }
-  
-  .nav-link:active,
-  .active {
-    background-color: rgb(124, 121, 121) !important;
-  }
+}
 
 .nav-link:active,
 .active {
@@ -46,59 +41,47 @@ body {
 
 main {
     width: 80%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
     position: relative;
     float: left;
     left: 30%;
-  }
-  
-  .listener-table{
-    margin-top: 100px;
-    margin-bottom: 100px;
-  }
-  
-  .table-menu {
-    display: flex;
-    justify-content: space-between;
-    width: 900px;
-    margin-top: 105px;
-    padding: 10px;
-    border: 1px solid rgb(226, 224, 224);
-    background-color: whitesmoke;
-  }
-  
-  .table-buttons {
-    border-radius: 25px;
+}
+
+.table-buttons {
     border: none;
     font-weight: bold;
-  
-  }
-  
-  .query-button {
-    background-image: linear-gradient(60deg, #43bbf3, #3a7ec7);
-  }
-  
-  .table {
+    width: 80px;
+}
+
+.table {
     width: 900px;
-    background-color: white;
-    margin-top: 100px;
     margin-bottom: 100px;
     text-align: center;
-  }
+    background-color: white;
+}
 
-.btn:focus{
+.song-table{
+    margin-top: 172px;
+}
+
+
+thead{
+    background-color: rgb(41, 41, 41);
+    color: white;
+}
+
+  
+.btn:focus {
     box-shadow: none;
 }
 
-.create-user-menu{
+
+.create-user-menu {
+    margin-top: 100px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
-.create-user-button{
+.create-user-button {
     display: flex;
     flex-direction: row;
     justify-items: center;
@@ -108,12 +91,12 @@ main {
     justify-content: flex-start;
 }
 
-.create-user-title{
+.create-user-title {
     font-size: 18px;
     margin-left: 10px;
 }
 
-.create-user-img{
+.create-user-img {
     width: 40px;
     height: 40px;
 }
@@ -122,42 +105,25 @@ main {
     background-image: linear-gradient(60deg, #43bbf3, #3a7ec7);
 }
 
-.songs-table{
-    margin-top: 70px;
-}
 
-thead {
-    background-color: rgb(41, 41, 41);
-    color: white;
-}
-
-.modal-table {
-    width: 100%;
-    background-color: rgb(41, 41, 41);
-    color: white;
-}
-
-.coogModals{
+.coogModals {
     font-family: 'Arimo', sans-serif;
     box-sizing: border-box;
 }
 
-.coogModalHeader{
-    background-color: rgb(41, 41, 41);
-    color: white;
+.coogModalHeader {
+    background-color: #eaeaea;
     border-bottom: none;
 }
 
-.coogModalTitle{
+.coogModalTitle {
     display: flex;
     justify-content: center;
     font-weight: 700 !important;
     margin-bottom: 15px;
-    
-    
 }
 
-.modalButton{
+.modalButton {
     width: 100%;
     border: none;
     height: 50px;
@@ -165,47 +131,40 @@ thead {
     font-size: 18px;
 }
 
-.coogModalBody{
-    height: 520px;
-    background-color: rgb(41, 41, 41);
-    color: white;
-    padding: 0 1rem 0 1rem
+.coogModalBody {
+    height: 600px;
+    background-color: #eaeaea;
+    padding: 0 1rem 0 1rem;
+
 }
 
-.coogModalFooter{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 35px;
-    background-color: rgb(41, 41, 41);
-    color: white;
-}
-
-.modalContainer{
+.modalContainer {
     padding: 0 20px 0 20px;
 }
 
-.modalButtons{
+.modalButtons {
     margin-top: 50px;
 }
 
-.createUserButton{
+.createUserButton {
+    background-color: #0ab6a8;
     margin-bottom: 10px;
 }
 
-.createUserButton:hover{
+.createUserButton:hover {
     background-color: #018d81;
 }
 
-.cancelButton,.cancelButton:hover{
-    background-color: #edf1f4;
+.cancelButton,
+.cancelButton:hover {
+    background-color: #eaeaea;
     color: #0671E2;
 }
 
-.form-control{
+.form-control {
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none; 
+    appearance: none;
     width: 100%;
     resize: none;
     font-family: inherit;
@@ -234,11 +193,11 @@ label {
     line-height: 2.2rem;
 }
 
-select{
+select {
     line-height: 2.2rem;
 }
 
-#userType{
+#userType {
     width: 100%;
     background-color: transparent;
     border: 1px solid #a6bdb9;
@@ -254,9 +213,10 @@ select{
     position: relative;
 }
 
-.buttons-row{
+.buttons-row {
     display: flex;
     justify-content: space-around;
+    width: auto;
 }
 
 #loading {
@@ -279,10 +239,3 @@ select{
     width: 3.5rem;
     z-index: 100;
 }
-
-
-
-
-
-
-

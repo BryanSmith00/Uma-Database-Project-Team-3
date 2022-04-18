@@ -81,6 +81,12 @@
               </a>
           </li>
           <li>
+            <a class="nav-link text-white" href="/my-favorites">
+              <i class="fa fa-heart"></i>
+              &nbsp;&nbsp;My Favorites
+            </a>
+          </li>
+          <li>
             <a class="nav-link text-white" href="/my-playlists">
               <i class="fa fa-list"></i>
               &nbsp;&nbsp;Playlists
@@ -100,6 +106,7 @@
       <table class="table table-dark table-hover table-striped table-borderless listener-table">
         <thead>
           <tr>
+            <th scope="col"></th>
             <th scope="col">Track Name</th>
             <th scope="col">Artist</th>
             <th scope="col">Length (minutes)</th>
@@ -113,9 +120,15 @@
         <tbody>
           <% if(data.length!=0){ JSON.parse(data).forEach(function(track, ind){ %>
           <%let form_id = "add-to-playlist-" + track.song_id;%>
-          <form id="<%=form_id%>" action="/add-to-playlist" method="post">
-              <input type="hidden" name="song_id" value="<%=track.song_id%>">
               <tr>
+                <td>
+                    <form id="<%=personal_pl_id%>" action="/add-to-playlist" method="post">
+                        <input type="hidden" name="playlist_id" value="<%=personal_pl_id%>">
+                        <button type="submit" class="btn btn-outline-danger btn-circle">
+                            <i class="fa fa-heart"></i>
+                        </button>
+                    </form>
+                </td>
                 <td><%=track.song_name%></td>
                 <td><%=track.published_by%></td>
                 <td><%=length_prettify(track.length)%></td>
@@ -133,15 +146,26 @@
                   </button>
                 </td>
                 <td>
-                    <select name="playlist_id" class="form-select" required>
-                        <option value="" selected>Add to playlist...</option>
+                    <form id="<%=form_id%>" action="/add-to-playlist" method="post">
+                        <input type="hidden" name="song_id" value="<%=track.song_id%>">
+                        <select name="playlist_id" 
+                        class="form-select"
+                        style="background-color: #292b2c;
+                        color: #f7f7f7;" 
+                        required>
+                            <option value="" selected>Add to playlist...</option>
                                 
-                        <% 
-                        pl_data.forEach(function(playlist){ 
-                        %>
-                        <option value="<%=playlist.playlist_id%>"><%=playlist.playlist_name%></option>
-                        <% }); %>
-                    </select>
+                            <% 
+                            pl_data.forEach(function(playlist){ 
+                            if (!playlist.is_private) {
+                            %>
+                            <option 
+                                value="<%=playlist.playlist_id%>">
+                                    <%=playlist.playlist_name%>
+                            </option>
+                            <% }}); %>
+                        </select>
+                    </form>
                 </td>
                 <td>
                     <button type="submit" class="btn btn-outline-success btn-circle" form="<%=form_id%>">
@@ -149,7 +173,6 @@
                     </button>
                 </td>
               </tr>
-            </form>
           <% });} %>
           
         </tbody>

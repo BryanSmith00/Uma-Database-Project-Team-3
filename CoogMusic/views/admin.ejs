@@ -74,43 +74,45 @@
                             <div class="modalContainer">
                                 <div class="coogModalTitle"><h4 class="modal-title" id="createUserLabel">Create new user</h4></div>
                                 <form id="createUserForm" action="/create-user" method="POST">
+                                    
+                                    <div class="form-group">
+
+                                        <label for="user_type">Choose User Type</label>
+    
+                                        <div className="select">
+                                            <select id="user_type">
+                                                <option value="" disabled selected>Select Type</option>
+                                                <option value="2">Admin</option>
+                                                <option value="1">Musician</option>
+                                                <option value="0">Listener</option>
+                                            </select>
+                                            <span className="focus"></span>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <label class="bold" id="handle" for="handle">Handle</label>
                                         <input type="text" id="handle" placeholder="Handle"
                                         name="handle" autofocus="autofocus" onfocus="" class="form-control" required>
                                     </div>
 
-                                <div class="form-group">
-                                    <label class="bold" id="username" for="username">Username</label>
-                                    <input type="username" id="username" placeholder="Your Username" name="username"
-                                        class="form-control" required>
-                                </div>
-
-                                <div class="form-group">
-
-                                    <label for="user_type">Choose User Type</label>
-
-                                    <div className="select">
-                                        <select id="user_type">
-                                            <option value="" disabled selected>Select Type</option>
-                                            <option value="2">Admin</option>
-                                            <option value="1">Musician</option>
-                                            <option value="0">Listener</option>
-                                        </select>
-                                        <span className="focus"></span>
+                                    <div class="form-group">
+                                        <label class="bold" id="username" for="username">Username</label>
+                                        <input type="username" id="username" placeholder="Your Username" name="username"
+                                            class="form-control" required>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="bold" id="password" for="password">Password</label>
-                                    <input type="password" id="password" placeholder="Password" name="password"
-                                        class="form-control" required>
-                                </div>
-                                <div class="modalButtons">
-                                    <button type="submit" class="btn btn-primary modalButton createUserButton">Create</button>
-                                    <button type="button" class="btn btn-secondary modalButton cancelButton"
-                                    data-bs-dismiss="modal">Cancel</button>
-                                </div>  
+                                    <div class="form-group">
+                                        <label class="bold" id="password" for="password">Password</label>
+                                        <input type="password" id="password" placeholder="Password" name="password"
+                                            class="form-control" required>
+                                    </div>
+
+                                    <div class="modalButtons">
+                                        <button type="submit" class="btn btn-primary modalButton createUserButton">Create</button>
+                                        <button type="button" class="btn btn-secondary modalButton cancelButton"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    </div>  
 
                             </form>
                         </div>

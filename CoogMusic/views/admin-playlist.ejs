@@ -44,45 +44,33 @@
                 <hr />
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/admin">Users</a>
+                        <a class="nav-link text-white" aria-current="page" href="/admin">Users</a>
                     </li>
                     <li>
                         <a class="nav-link text-white" href="/songs">Songs</a>
                     </li>
                     <li>
-                        <a
-                            class="nav-link text-white active"
-                            aria-current="page"
-                            href="/admin-playlist"
-                            >Playlists</a
-                        >
+                        <a class="nav-link text-white active" href="/admin-playlist">Playlists</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/queries"
-                            >Run Queries</a
-                        >
+                        <a class="nav-link text-white" href="/queries">Queries</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/Logout"
-                            >Log out</a
-                        >
+                        <a class="nav-link text-white" href="/Logout">Log out</a>
                     </li>
                 </ul>
             </div>
         </header>
 
         <main>
-            <!-- Playlist Library -->
-            <table class="table table-dark table-hover table-striped table-borderless listener-table">
-                <caption>
-                    Playlist Library
-                </caption>
+            <!-- Songs table -->
+            <table class="table table-dark table-hover table-striped table-borderless song-table">
                 <thead>
                     <tr>
                         <th scope="col">Playlist Name</th>
                         <th scope="col">Playlist Creator</th>
                         <th scope="col">Length</th>
-                        <th scope="col"></th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>

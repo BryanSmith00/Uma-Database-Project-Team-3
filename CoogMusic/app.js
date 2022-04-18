@@ -257,7 +257,7 @@ app.get("/songs", function (req, res) {
 
     if (req.isAuthenticated() && req.user[0].user_type === 2) {
         var sql =
-            "SELECT song_id, song_name, published_by, date_added, number_of_plays FROM track;";
+            "SELECT song_id, song_name, published_by, length, date_added, number_of_plays FROM track;";
 
         connection.query(`${sql}`, function (error, results) {
             if (error) throw error;
@@ -481,7 +481,6 @@ app.post("/runquery", (req, res, next) => {
 });
 
 app.post("/my-playlists", (req, res, next) => {
-    //console.log(req.user);
     var playlist_name = req.body.playlistname;
     var user_username = req.user[0].username;
 
@@ -496,7 +495,6 @@ app.post("/my-playlists", (req, res, next) => {
 });
 
 app.post("/add-to-playlist", (req, res, next) => {
-    //console.log(req.body);
     var playlist_id = req.body.playlist_id;
     var song_id = req.body.song_id;
 
@@ -535,7 +533,6 @@ app.post("/delete-song", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
     });
 
     res.redirect("/musician-tracks");
@@ -548,10 +545,21 @@ app.post("/delete-song-admin", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
     });
 
     res.redirect("songs");
+});
+
+app.post("/delete-user", (req, res, next) => {
+    var user_id = req.body.user_id;
+
+    let sql = `DELETE FROM user WHERE user_id = ${user_id}`;
+
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+    });
+
+    res.redirect("admin");
 });
 
 app.post("/open-playlist", function (req, res, next) {
@@ -678,7 +686,6 @@ app.post("/edit-song", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
     });
 
     res.redirect("/musician-tracks");
@@ -696,10 +703,43 @@ app.post("/edit-song-admin", (req, res, next) => {
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results.message);
     });
 
     res.redirect("songs");
+});
+
+app.post("/edit-user", (req, res, next) => {
+    var user_id = req.body.user_id;
+    var user_type = req.body.role;
+    var handle = req.body.handle;
+
+    let sql = `UPDATE user
+               SET user_type = \"${user_type}\", handle = \"${handle}\"
+               WHERE user_id = ${user_id}`;
+
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+    });
+
+    res.redirect("admin");
+});
+
+app.post("/create-user", (req, res, next) => {
+    var handle = req.body.handle;
+    var username = req.body.username;
+    var user_type = req.body.user_type;
+    var password = req.body.password;
+
+    let sql = `INSERT INTO user
+                (handle, username, user_type, pass)
+                VALUES (\"${handle}\", \"${username}\", \"${parseInt(user_type)}\", \"${password}\")`;
+
+    connection.query(sql, function (error, results) {
+        if (error) throw error;
+        console.log(results);
+    });
+
+    res.redirect("admin");
 });
 
 //--------------Server--------------//

@@ -1,14 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Arimo&family=Lato:wght@700;400&family=PT+Sans+Narrow&display=swap');
-
 body {
     font-family: Arial, Helvetica, sans-serif;
     width: 100vw;
     height: 100vh;
     padding: 0;
     margin: 0;
-    background-color: #dedede;
+    background-color: #191A1F;
     overflow-x: hidden;
-}
+  }
 
 #sidebarMenu {
     background-color: black;
@@ -112,7 +110,8 @@ thead{
 }
 
 .coogModalHeader {
-    background-color: #eaeaea;
+    background-color: rgb(41, 41, 41);
+    color: white;
     border-bottom: none;
 }
 
@@ -132,9 +131,10 @@ thead{
 }
 
 .coogModalBody {
-    height: 600px;
-    background-color: #eaeaea;
-    padding: 0 1rem 0 1rem;
+    height: auto;
+    background-color: rgb(41, 41, 41);
+    color: white;
+    padding: 0 1rem 3rem 1rem;
 
 }
 

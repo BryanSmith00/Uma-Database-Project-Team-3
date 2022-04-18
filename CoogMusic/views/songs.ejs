@@ -1,6 +1,23 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
+    <%
+    function pad2(n) {
+        return n.length == 2 ? n : "0" + n;
+    }
+
+    function length_prettify(song_len) {
+        var hour = Math.floor(song_len / 60).toString();
+
+        var min = Math.floor(song_len % 60).toString();
+        min = (hour === "0") ? min : pad2(min);
+
+        var sec = pad2(Math.floor(((song_len - Math.floor(song_len)) * 60)).toString());
+
+        return hour === "0" ? `${min}:${sec}` : `${hour}:${min}:${sec}`;
+    }
+  %>
+
     <head>
         <meta charset="UTF-8" />
         <title>Songs</title>
@@ -42,45 +59,28 @@
         <%- include('loading') %>
         <header>
             <div id="sidebarMenu" class="d-flex flex-column text-white">
-                <div
-                    class="d-flex align-items-center justify-content-around flex-column"
-                >
+                <div class="d-flex align-items-center justify-content-around flex-column">
                     <a href="/" class="logo">
-                        <img
-                            class="logo"
-                            src="../public/images/coogMusic.png"
-                            alt="Coog Music logo"
-                        />
+                        <img class="logo" src="../public/images/coogMusic.png" alt="Coog Music logo"/>
                     </a>
                     <h2>Admin</h2>
                 </div>
-                <hr />
+                <hr/>
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a
-                            class="nav-link text-white"
-                            aria-current="page"
-                            href="/admin"
-                            >Users</a
-                        >
+                        <a class="nav-link text-white" aria-current="page" href="/admin">Users</a>
                     </li>
                     <li>
                         <a class="nav-link text-white active" href="/songs">Songs</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/admin-playlist"
-                            >Playlists</a
-                        >
+                        <a class="nav-link text-white" href="/admin-playlist">Playlists</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/queries"
-                            >Run Reports</a
-                        >
+                        <a class="nav-link text-white" href="/queries">Queries</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/Logout"
-                            >Log out</a
-                        >
+                        <a class="nav-link text-white" href="/Logout">Log out</a>
                     </li>
                 </ul>
             </div>
@@ -88,12 +88,13 @@
 
         <main>
             <!-- Songs table -->
-            <table class="table table-hover table-striped table-borderless song-table">
+            <table class="table table-dark table-hover table-striped table-borderless song-table">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Title</th>
                         <th scope="col">Artist</th>
+                        <th scope="col">Length</th>
                         <th scope="col">Number of plays</th>
                         <th scope="col">Release Date</th>
                         <th scope="col">Action</th>
@@ -106,13 +107,14 @@
                         <td><%=track.song_id%></td>
                         <td><%=track.song_name%></td>
                         <td><%=track.published_by%></td>
+                        <td><%=length_prettify(track.length)%></td>
                         <td><%=track.number_of_plays%></td>
                         <td><%=track.date_added%></td>
                         <td>
                             <div class="buttons-row">
                                 <button
                                     type="submit"
-                                    class="btn query-button text-white table-buttons open-edit-name-modal"
+                                    class="btn btn-outline-primary open-edit-name-modal"
                                     data-toggle="modal"
                                     data-target="#edit-name-modal"
                                     data-id="<%=track.song_id%>"
@@ -132,7 +134,7 @@
                                 />
                                 <button
                                     type="submit"
-                                    class="btn btn-danger table-buttons btn-circle"
+                                    class="btn btn-outline-danger"
                                 >
                                 Delete
                                 </button>
@@ -147,72 +149,70 @@
 
             <!-- Edit Song Modal -->
             <div
-            class="modal fade"
-            id="edit-name-modal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="edit-name-modal-label"
-            aria-hidden="true"
-            data-backdrop="false"
-          >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header coogModalHeader">
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                    ></button>
-                </div>
+                class="modal fade"
+                id="edit-name-modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="edit-name-modal-label"
+                aria-hidden="true"
+                data-backdrop="false"
+            >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header coogModalHeader">
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                        ></button>
+                    </div>
 
-                <div class="modal-body coogModalBody">
-                    <div class="modalContainer">
-                        <div class="coogModalTitle">
-                            <h3 class="modal-title" id="editSongLabel">
-                                Edit Song
-                            </h3>
+                    <div class="modal-body coogModalBody">
+                        <div class="modalContainer">
+                            <div class="coogModalTitle">
+                                <h3 class="modal-title" id="editSongLabel">
+                                    Edit Song
+                                </h3>
+                            </div>
+                            <form id="edit-playlist" action="/edit-song-admin" method="post">
+
+                                <div class="form-group">
+                                    <input type="hidden" id="track-id" name="track_id" value = "">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="bold" id="track_name" for="track_name">New title</label>
+                                    <input type="text" class="form-control" name="track_name" placeholder="New title" value = "" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="bold" id="number_of_plays" for="number_of_plays">New number of plays</label>
+                                    <input type="text" class="form-control" name="number_of_plays" placeholder="New number of plays" value = "" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="bold" id="date_added" for="date_added">New release date</label>
+                                    <input type="text" class="form-control" name="date_added" placeholder="New release date" value = "" required>
+                                </div>
+            
+                                <div class="modalButtons">
+                                    <button type="submit" class="btn btn-primary modalButton createUserButton">
+                                        Save
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary modalButton cancelButton"
+                                        data-bs-dismiss="modal"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <form id="edit-playlist" action="/edit-song-admin" method="post">
-
-                            <div class="form-group">
-                                <input type="hidden" id="track-id" name="track_id" value = "">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="bold" id="track_name" for="track_name">New title</label>
-                                <input type="text" class="form-control" name="track_name" placeholder="New title" value = "" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="bold" id="number_of_plays" for="number_of_plays">New number of plays</label>
-                                <input type="text" class="form-control" name="number_of_plays" placeholder="New number of plays" value = "" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="bold" id="date_added" for="date_added">New release date</label>
-                                <input type="text" class="form-control" name="date_added" placeholder="New release date" value = "" required>
-                            </div>
-        
-                            <div class="modalButtons">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary modalButton createUserButton"
-                                >
-                                    Save
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary modalButton cancelButton"
-                                    data-bs-dismiss="modal"
-                                >
-                                    Cancel
-                                </button>
-        
-                          </form>
                     </div>
                 </div>
             </div>
-        </div>
+            <!-- /Edit User Modal -->
 
         </main>
 

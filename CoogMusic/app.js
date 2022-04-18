@@ -92,17 +92,26 @@ app.get("/listener", function (req, res, next) {
   res.statusCode = 200;
 
   if (req.isAuthenticated() && req.user[0].user_type === 0) {
-    var sql1 = `SELECT playlist_id, playlist_name FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
+    var sql1 = `SELECT playlist_id, playlist_name, is_private 
+                FROM playlist WHERE user_username=\'${req.session.passport.user}\' 
+                ORDER BY created_at`;
 
     var sql2 = "SELECT * FROM track";
 
     connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
-      if (error) throw error;
-      res.render("listener", {
-        data: JSON.stringify(results[1]),
-        pl_data: results[0],
-        user: req.session.passport.user,
-      }
+
+        if (error) throw error;
+        var personal_pl_id;
+        results[0].forEach(function (playlist) {
+            if (playlist.is_private === 1) personal_pl_id = playlist.playlist_id;
+        });
+
+        res.render("listener", {
+            personal_pl_id: personal_pl_id,
+            data: JSON.stringify(results[1]),
+            pl_data: results[0],
+            user: req.session.passport.user,
+        }
       );
     });
   } else {
@@ -140,10 +149,14 @@ app.get("/addtrack", (req, res, next) => {
 app.get("/my-playlists", function (req, res, next) {
     res.statusCode = 200;
 
-    if (req.isAuthenticated() && req.user[0].user_type === 0) {
-        var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\' ORDER BY created_at`;
 
-        var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
+  if (req.isAuthenticated() && req.user[0].user_type === 0) {
+      var sql1 = `SELECT * FROM playlist 
+                  WHERE user_username=\'${req.session.passport.user}\' && is_private=0
+                  ORDER BY created_at`;
+
+      var sql2 = `SELECT * FROM playlist 
+                  WHERE NOT user_username=\'${req.session.passport.user}\' && is_private=0`;
 
         connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
             if (error) throw error;
@@ -151,6 +164,34 @@ app.get("/my-playlists", function (req, res, next) {
             res.render("playlist", {
                 my_pls: results[0],
                 other_pls: results[1],
+                user: req.session.passport.user,
+            });
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/my-favorites", function (req, res, next) {
+    res.statusCode = 200;
+
+    if (req.isAuthenticated() && req.user[0].user_type === 0) {
+        var sql = `SELECT * FROM(track, contains_tracks, user, playlist)
+                    WHERE(playlist_playlist_ID = user.personal_playlist_ID
+                          && playlist_ID=playlist_playlist_ID
+                          && user.username=\"${req.user[0].username}\"
+                          && track_song_id=song_id)
+                    ORDER BY created_at`;
+
+        connection.query(sql, function (error, results, fields) {
+            if (error) throw error;
+
+            res.render("open-playlist", {
+                pl_name: "My Favorites",
+                pl_creator: req.user[0].username,
+                pl_id: req.user[0].personal_playlist_ID,
+                is_private: 1,
+                data: JSON.stringify(results),
                 user: req.session.passport.user,
             });
         });
@@ -581,6 +622,7 @@ app.post("/open-playlist", function (req, res, next) {
                 pl_name: playlist_name,
                 pl_creator: playlist_creator,
                 pl_id: playlist_id,
+                is_private: 0,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
             });
@@ -596,6 +638,7 @@ app.post("/remove-from-playlist", function (req, res, next) {
         var playlist_name = req.body.playlist_name;
         var playlist_creator = req.body.playlist_creator;
         var song_id = req.body.song_id;
+        var is_private = req.body.is_private;
 
         var sql1 = `DELETE FROM contains_tracks
                    WHERE (playlist_playlist_ID = \"${playlist_id}\"
@@ -618,6 +661,7 @@ app.post("/remove-from-playlist", function (req, res, next) {
                 pl_name: playlist_name,
                 pl_creator: playlist_creator,
                 pl_id: playlist_id,
+                is_private: is_private,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
             });
@@ -650,6 +694,7 @@ app.post("/edit-playlist", function (req, res, next) {
                 pl_name: playlist_name,
                 pl_creator: playlist_creator,
                 pl_id: playlist_id,
+                is_private: 0,
                 data: JSON.stringify(results[1]),
                 user: req.session.passport.user,
             });

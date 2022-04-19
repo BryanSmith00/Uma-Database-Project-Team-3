@@ -1,3 +1,4 @@
+
 /* BASIC ACCOUNTS */
 
 INSERT INTO user (
@@ -13,6 +14,10 @@ VALUES (
 'Admin',
 'Admin'
 );
+
+UPDATE user
+	SET user_id = 0
+    WHERE username = 'Admin';
 
 INSERT INTO user (
 user_id,
@@ -151,7 +156,7 @@ handle )
 VALUES (
 0,
 '"&&2(Jw3d^xL-C3a',
-'redwoodracoon',
+'redwoodraccoon',
 'Mia'
 );
 
@@ -215,6 +220,7 @@ VALUES (
 'Michael'
 );
 
+
 INSERT INTO user (
 user_type,
 pass,
@@ -238,6 +244,7 @@ VALUES (
 'auburnbear',
 'Jennifer'
 );
+SET foreign_key_checks = 0;
 
 INSERT INTO user (
 user_type,
@@ -249,4 +256,16 @@ VALUES (
 'bRZ_v5G\sw-B/2%j',
 'pinkpig',
 'Jacob'
+);
+
+INSERT INTO user (
+user_type,
+pass,
+handle,
+username )
+VALUES (
+0,
+'.XnJwZ6md&p((33Z',
+'Samantha',
+'skyblueshrew'
 );

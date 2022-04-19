@@ -6,11 +6,17 @@ const connection = require("./public/js/database");
 
 var app = express();
 const port = 3000;
+const process = require('process')
 const session = require("express-session");
 const file_upload = require("express-fileupload");
 const music_metadata = require("music-metadata");
 
-//---------------Session stup---------------//
+//---------------Session setup---------------//
+
+const isProd = process.env.NODE_ENV || 'development'
+const devRoute = "http://localhost:3000/"
+const prodRoute = "http://coogmusic.com/"
+const route = (isProd == 'development') ? devRoute : prodRoute
 
 app.set("trust proxy", 1); // trust first proxy
 app.set("view engine", "ejs");
@@ -111,6 +117,7 @@ app.get("/listener", function (req, res, next) {
             data: JSON.stringify(results[1]),
             pl_data: results[0],
             user: req.session.passport.user,
+            curr_route: (isProd == 'development') ? devRoute : prodRoute
         }
       );
     });
@@ -164,6 +171,7 @@ app.get("/my-playlists", function (req, res, next) {
                 my_pls: results[0],
                 other_pls: results[1],
                 user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
             });
         });
     } else {
@@ -192,6 +200,7 @@ app.get("/my-favorites", function (req, res, next) {
                 is_private: 1,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
             });
         });
     } else {
@@ -270,7 +279,7 @@ app.get("/queries", (req, res, next) => {
     if (req.isAuthenticated() && req.user[0].user_type === 2) {
         res.render("queries", { user_type: req.user[0].user_type });
     } else {
-        res.redirect("/");
+        res.redirect("/login");
     }
 });
 
@@ -291,7 +300,6 @@ app.get("/songs", function (req, res) {
         res.redirect("/login");
     }
 });
-
 
 app.get("/admin-playlist", function (req, res, next) {
     res.statusCode = 200;
@@ -314,6 +322,7 @@ app.get("/admin-playlist", function (req, res, next) {
         res.redirect("/login");
     }
 });
+
 app.get("/songReport", (req, res, next) => {
     if (req.isAuthenticated() && req.user[0].user_type === 2) {
         connection.query(
@@ -375,7 +384,7 @@ app.post("/addtrack", async (req, res, next) => {
     if (req.user[0].user_type !== 1 || !req.isAuthenticated())
         res.redirect('/');
     const mp3_file = req.files.trackfile;
-    
+   
     const mp3_path = `${__dirname}/music/${mp3_file.name}`;
     await mp3_file.mv(mp3_path);
     const duration_minutes = (
@@ -384,11 +393,11 @@ app.post("/addtrack", async (req, res, next) => {
     const cover_art = req.files.trackart;
 
     const sql = `INSERT INTO track (song_file, song_name, length, published_by${(cover_art) ? ", cover_art" : ""})
-    VALUES ("http://localhost:3000/music/${mp3_file.name}", 
+    VALUES ("${route + "music/" + mp3_file.name}", 
             "${req.body.trackname}", 
             ${duration_minutes}, 
             "${req.user[0].username}"
-            ${(cover_art) ?  `, "http://localhost:3000/cover_art/${cover_art.name}"` : ""} 
+            ${(cover_art) ?  `, "${route + "cover_art/" + cover_art.name}"` : ""} 
             );`;
     if(cover_art){
       const cover_art_path = `${__dirname}/cover_art/${cover_art.name}`;
@@ -491,20 +500,17 @@ app.post("/delete-playlist", (req, res, next) => {
     res.redirect("/my-playlists");
 });
 
-
-//Admin delete playlist
 app.post("/delete-playlist-admin", (req, res, next) => {
     var playlist_id = req.body.playlist_id;
 
-    let sql = `DELETE FROM playlist WHERE playlist_ID = \"${playlist_id}\"`;
+    let sql = `DELETE FROM playlist WHERE playlist_id = \"${playlist_id}\"`;
 
     connection.query(sql, function (error, results) {
-        if (error) throw (error);
+        if (error) throw error;
     });
 
-    res.redirect("/queries");
+    res.redirect("admin-playlist");
 });
-
 
 app.post("/delete-song", (req, res, next) => {
     var song_id = req.body.song_id;
@@ -564,6 +570,7 @@ app.post("/open-playlist", function (req, res, next) {
                 is_private: 0,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
             });
         });
     } else {

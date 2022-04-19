@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    <% function pad2(n) { return n.length == 2 ? n : "0" + n; } function
-    length_prettify(song_len) { var hour = Math.floor(song_len / 60).toString();
-    var min = Math.floor(song_len % 60).toString(); min = (hour === "0") ? min :
-    pad2(min); var sec = pad2(Math.floor(((song_len - Math.floor(song_len)) *
-    60)).toString()); return hour === "0" ? `${min}:${sec}` :
-    `${hour}:${min}:${sec}`; } %>
-
     <head>
         <meta charset="UTF-8" />
         <title>Coog Music</title>
@@ -108,10 +101,11 @@
             <table
                 class="table table-dark table-hover table-borderless listener-table"
             >
-                <thead class="coog-thead">
-                    <%let full_length = (JSON.parse(data).length == 0 ?
-                    length_prettify(0) :
-                    length_prettify(JSON.parse(data)[0].full_length));%>
+                <thead>
+                    <%let full_length = (JSON.parse(data).length == 0) ?
+                    "0m 0s" :
+                    parseInt(JSON.parse(data)[0].full_length) + "m " + parseInt(((JSON.parse(data)[0].full_length - parseInt(JSON.parse(data)[0].full_length))) * 60) + "s";
+                    %>
                     <tr>
                         <th scope="col" colspan="1">
                             <% if (user == pl_creator && is_private == 0) { %>
@@ -145,13 +139,13 @@
                 </thead>
 
                 <tbody>
-                    <% if(data.length!=0){
+                    <% if(JSON.parse(data).length!=0){
                     JSON.parse(data).forEach(function(track, ind){ let form_id =
                     "remove-" + track.playlist_ID; %>
                     <tr>
                         <td><%=track.song_name%></td>
                         <td><%=track.published_by%></td>
-                        <td><%=length_prettify(track.length)%></td>
+                        <td><%=parseInt(track.length)%>m <%=parseInt(((track.length - parseInt(track.length))) * 60) %>s </td>
                         <td><%=track.number_of_plays%></td>
                         <td>
                             <button
@@ -160,7 +154,7 @@
                                 onclick="play_selected(this.getAttribute('id'))"
                                 data-toggle="modal"
                                 data-target="#play-modal"
-                                id="song-<%= ind %>"
+                                id="song-<%= ind %>-<%= track.song_id%>"
                             >
                                 <i class="fas fa-play"></i>
                             </button>
@@ -207,7 +201,13 @@
                             <% } %>
                         </td>
                     </tr>
-                    <% });} %>
+                    <% });} else { %>
+                    <tr>
+                        <th scope="row" colspan="6" class="text-muted">
+                            This playlist is empty.
+                        </th>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
 
@@ -374,7 +374,7 @@
             $("#play-modal").draggable({ handle: ".modal-content" });
 
             const song_data = JSON.parse('<%- data %>');
-            //   const song_data = JSON.parse(data_string);
+            const route = '<%= curr_route %>'
 
             const musicContainer = document.getElementById("music-container");
             const playBtn = document.getElementById("play");
@@ -395,6 +395,7 @@
 
             const songs = [];
             const cover_art = [];
+            const plays = {}
 
             song_data.forEach((elm) => {
                 songs.push({
@@ -426,10 +427,13 @@
             }
             function play_selected(id) {
                 background_vid.play();
-                const song_number = parseInt(id.split("-")[1]);
+                const curr_song = id.split("-")
+                const song_number = parseInt(curr_song[1]);
+                const song_id = curr_song[2]
                 songIndex = song_number;
                 loadSong(songs[songIndex], cover_art[songIndex]);
                 playSong();
+                plays[song_id] = (song_id in plays) ? plays[song_id] + 1 : 1
             }
             // Play song
             function playSong() {
@@ -581,6 +585,17 @@
 
             // Time of song
             audio.addEventListener("timeupdate", DurTime);
+
+            window.addEventListener('beforeunload', async () => {
+                
+                fetch(route + "plays", {
+                  method: 'POST',
+                  body: JSON.stringify(plays),
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                })
+            })
         </script>
 
         <script

@@ -93,7 +93,7 @@
                         <td><%=playlist.full_length.toFixed(2)%></td>
                         <td>
                             <div class="buttons-row">
-                                <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
+                                <form id="<%=pl_form_id%>" action="/admin-open-playlist" method="post">
                                     <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
                                     <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
                                     <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">

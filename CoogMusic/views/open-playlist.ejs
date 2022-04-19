@@ -106,9 +106,9 @@
 
         <main>
             <table
-                class="table table-dark table-hover table-striped table-borderless listener-table"
+                class="table table-dark table-hover table-borderless listener-table"
             >
-                <thead>
+                <thead class="coog-thead">
                     <%let full_length = (JSON.parse(data).length == 0 ?
                     length_prettify(0) :
                     length_prettify(JSON.parse(data)[0].full_length));%>

@@ -4,7 +4,7 @@ body {
   height: 100vh;
   padding: 0;
   margin: 0;
-  background-color: #191A1F;
+  background-color: #212529;
   overflow-x: hidden;
 }
 
@@ -39,19 +39,28 @@ h2 {
 
 main {
   width: 80%;
-  height: auto;
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
-  align-items: flex-start;
-  position: relative;
+  align-items: center;
+  position: absolute;
   float: left;
-  left: 30%;
+  left: 20.8%;
 }
 
-.listener-table{
-  margin-top: 100px;
+.listener-table {
+  /* margin-top: 100px; */
   margin-bottom: 100px;
+}
+
+th{
+  position: sticky;
+  top: 0;
+}
+
+tr{
+  height: auto;
 }
 
 .table-menu {
@@ -76,10 +85,16 @@ main {
 }
 
 .table {
-  width: 900px;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  width: 99%;
+  top: 0;
+  bottom: 0;
+  margin-top: 20px;
   text-align: center;
+  vertical-align: center;
+  position: absolute;
+  /* float: left; */
+  right: 0;
+  left: 0;
 }
 
 .modal-table {
@@ -87,9 +102,19 @@ main {
   background-color: white;
 }
 
-thead {
-  background-color: rgb(41, 41, 41);
-  color: white;
+tbody{
+  color: rgb(214, 214, 214);
+}
+
+
+.playlists-library{
+  margin-top: 400px;
+}
+
+caption{
+  text-align: center;
+  margin-bottom: 15px;
+  color:rgb(199, 67, 67);
 }
 
 
@@ -129,11 +154,6 @@ thead {
   margin-top: 70px;
 }
 
-thead {
-  background-color: rgb(41, 41, 41);
-  color: white;
-}
-
 .modal-table {
   width: 100%;
   background-color: rgb(41, 41, 41);
@@ -156,7 +176,6 @@ thead {
   justify-content: center;
   font-weight: 700 !important;
   margin-bottom: 15px;
-  
   
 }
 

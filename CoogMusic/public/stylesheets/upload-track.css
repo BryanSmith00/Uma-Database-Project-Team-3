@@ -1,5 +1,5 @@
 body{
-    background-color: #191A1F;
+     background-color: #212529;
 }
 
 h3 {
@@ -17,14 +17,14 @@ h3 {
     height: 40em;
     margin: 3.125rem auto 0 auto;
 }
+
 input[type="file"] {
     display: none;
 }
+
 form {
     display: block;
     position: relative;
-    top: 15%;
-    right: 20%;
     margin: 0em;
     width: 100%;
     padding: 2.5rem;

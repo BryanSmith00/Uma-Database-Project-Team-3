@@ -702,11 +702,13 @@ app.post("/edit-song-admin", (req, res, next) => {
 
 app.post("/edit-user", (req, res, next) => {
     var user_id = req.body.user_id;
+    var username = req.body.username;
     var user_type = req.body.role;
     var handle = req.body.handle;
+    var pass = req.body.pass;
 
     let sql = `UPDATE user
-               SET user_type = \"${user_type}\", handle = \"${handle}\"
+               SET user_type = \"${user_type}\", handle = \"${handle}\", username = \"${username}\", pass = \"${pass}\"
                WHERE user_id = ${user_id}`;
 
     connection.query(sql, function (error, results) {
@@ -715,6 +717,29 @@ app.post("/edit-user", (req, res, next) => {
 
     res.redirect("admin");
 });
+
+
+//app.get("/user-details", (req, res, next) => {
+
+//     user_id = user.user_id;
+
+//     let sql = `SELECT * FROM user WHERE user_id = ${user_id}`;
+
+//     connection.query(`${sql}`, function (error, results) {
+//         if (error) throw error;
+//         var user_id;
+//         results[0].forEach(function (user) {
+//             user_id = user.user_id;
+//         });
+//     });
+
+//         res.render("admin", {
+//             details: results[0]
+//         }
+//     );
+// });
+
+
 
 app.post("/create-user", (req, res, next) => {
     var handle = req.body.handle;

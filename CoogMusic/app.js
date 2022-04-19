@@ -5,12 +5,16 @@ var usersRouter = require("./public/js/users");
 const connection = require("./public/js/database");
 
 var app = express();
+const process = require('process')
 const port = 3000;
 const session = require("express-session");
 const file_upload = require("express-fileupload");
 const music_metadata = require("music-metadata");
 
 //---------------Session stup---------------//
+const isProd = process.env.NODE_ENV || 'development'
+const devRoute = "http://localhost:3000/"
+const prodRoute = "http://coogmusic.com/"
 
 app.set("trust proxy", 1); // trust first proxy
 app.set("view engine", "ejs");
@@ -217,28 +221,6 @@ app.get("/notifications", function (req, res, next) {
     }
 });
 
-app.get("/admin-playlist", function (req, res, next) {
-    res.statusCode = 200;
-
-    if (req.isAuthenticated()) {
-        var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
-
-        var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
-
-        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
-            if (error) throw error;
-
-            res.render("admin-playlist", {
-                my_pls: results[0],
-                other_pls: results[1],
-                user: req.session.passport.user,
-            });
-        });
-    } else {
-        res.redirect("/login");
-    }
-});
-
 app.get("/music/:file_name", (req, res) => {
     res.sendFile(__dirname + `/music/${req.params.file_name}`);
 });
@@ -297,16 +279,13 @@ app.get("/admin-playlist", function (req, res, next) {
     res.statusCode = 200;
 
     if (req.isAuthenticated() && req.user[0].user_type === 2) {
-        var sql1 = `SELECT * FROM playlist WHERE user_username=\'${req.session.passport.user}\'`;
+        var sql = `SELECT * FROM playlist 
+                   WHERE is_private=0;`
 
-        var sql2 = `SELECT * FROM playlist WHERE NOT user_username=\'${req.session.passport.user}\'`;
-
-        connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+        connection.query(sql, function (error, results, fields) {
             if (error) throw error;
-
             res.render("admin-playlist", {
-                my_pls: results[0],
-                other_pls: results[1],
+                other_pls: results,
                 user: req.session.passport.user,
             });
         });
@@ -374,8 +353,9 @@ app.post(
 app.post("/addtrack", async (req, res, next) => {
     if (req.user[0].user_type !== 1 || !req.isAuthenticated())
         res.redirect('/');
+
+    const route = (isProd == 'development') ? devRoute : prodRoute
     const mp3_file = req.files.trackfile;
-    
     const mp3_path = `${__dirname}/music/${mp3_file.name}`;
     await mp3_file.mv(mp3_path);
     const duration_minutes = (
@@ -384,11 +364,11 @@ app.post("/addtrack", async (req, res, next) => {
     const cover_art = req.files.trackart;
 
     const sql = `INSERT INTO track (song_file, song_name, length, published_by${(cover_art) ? ", cover_art" : ""})
-    VALUES ("http://localhost:3000/music/${mp3_file.name}", 
+    VALUES ("${route + "music/" + mp3_file.name}", 
             "${req.body.trackname}", 
             ${duration_minutes}, 
             "${req.user[0].username}"
-            ${(cover_art) ?  `, "http://localhost:3000/cover_art/${cover_art.name}"` : ""} 
+            ${(cover_art) ?  `, "${route + "cover_art/" +  cover_art.name}"` : ""} 
             );`;
     if(cover_art){
       const cover_art_path = `${__dirname}/cover_art/${cover_art.name}`;

@@ -5,12 +5,16 @@ var usersRouter = require("./public/js/users");
 const connection = require("./public/js/database");
 
 var app = express();
+const process = require('process')
 const port = 3000;
 const session = require("express-session");
 const file_upload = require("express-fileupload");
 const music_metadata = require("music-metadata");
 
 //---------------Session stup---------------//
+const isProd = process.env.NODE_ENV || 'development'
+const devRoute = "http://localhost:3000/"
+const prodRoute = "http://coogmusic.com/"
 
 app.set("trust proxy", 1); // trust first proxy
 app.set("view engine", "ejs");
@@ -374,8 +378,9 @@ app.post(
 app.post("/addtrack", async (req, res, next) => {
     if (req.user[0].user_type !== 1 || !req.isAuthenticated())
         res.redirect('/');
+
+    const route = (isProd == 'development') ? devRoute : prodRoute
     const mp3_file = req.files.trackfile;
-    
     const mp3_path = `${__dirname}/music/${mp3_file.name}`;
     await mp3_file.mv(mp3_path);
     const duration_minutes = (
@@ -384,11 +389,11 @@ app.post("/addtrack", async (req, res, next) => {
     const cover_art = req.files.trackart;
 
     const sql = `INSERT INTO track (song_file, song_name, length, published_by${(cover_art) ? ", cover_art" : ""})
-    VALUES ("http://localhost:3000/music/${mp3_file.name}", 
+    VALUES ("${route + "music/" + mp3_file.name}", 
             "${req.body.trackname}", 
             ${duration_minutes}, 
             "${req.user[0].username}"
-            ${(cover_art) ?  `, "http://localhost:3000/cover_art/${cover_art.name}"` : ""} 
+            ${(cover_art) ?  `, "${route + "cover_art/" +  cover_art.name}"` : ""} 
             );`;
     if(cover_art){
       const cover_art_path = `${__dirname}/cover_art/${cover_art.name}`;

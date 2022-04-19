@@ -544,6 +544,7 @@ app.post("/delete-playlist-admin", (req, res, next) => {
     res.redirect("admin-playlist");
 });
 
+
 app.post("/delete-song", (req, res, next) => {
     var song_id = req.body.song_id;
 
@@ -596,6 +597,37 @@ app.post("/open-playlist", function (req, res, next) {
         connection.query(sql, function (error, results, fields) {
             if (error) throw error;
             res.render("open-playlist", {
+                pl_name: playlist_name,
+                pl_creator: playlist_creator,
+                pl_id: playlist_id,
+                is_private: 0,
+                data: JSON.stringify(results),
+                user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
+            });
+        });
+    } else {
+        res.redirect("/login");
+    }
+});
+
+//admin open playlist
+app.post("/admin-open-playlist", function (req, res, next) {
+    if (req.isAuthenticated()) {
+        var playlist_id = req.body.playlist_id;
+        var playlist_name = req.body.playlist_name;
+        var playlist_creator = req.body.playlist_creator;
+
+        var sql = `SELECT * FROM(track, contains_tracks, playlist)
+                   WHERE(
+                        playlist_ID = \"${playlist_id}\"
+                        && playlist_ID = contains_tracks.playlist_playlist_ID
+                        && track.song_id = contains_tracks.track_song_id
+                        )`;
+
+        connection.query(sql, function (error, results, fields) {
+            if (error) throw error;
+            res.render("admin-open-playlist", {
                 pl_name: playlist_name,
                 pl_creator: playlist_creator,
                 pl_id: playlist_id,

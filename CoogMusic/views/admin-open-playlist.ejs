@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Coog Music</title>
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="../public/images/favicon.ico"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
+        />
+        
+        <link rel="stylesheet" href="../public/stylesheets/admin.css" />
+        <link rel="stylesheet" href="../public/stylesheets/music-player.css" />
+        <link
+            rel="stylesheet"
+            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"
+        />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    </head>
+
+    <body>
+        <%- include('loading') %> 
+        <header>
+    
+            <!-- Sidebar -->
+            <div id="sidebarMenu" class="d-flex flex-column text-white">
+                <div class=" d-flex align-items-center justify-content-around flex-column">
+                    <a href="/" class="logo">
+                        <img class="logo" src="../public/images/coogMusic.png" alt="Coog Music logo">
+                    </a>
+                    <h2>Hello, Admin</h2>
+                </div>
+                <hr>
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" href="/admin"><i class="fa fa-users"></i>
+                            &nbsp;&nbsp;Users</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="/songs"><i class="fa fa-music"></i>
+                            &nbsp;&nbsp;Songs</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="/admin-playlist"><i class="fa fa-bars"></i>
+                            &nbsp;&nbsp;Playlists</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="/queries"><i class="fa fa-ellipsis-h"></i>
+                            &nbsp;&nbsp;Queries</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" href="/Logout"><i class="fa fa-arrow-left"></i>
+                            &nbsp;&nbsp;Log out</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </header>
+
+        <main>
+            <table
+                class="table table-hover table-borderless listener-table caption-top"
+            >
+                <caption class="admin-caption"> 
+                    Playlists
+                </caption>
+                <thead>
+                    <%let full_length = (JSON.parse(data).length == 0) ?
+                    "0m 0s" :
+                    parseInt(JSON.parse(data)[0].full_length) + "m " + parseInt(((JSON.parse(data)[0].full_length - parseInt(JSON.parse(data)[0].full_length))) * 60) + "s";
+                    %>
+                    <tr>
+                        <th scope="col" colspan="1">
+                            <% if (user == pl_creator && is_private == 0) { %>
+                            <button
+                                class="btn btn-outline-light btn-sm btn-circle"
+                                data-toggle="modal"
+                                data-target="#edit-name-modal"
+                            >
+                                <i class="fa fa-pen"></i>
+                            </button>
+                            <% } %>
+                        </th>
+                        <%var name = (is_private == 1) ? "My Favorites" :
+                        pl_name%>
+                        <th class="text-center bold" scope="col" colspan="3">
+                            <%=name%>
+                        </th>
+                        <th scope="col" colspan="1">
+                            <%=JSON.parse(data).length%> Track(s)
+                        </th>
+                        <th scope="col" colspan="1"><%=full_length%></th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Track Name</th>
+                        <th scope="col">Artist</th>
+                        <th scope="col">Length</th>
+                        <th scope="col">Number of Plays</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% if(JSON.parse(data).length!=0){
+                    JSON.parse(data).forEach(function(track, ind){ let form_id =
+                    "remove-" + track.playlist_ID; %>
+                    <tr>
+                        <td><%=track.song_name%></td>
+                        <td><%=track.published_by%></td>
+                        <td><%=parseInt(track.length)%>m <%=parseInt(((track.length - parseInt(track.length))) * 60) %>s </td>
+                        <td><%=track.number_of_plays%></td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger btn-circle"
+                                onclick="play_selected(this.getAttribute('id'))"
+                                data-toggle="modal"
+                                data-target="#play-modal"
+                                id="song-<%= ind %>-<%= track.song_id%>"
+                            >
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <%if (user == track.user_username) {%>
+                            <form
+                                id="<%=form_id%>"
+                                action="/remove-from-playlist"
+                                method="post"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="playlist_id"
+                                    value="<%=track.playlist_ID%>"
+                                />
+                                <input
+                                    type="hidden"
+                                    name="song_id"
+                                    value="<%=track.song_id%>"
+                                />
+                                <input
+                                    type="hidden"
+                                    name="playlist_name"
+                                    value="<%=track.playlist_name%>"
+                                />
+                                <input
+                                    type="hidden"
+                                    name="playlist_creator"
+                                    value="<%=pl_creator%>"
+                                />
+                                <input
+                                    type="hidden"
+                                    name="is_private"
+                                    value="<%=is_private%>"
+                                />
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger btn-circle"
+                                >
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </form>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% });} else { %>
+                    <tr>
+                        <th scope="row" colspan="6" class="text-muted">
+                            This playlist is empty.
+                        </th>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+
+            <!-- EDIT MODAL -->
+
+            <div
+                class="modal fade"
+                id="edit-name-modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="edit-name-modal-label"
+                aria-hidden="true"
+                data-backdrop="false"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form
+                            id="edit-playlist"
+                            action="/edit-playlist"
+                            method="post"
+                        >
+                            <!-- Modal Body / Playlist Table -->
+                            <div class="modal-body">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="playlist_name"
+                                    placeholder="New playlist name..."
+                                    value=""
+                                    required
+                                />
+                                <input
+                                    type="hidden"
+                                    name="playlist_id"
+                                    value="<%=pl_id%>"
+                                />
+                                <input
+                                    type="hidden"
+                                    name="playlist_creator"
+                                    value="<%=pl_creator%>"
+                                />
+                            </div>
+
+                            <div class="modal-footer">
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-success btn-circle"
+                                >
+                                    <i class="fa fa-check"></i>
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-danger btn-circle"
+                                    data-dismiss="modal"
+                                >
+                                    <i class="fa fa-ban"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- END EDIT MODAL -->
+
+            <div
+                class="modal fade"
+                id="play-modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="play-modal"
+                aria-hidden="true"
+                data-backdrop="false"
+            >
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <header class="player-header">
+                            <div class="player-overlay"></div>
+                            <video
+                                id="background"
+                                autoplay="autoplay"
+                                loop="loop"
+                                style="
+                                    width: 100%;
+                                    height: auto;
+                                    margin: 0 auto;
+                                "
+                            >
+                                <source
+                                    src="../public/videos/player-header.mp4"
+                                    type="video/mp4"
+                                />
+                            </video>
+                        </header>
+                        <div class="modal-header">
+                            <button
+                                type="button"
+                                class="btn-close btn-close-white"
+                                onclick="pauseSong()"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body" style="height: 500px; color: white">
+                            <div class="music-container" id="music-container">
+                                <div class="music-info">
+                                    <h4 id="title"></h4>
+                                    <h5><em id="artist"></em></h5>
+                                    <div class="time">
+                                        <div id="currTime">0</div>
+                                        <div id="durTime">0</div>
+                                    </div>
+
+                                    <div
+                                        class="progress-container"
+                                        id="progress-container"
+                                    >
+                                        <div
+                                            class="progress"
+                                            id="progress"
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                <audio src="" id="audio"></audio>
+
+                                <div class="navigation">
+                                    <div class="img-container">
+                                        <img
+                                            class="cover"
+                                            src="/CoogMusic/public/images/song-cover.png"
+                                            alt="music-cover"
+                                            id="cover"
+                                        />
+                                    </div>
+                                    <div class="controls">
+                                        <button id="prev" class="action-btn">
+                                            <i class="fas fa-backward"></i>
+                                        </button>
+                                        <button
+                                            id="play"
+                                            class="action-btn action-btn-big"
+                                        >
+                                            <i class="fas fa-play"></i>
+                                        </button>
+                                        <button id="next" class="action-btn">
+                                            <i class="fas fa-forward"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script>
+            const background_vid = document.getElementById("background");
+
+            $(window).on("load", function () {
+                $("#loading").hide();
+            });
+
+            $("#play-modal").draggable({ handle: ".modal-content" });
+
+            const song_data = JSON.parse('<%- data %>');
+            const route = '<%= curr_route %>'
+
+            const musicContainer = document.getElementById("music-container");
+            const playBtn = document.getElementById("play");
+            const prevBtn = document.getElementById("prev");
+            const nextBtn = document.getElementById("next");
+
+            const audio = document.getElementById("audio");
+            const progress = document.getElementById("progress");
+            const progressContainer =
+                document.getElementById("progress-container");
+            const title = document.getElementById("title");
+            const artist = document.getElementById("artist");
+            const cover = document.getElementById("cover");
+            const currTime = document.querySelector("#currTime");
+            const durTime = document.querySelector("#durTime");
+            const default_img_path =
+                "http://localhost:3000/cover_art/default-cover.png";
+
+            const songs = [];
+            const cover_art = [];
+            const plays = {}
+
+            song_data.forEach((elm) => {
+                songs.push({
+                    file: elm.song_file,
+                    name: elm.song_name,
+                    artist: elm.published_by,
+                });
+                cover_art.push(elm.cover_art);
+            });
+            // Keep track of song, start at the first
+            let songIndex = 0;
+
+            // Initially load song details into DOM, cover is hard coded for now
+            loadSong(songs[songIndex], cover_art[songIndex]);
+
+            // Update song details, in dev rn
+            function loadSong(song, cover_art) {
+                title.innerText = song.name;
+                artist.innerText = song.artist;
+                audio.src = song.file;
+                cover.src =
+                    cover_art === "" ||
+                    cover_art === undefined ||
+                    cover_art === null ||
+                    cover_art ===
+                        "https://reptilesmagazine.com/wp-content/themes/magone/assets/images/default-thumbnail.png "
+                        ? default_img_path
+                        : cover_art;
+            }
+            function play_selected(id) {
+                background_vid.play();
+                const curr_song = id.split("-")
+                const song_number = parseInt(curr_song[1]);
+                const song_id = curr_song[2]
+                songIndex = song_number;
+                loadSong(songs[songIndex], cover_art[songIndex]);
+                playSong();
+                plays[song_id] = (song_id in plays) ? plays[song_id] + 1 : 1
+            }
+            // Play song
+            function playSong() {
+                musicContainer.classList.add("play");
+                playBtn.querySelector("i.fas").classList.remove("fa-play");
+                playBtn.querySelector("i.fas").classList.add("fa-pause");
+
+                audio.play();
+            }
+
+            // Pause song
+            function pauseSong() {
+                musicContainer.classList.remove("play");
+                playBtn.querySelector("i.fas").classList.add("fa-play");
+                playBtn.querySelector("i.fas").classList.remove("fa-pause");
+
+                audio.pause();
+            }
+
+            // Previous song
+            function prevSong() {
+                songIndex--;
+
+                if (songIndex < 0) {
+                    songIndex = songs.length - 1;
+                }
+
+                loadSong(songs[songIndex], cover_art[songIndex]);
+
+                playSong();
+            }
+
+            // Next song
+            function nextSong() {
+                songIndex++;
+
+                if (songIndex > songs.length - 1) {
+                    songIndex = 0;
+                }
+
+                loadSong(songs[songIndex], cover_art[songIndex]);
+
+                playSong();
+            }
+
+            // Update progress bar
+            function updateProgress(e) {
+                const { duration, currentTime } = e.srcElement;
+                const progressPercent = (currentTime / duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+            }
+
+            // Set progress bar
+            function setProgress(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+
+                audio.currentTime = (clickX / width) * duration;
+            }
+
+            //get duration & currentTime for Time of song
+            function DurTime(e) {
+                const { duration, currentTime } = e.srcElement;
+                var sec;
+                var sec_d;
+
+                // define minutes currentTime
+                let min =
+                    currentTime == null ? 0 : Math.floor(currentTime / 60);
+                min = min < 10 ? "0" + min : min;
+
+                // define seconds currentTime
+                function get_sec(x) {
+                    if (Math.floor(x) >= 60) {
+                        for (var i = 1; i <= 60; i++) {
+                            if (
+                                Math.floor(x) >= 60 * i &&
+                                Math.floor(x) < 60 * (i + 1)
+                            ) {
+                                sec = Math.floor(x) - 60 * i;
+                                sec = sec < 10 ? "0" + sec : sec;
+                            }
+                        }
+                    } else {
+                        sec = Math.floor(x);
+                        sec = sec < 10 ? "0" + sec : sec;
+                    }
+                }
+
+                get_sec(currentTime, sec);
+
+                // change currentTime DOM
+                currTime.innerHTML = min + ":" + sec;
+
+                // define minutes duration
+                let min_d =
+                    isNaN(duration) === true ? "0" : Math.floor(duration / 60);
+                min_d = min_d < 10 ? "0" + min_d : min_d;
+
+                function get_sec_d(x) {
+                    if (Math.floor(x) >= 60) {
+                        for (var i = 1; i <= 60; i++) {
+                            if (
+                                Math.floor(x) >= 60 * i &&
+                                Math.floor(x) < 60 * (i + 1)
+                            ) {
+                                sec_d = Math.floor(x) - 60 * i;
+                                sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
+                            }
+                        }
+                    } else {
+                        sec_d = isNaN(duration) === true ? "0" : Math.floor(x);
+                        sec_d = sec_d < 10 ? "0" + sec_d : sec_d;
+                    }
+                }
+
+                // define seconds duration
+
+                get_sec_d(duration);
+
+                // change duration DOM
+                durTime.innerHTML = min_d + ":" + sec_d;
+            }
+
+            // Event listeners
+            playBtn.addEventListener("click", () => {
+                const isPlaying = musicContainer.classList.contains("play");
+
+                if (isPlaying) {
+                    pauseSong();
+                } else {
+                    playSong();
+                }
+            });
+
+            // Change song
+            prevBtn.addEventListener("click", prevSong);
+            nextBtn.addEventListener("click", nextSong);
+
+            // Time/song update
+            audio.addEventListener("timeupdate", updateProgress);
+
+            // Click on progress bar
+            progressContainer.addEventListener("click", setProgress);
+
+            // Song ends
+            audio.addEventListener("ended", nextSong);
+
+            // Time of song
+            audio.addEventListener("timeupdate", DurTime);
+
+            window.addEventListener('beforeunload', async () => {
+                
+                fetch(route + "plays", {
+                  method: 'POST',
+                  body: JSON.stringify(plays),
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                })
+            })
+        </script>
+
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

@@ -54,7 +54,7 @@ main {
   margin-bottom: 100px;
 }
 
-th{
+thead{
   position: sticky;
   top: 0;
 }
@@ -92,9 +92,26 @@ tr{
   text-align: center;
   vertical-align: center;
   position: absolute;
-  /* float: left; */
+  /*float: left;*/
   right: 0;
   left: 0;
+}
+
+.half-table {
+    width: 50%;
+    top: 0;
+    bottom: 0;
+    text-align: center;
+    vertical-align: top;
+    position: relative;
+    float: left;
+    right: 0;
+    left: 0;
+}
+
+.playlist-container {
+    width: 100%;
+    height: 100%;
 }
 
 .modal-table {
@@ -106,10 +123,11 @@ tbody{
   color: rgb(214, 214, 214);
 }
 
-
+/*
 .playlists-library{
   margin-top: 400px;
 }
+*/
 
 caption{
   text-align: center;

@@ -60,6 +60,13 @@
 
     <main>
 
+        <p class="query-box"></p>
+        <div class="dark-box">
+            <p class="quero"><%= sql1 %></p>
+            <p class="quero"><%= sql2 %></p>
+            <p class="quero"><%= sql3 %></p><br>
+        </div>
+
         <!-- Playlist report table -->
         <table class="table table-hover table-striped table-borderless">
             <thead>
@@ -85,20 +92,14 @@
                     <td><%=playlist.user_username%></td>
                     <td><%=playlist.created_at%></td>
                     <td> 
-                        <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
-                            <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
-                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
-                            <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
-                            <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success">
-                                Open
-                            </button>
-                        </form>
-                        <form id="<%=pl_form_id%>" action="/delete-playlist-admin" method="post">
-                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
-                            <button type="submit" class="btn btn-outline-danger btn-circle">
-                                <i class="fa fa-minus"></i>
-                            </button>
-                        </form>
+                        <div>
+                            <form id="<%=pl_form_id%>" action="/delete-playlist-admin" method="post">
+                                <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                                <button type="submit" class="btn btn-outline-danger btn-circle">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 <% });} else { %>

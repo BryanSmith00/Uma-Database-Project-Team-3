@@ -61,7 +61,7 @@
     <main>
 
         <!-- Playlist report table -->
-        <table class="table table-hover table-striped table-borderless">
+        <table class="table table-hover table-striped table-borderless playlist-table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -85,20 +85,22 @@
                     <td><%=playlist.user_username%></td>
                     <td><%=playlist.created_at%></td>
                     <td> 
+                        <div class="buttons-row">
                         <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
                             <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
                             <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
                             <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
-                            <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success">
+                            <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success open-button">
                                 Open
                             </button>
                         </form>
                         <form id="<%=pl_form_id%>" action="/delete-playlist-admin" method="post">
-                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
-                            <button type="submit" class="btn btn-outline-danger btn-circle">
-                                <i class="fa fa-minus"></i>
+                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>"> 
+                            <button type="submit" class="btn btn-outline-danger delete">
+                                Delete
                             </button>
                         </form>
+                    </div>
                     </td>
                 </tr>
                 <% });} else { %>

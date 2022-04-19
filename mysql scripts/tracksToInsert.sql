@@ -1,3 +1,4 @@
+
 INSERT INTO track (
 song_file,
 song_name,
@@ -117,3 +118,45 @@ VALUES (
 1.50,
 'aquamarineelephant'
 );
+
+/*
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/ukulele.jpg'
+WHERE song_name = 'Ukulele';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/epic.jpg'
+WHERE song_name = 'Epic';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/slowmotion.jpg'
+WHERE song_name = 'Slow Motion';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/scifi.jpg'
+WHERE song_name = 'Sci-Fi';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/dreams.jpg'
+WHERE song_name = 'Dreams';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/sweet.jpg'
+WHERE song_name = 'Sweet';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/newdawn.jpg'
+WHERE song_name = 'New Dawn';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/groovyhiphop.jpg'
+WHERE song_name = 'Groovy Hip-Hop';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/highoctane.jpg'
+WHERE song_name = 'High Octane';
+
+UPDATE track
+SET cover_art = 'https://www.bensound.com/bensound-img/pianomoment.jpg'
+WHERE song_name = 'Piano Moment';
+*/

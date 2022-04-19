@@ -59,6 +59,27 @@ main {
     color: #DD3444;
 }
 
+.open-button:hover{
+    background-color: #d7efe6;
+    color:#109365;
+}
+
+.delete, .open-button, .open-edit-name-modal{
+    width: 100px;
+}
+
+
+.admin-caption{
+    color: #191a1f;
+}
+
+.truncate {
+    width: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
 .table {
     width: 900px;
     margin-bottom: 100px;
@@ -66,7 +87,7 @@ main {
     background-color: white;
 }
 
-.song-table{
+.song-table, .playlist-table{
     margin-top: 163px;
 }
 
@@ -238,4 +259,11 @@ select {
 
 .query-box {
     padding: 20px 0px 0px 0px;
+}
+
+.dark-box{
+    background-color: #a6bdb9;
+    border: 2px, solid, grey;
+    padding: 20px;
+    width: 900px;
 }

@@ -59,15 +59,19 @@
     </header>
 
     <main>
-        <p class="query-box"></p>
+        <p class="query-box">SQL Query</p>
         <div class="dark-box">
             <p class="quero"><%= sql1 %></p>
             <p class="quero"><%= sql2 %></p>
             <p class="quero"><%= sql3 %></p><br>
         </div>
 
-        <!-- Playlist report table -->
-        <table class="table table-hover table-striped table-borderless">
+        
+         <!-- Users report table -->
+         <table class="table table-hover table-striped table-borderless playlist-table caption-top">
+            <caption class="admin-caption">
+                Users
+            </caption>
             <thead>
                 <tr>
                     <th scope="col">User ID</th>
@@ -91,8 +95,8 @@
                     <td> 
                         <form id="<%=pl_form_id%>" action="/delete-user" method="post">
                             <input type="hidden" name="user_id" value="<%=user.user_id%>">
-                            <button type="submit" class="btn btn-outline-danger btn-circle">
-                                <i class="fa fa-minus"></i>
+                            <button type="submit" class="btn btn-outline-danger delete">
+                                <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
                             </button>
                         </form>
                     </td>

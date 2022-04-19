@@ -154,7 +154,7 @@
                                 onclick="play_selected(this.getAttribute('id'))"
                                 data-toggle="modal"
                                 data-target="#play-modal"
-                                id="song-<%= ind %>"
+                                id="song-<%= ind %>-<%= track.song_id%>"
                             >
                                 <i class="fas fa-play"></i>
                             </button>
@@ -374,7 +374,7 @@
             $("#play-modal").draggable({ handle: ".modal-content" });
 
             const song_data = JSON.parse('<%- data %>');
-            //   const song_data = JSON.parse(data_string);
+            const route = '<%= curr_route %>'
 
             const musicContainer = document.getElementById("music-container");
             const playBtn = document.getElementById("play");
@@ -395,6 +395,7 @@
 
             const songs = [];
             const cover_art = [];
+            const plays = {}
 
             song_data.forEach((elm) => {
                 songs.push({
@@ -426,10 +427,13 @@
             }
             function play_selected(id) {
                 background_vid.play();
-                const song_number = parseInt(id.split("-")[1]);
+                const curr_song = id.split("-")
+                const song_number = parseInt(curr_song[1]);
+                const song_id = curr_song[2]
                 songIndex = song_number;
                 loadSong(songs[songIndex], cover_art[songIndex]);
                 playSong();
+                plays[song_id] = (song_id in plays) ? plays[song_id] + 1 : 1
             }
             // Play song
             function playSong() {
@@ -581,6 +585,17 @@
 
             // Time of song
             audio.addEventListener("timeupdate", DurTime);
+
+            window.addEventListener('beforeunload', async () => {
+                
+                fetch(route + "plays", {
+                  method: 'POST',
+                  body: JSON.stringify(plays),
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                })
+            })
         </script>
 
         <script

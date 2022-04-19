@@ -115,6 +115,7 @@ app.get("/listener", function (req, res, next) {
             data: JSON.stringify(results[1]),
             pl_data: results[0],
             user: req.session.passport.user,
+            curr_route: (isProd == 'development') ? devRoute : prodRoute
         }
       );
     });
@@ -168,6 +169,7 @@ app.get("/my-playlists", function (req, res, next) {
                 my_pls: results[0],
                 other_pls: results[1],
                 user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
             });
         });
     } else {
@@ -196,6 +198,7 @@ app.get("/my-favorites", function (req, res, next) {
                 is_private: 1,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
             });
         });
     } else {
@@ -566,6 +569,7 @@ app.post("/open-playlist", function (req, res, next) {
                 is_private: 0,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
             });
         });
     } else {

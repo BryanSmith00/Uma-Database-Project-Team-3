@@ -260,3 +260,10 @@ select {
 .query-box {
     padding: 20px 0px 0px 0px;
 }
+
+.dark-box{
+    background-color: #a6bdb9;
+    border: 2px, solid, grey;
+    padding: 20px;
+    width: 900px;
+}

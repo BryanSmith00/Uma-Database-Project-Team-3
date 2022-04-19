@@ -35,7 +35,7 @@
             <hr>
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-white active" aria-current="page" href="/admin"><i class="fa fa-users"></i>
+                    <a class="nav-link text-white active" href="/admin"><i class="fa fa-users"></i>
                         &nbsp;&nbsp;Users</a>
                 </li>
                 <li>
@@ -43,14 +43,19 @@
                         &nbsp;&nbsp;Songs</a>
                 </li>
                 <li>
+                    <a class="nav-link text-white" href="/admin-playlist"><i class="fa fa-bars"></i>
+                        &nbsp;&nbsp;Playlists</a>
+                </li>
+                <li>
                     <a class="nav-link text-white" href="/queries"><i class="fa fa-ellipsis-h"></i>
-                        &nbsp;&nbsp;More</a>
+                        &nbsp;&nbsp;Queries</a>
                 </li>
                 <li>
                     <a class="nav-link text-white" href="/Logout"><i class="fa fa-arrow-left"></i>
                         &nbsp;&nbsp;Log out</a>
                 </li>
             </ul>
+            
         </div>
     </header>
 
@@ -150,7 +155,7 @@
                             <%=user.user_type%>
                         </td>
                         <td>
-                            @<%=user.username%>
+                            <%=user.username%>
                         </td>
                         <td>
                             <%=user.handle%>
@@ -162,7 +167,7 @@
                             <div class="buttons-row">
                                 <button
                                     type="submit"
-                                    class="btn btn-outline-primary table-buttons details open-edit-name-modal"
+                                    class="btn btn-outline-primary open-edit-name-modal"
                                     data-toggle="modal"
                                     data-target="#edit-name-modal"
                                     data-id="<%=user.user_id%>"
@@ -181,7 +186,7 @@
                                 />
                                 <button
                                     type="submit"
-                                    class="btn btn-outline-danger table-buttons delete"
+                                    class="btn btn-outline-danger delete"
                                 ><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
                                 </button>
                             </form>

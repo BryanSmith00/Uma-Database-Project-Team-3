@@ -270,7 +270,7 @@ app.get("/queries", (req, res, next) => {
     if (req.isAuthenticated() && req.user[0].user_type === 2) {
         res.render("queries", { user_type: req.user[0].user_type });
     } else {
-        res.redirect("/");
+        res.redirect("/login");
     }
 });
 
@@ -491,20 +491,17 @@ app.post("/delete-playlist", (req, res, next) => {
     res.redirect("/my-playlists");
 });
 
-
-//Admin delete playlist
 app.post("/delete-playlist-admin", (req, res, next) => {
     var playlist_id = req.body.playlist_id;
 
-    let sql = `DELETE FROM playlist WHERE playlist_ID = \"${playlist_id}\"`;
+    let sql = `DELETE FROM playlist WHERE playlist_id = \"${playlist_id}\"`;
 
     connection.query(sql, function (error, results) {
-        if (error) throw (error);
+        if (error) throw error;
     });
 
-    res.redirect("/queries");
+    res.redirect("admin-playlist");
 });
-
 
 app.post("/delete-song", (req, res, next) => {
     var song_id = req.body.song_id;

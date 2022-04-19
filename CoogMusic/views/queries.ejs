@@ -21,35 +21,45 @@
 
 <body>
     <%- include('loading') %>
-        <header>
-            <div id="sidebarMenu" class="d-flex flex-column text-white">
-                <div class="d-flex align-items-center justify-content-around flex-column">
-                    <a href="/" class="logo">
-                        <img class="logo" src="../public/images/coogMusic.png" alt="Coog Music logo" />
-                    </a>
-                    <h2>Hello, Admin</h2>
-                </div>
-                <hr />
-                <ul class="nav nav-pills flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" aria-current="page" href="/admin"><i class="fa fa-users"></i>
-                            &nbsp;&nbsp;Users</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-white" href="/songs"><i class="fa fa-music"></i>
-                            &nbsp;&nbsp;Songs</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-white active" href="/queries"><i class="fa fa-ellipsis-h"></i>
-                            &nbsp;&nbsp;More</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-white" href="/Logout"><i class="fa fa-arrow-left"></i>
-                            &nbsp;&nbsp;Log out</a>
-                    </li>
-                </ul>
+    <header>
+        <div id="sidebarMenu" class="d-flex flex-column text-white">
+            <div
+                class="d-flex align-items-center justify-content-around flex-column"
+            >
+                <a href="/" class="logo">
+                    <img
+                        class="logo"
+                        src="../public/images/coogMusic.png"
+                        alt="Coog Music logo"
+                    />
+                </a>
+                <h2>Hello, Admin</h2>
             </div>
-        </header>
+            <hr />
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin"><i class="fa fa-users"></i>
+                        &nbsp;&nbsp;Users</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white" href="/songs"><i class="fa fa-music"></i>
+                        &nbsp;&nbsp;Songs</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white" href="/admin-playlist"><i class="fa fa-bars"></i>
+                        &nbsp;&nbsp;Playlists</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white active" href="/queries"><i class="fa fa-ellipsis-h"></i>
+                        &nbsp;&nbsp;Queries</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white" href="/Logout"><i class="fa fa-arrow-left"></i>
+                        &nbsp;&nbsp;Log out</a>
+                </li>
+            </ul>
+        </div>
+    </header>
 
         <main>
             <div class="container">

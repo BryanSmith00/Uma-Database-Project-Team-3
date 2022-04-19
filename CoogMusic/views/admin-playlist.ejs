@@ -10,6 +10,8 @@
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"/>
+
         <script
             src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -39,24 +41,29 @@
                             alt="Coog Music logo"
                         />
                     </a>
-                    <h2><%=user%></h2>
+                    <h2>Hello, Admin</h2>
                 </div>
                 <hr />
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-white" aria-current="page" href="/admin">Users</a>
+                        <a class="nav-link text-white" href="/admin"><i class="fa fa-users"></i>
+                            &nbsp;&nbsp;Users</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/songs">Songs</a>
+                        <a class="nav-link text-white" href="/songs"><i class="fa fa-music"></i>
+                            &nbsp;&nbsp;Songs</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white active" href="/admin-playlist">Playlists</a>
+                        <a class="nav-link text-white active" href="/admin-playlist"><i class="fa fa-bars"></i>
+                            &nbsp;&nbsp;Playlists</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/queries">Queries</a>
+                        <a class="nav-link text-white" href="/queries"><i class="fa fa-ellipsis-h"></i>
+                            &nbsp;&nbsp;Queries</a>
                     </li>
                     <li>
-                        <a class="nav-link text-white" href="/Logout">Log out</a>
+                        <a class="nav-link text-white" href="/Logout"><i class="fa fa-arrow-left"></i>
+                            &nbsp;&nbsp;Log out</a>
                     </li>
                 </ul>
             </div>
@@ -70,7 +77,7 @@
                         <th scope="col">Playlist Name</th>
                         <th scope="col">Playlist Creator</th>
                         <th scope="col">Length</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,14 +89,33 @@
                         <td><%=playlist.user_username%></td>
                         <td><%=playlist.full_length.toFixed(2)%></td>
                         <td>
-                            <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
-                                <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
-                                <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
-                                <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
-                                <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success">
-                                    Open
+                            <div class="buttons-row">
+                                <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
+                                    <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
+                                    <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                                    <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
+                                    <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success">
+                                        Open
+                                    </button>
+                                </form>
+                                <form
+                                id="<%=pl_form_id%>"
+                                action="/delete-playlist-admin"
+                                method="post"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="playlist_id"
+                                    value="<%=playlist.playlist_ID%>"
+                                />
+                                <button
+                                    type="submit"
+                                    class="btn btn-outline-danger delete"
+                                ><i class="fa fa-trash"></i>&nbsp;&nbsp;
+                                Delete
                                 </button>
                             </form>
+                            </div> 
                         </td>
                     </tr>
                     <% });} else { %>

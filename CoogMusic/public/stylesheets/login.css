@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(41, 41, 41);
+}
+
 h3 {
     font-weight: 700;
     text-align: center;
@@ -86,7 +90,7 @@ button:hover {
     box-sizing: border-box;
     font-weight: 700;
     border-radius: 50px;
-    background-color: #c21f35;
+    background-color: #13b47b;
     color: white;
 }
 

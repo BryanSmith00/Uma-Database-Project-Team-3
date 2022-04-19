@@ -382,7 +382,7 @@ app.post(
 //Upload standalone track form route (w/out any validation)
 app.post("/addtrack", async (req, res, next) => {
     if (req.user[0].user_type !== 1 || !req.isAuthenticated())
-        res.redirect('/');
+        res.redirect('/login');
     const mp3_file = req.files.trackfile;
    
     const mp3_path = `${__dirname}/music/${mp3_file.name}`;
@@ -410,6 +410,7 @@ app.post("/addtrack", async (req, res, next) => {
         res.redirect("/musician-tracks");
     });
 });
+
 app.post("/plays", (req, _) => {
     const plays = req.body;
     const song_ids = Object.keys(plays);

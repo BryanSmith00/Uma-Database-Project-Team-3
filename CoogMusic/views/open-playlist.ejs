@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    <% function pad2(n) { return n.length == 2 ? n : "0" + n; } function
-    length_prettify(song_len) { var hour = Math.floor(song_len / 60).toString();
-    var min = Math.floor(song_len % 60).toString(); min = (hour === "0") ? min :
-    pad2(min); var sec = pad2(Math.floor(((song_len - Math.floor(song_len)) *
-    60)).toString()); return hour === "0" ? `${min}:${sec}` :
-    `${hour}:${min}:${sec}`; } %>
-
     <head>
         <meta charset="UTF-8" />
         <title>Coog Music</title>
@@ -109,9 +102,10 @@
                 class="table table-dark table-hover table-striped table-borderless listener-table"
             >
                 <thead>
-                    <%let full_length = (JSON.parse(data).length == 0 ?
-                    length_prettify(0) :
-                    length_prettify(JSON.parse(data)[0].full_length));%>
+                    <%let full_length = (JSON.parse(data).length == 0) ?
+                    "0m 0s" :
+                    parseInt(JSON.parse(data)[0].full_length) + "m " + parseInt(((JSON.parse(data)[0].full_length - parseInt(JSON.parse(data)[0].full_length))) * 60) + "s";
+                    %>
                     <tr>
                         <th scope="col" colspan="1">
                             <% if (user == pl_creator && is_private == 0) { %>
@@ -145,13 +139,13 @@
                 </thead>
 
                 <tbody>
-                    <% if(data.length!=0){
+                    <% if(JSON.parse(data).length!=0){
                     JSON.parse(data).forEach(function(track, ind){ let form_id =
                     "remove-" + track.playlist_ID; %>
                     <tr>
                         <td><%=track.song_name%></td>
                         <td><%=track.published_by%></td>
-                        <td><%=length_prettify(track.length)%></td>
+                        <td><%=parseInt(track.length)%>m <%=parseInt(((track.length - parseInt(track.length))) * 60) %>s </td>
                         <td><%=track.number_of_plays%></td>
                         <td>
                             <button
@@ -207,7 +201,13 @@
                             <% } %>
                         </td>
                     </tr>
-                    <% });} %>
+                    <% });} else { %>
+                    <tr>
+                        <th scope="row" colspan="6" class="text-muted">
+                            This playlist is empty.
+                        </th>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
 

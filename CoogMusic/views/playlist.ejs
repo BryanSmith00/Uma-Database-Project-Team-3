@@ -1,23 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <%
-    function pad2(n) {
-        return n.length == 2 ? n : "0" + n;
-    }
-
-    function length_prettify(song_len) {
-        var hour = Math.floor(song_len / 60).toString();
-
-        var min = Math.floor(song_len % 60).toString();
-        min = (hour === "0") ? min : pad2(min);
-
-        var sec = pad2(Math.floor(((song_len - Math.floor(song_len)) * 60)).toString());
-
-        return hour === "0" ? `${min}:${sec}` : `${hour}:${min}:${sec}`;
-    }
-  %>
-  
     <head>
         <meta charset="UTF-8" />
         <title>Playlists</title>
@@ -125,7 +107,7 @@
                         "delete-playlist-" + playlist.playlist_ID; %>
                         <tr>
                             <td><%=playlist.playlist_name%></td>
-                            <td><%=length_prettify(playlist.full_length)%></td>
+                            <td><%=parseInt(playlist.full_length)%>m <%=parseInt(((playlist.full_length - parseInt(playlist.full_length))) * 60) %>s</td>
                             <td>
                                 <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
                                     <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
@@ -147,7 +129,7 @@
                         </tr>
                         <% });} else { %>
                         <tr>
-                            <th scope="row" colspan="4">
+                            <th scope="row" colspan="4" class="text-muted">
                                 You have no playlists.
                             </th>
                         </tr>
@@ -206,7 +188,7 @@
                     <tr>
                         <td><%=playlist.playlist_name%></td>
                         <td><%=playlist.user_username%></td>
-                        <td><%=length_prettify(playlist.full_length)%></td>
+                        <td><%=parseInt(playlist.full_length)%>m <%=parseInt(((playlist.full_length - parseInt(playlist.full_length))) * 60) %>s</td>
                         <td>
                             <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
                                 <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">

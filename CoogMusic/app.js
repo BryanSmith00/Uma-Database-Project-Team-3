@@ -674,6 +674,7 @@ app.post("/remove-from-playlist", function (req, res, next) {
                 is_private: is_private,
                 data: JSON.stringify(results),
                 user: req.session.passport.user,
+                curr_route: route
             });
         });
     } else {
@@ -707,6 +708,7 @@ app.post("/edit-playlist", function (req, res, next) {
                 is_private: 0,
                 data: JSON.stringify(results[1]),
                 user: req.session.passport.user,
+                curr_route: (route)
             });
         });
     } else {

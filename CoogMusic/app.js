@@ -812,11 +812,10 @@ app.post("/create-user", (req, res, next) => {
 
     let sql = `INSERT INTO user
                 (handle, username, user_type, pass)
-                VALUES (\"${handle}\", \"${username}\", \"${parseInt(user_type)}\", \"${password}\")`;
+                VALUES (\"${handle}\", \"${username}\", ${parseInt(user_type)}, \"${password}\")`;
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
-        console.log(results);
     });
 
     res.redirect("admin");

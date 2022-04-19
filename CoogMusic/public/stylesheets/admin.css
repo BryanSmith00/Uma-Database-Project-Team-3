@@ -49,7 +49,7 @@ main {
     font-weight: bold;
 }
 
-.details:hover{
+.open-edit-name-modal:hover{
     background-color: #d5e4fc;
     color: #0b6efd;
 }

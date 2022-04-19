@@ -170,15 +170,13 @@
                                     class="btn btn-outline-primary open-edit-name-modal"
                                     data-toggle="modal"
                                     data-target="#edit-name-modal"
-                                    data-id="<%=user.user_id%>"
-                                >
+                                    data-id="<%=user.user_id%>">
                                 <i class="fa fa-pen"></i>&nbsp;&nbsp;Edit
                                 </button>
                                 <form
                                 id="<%=form_id%>"
                                 action="/delete-user"
-                                method="post"
-                            >
+                                method="post">
                                 <input
                                     type="hidden"
                                     name="user_id"
@@ -189,10 +187,10 @@
                                     class="btn btn-outline-danger delete"
                                 ><i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
                                 </button>
-                            </form>
-                            <!--<button type="submit" class="btn btn-outline-primary table-buttons open-users-details-modal" data-toggle="modal"
-                                data-target="#users-details-modal"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;EditDetails 1</button>
-                            </div>-->
+                                </form>
+                                <!-- <button type="submit" class="btn btn-outline-primary table-buttons open-users-details-modal" data-toggle="modal"
+                                data-target="#users-details-modal" id="user-details" data-id="<%=user.user_id%>"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Details 1</button>
+                                </div> -->
                         </td>
                     </tr>
                     <% });} %>
@@ -234,13 +232,23 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="bold" id="role" for="role">New Role</label>
-                                <input type="text" class="form-control" name="role" placeholder="New Role" value = "" required>
+                                <label class="bold" id="role" for="role">Role</label>
+                                <input type="text" class="form-control" name="role" placeholder="New Role" value = "" required >
                             </div>
 
                             <div class="form-group">
-                                <label class="bold" id="handle" for="handle">New Handle</label>
+                                <label class="bold" id="handle" for="handle">Handle</label>
                                 <input type="text" class="form-control" name="handle" placeholder="New Handle" value = "" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="bold" id="username" for="username">Username</label>
+                                <input type="text" class="form-control" name="username" placeholder="New Username" value = "" required >
+                            </div>
+
+                            <div class="form-group">
+                                <label class="bold" id="pass" for="pass">Password</label>
+                                <input type="text" class="form-control" name="pass" placeholder="New Password" value = "" required>
                             </div>
         
                             <div class="modalButtons">
@@ -260,60 +268,44 @@
                 </div>
             </div>
         </div>
-        <!-- /Edit User Modal -->
 
-        <!--  Users Details Modal
+         <!-- Users Details Modal
         <div
-            class="modal fade"
-            id="usersDetailsModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="users-details-modal-label"
+            class="modal fade coogModals" id="users-details-modal" tabindex="-1" role="dialog" aria-labelledby="users-details-modal-label"
             aria-hidden="true"
-            data-backdrop="false"
         >
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header coogModalHeader">
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                    ></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body coogModalBody">
                     <div class="modalContainer">
                         <div class="coogModalTitle">
-                            <h3 class="modal-title" id="editSongLabel">
-                                User
-                            </h3>
+                            <h3 class="modal-title" id="editSongLabel">User Details</h3>
                         </div>
-                        <form id="edit-user" action="/edit-user" method="post">
+                        <form id="user-details" action="/user-details" method="get">
 
                             <div class="form-group">
-                                <input type="hidden" id="user-id" name="user_id" value = "">
+                                <input type="" id="" name="" value = "">
                             </div>
 
                             <div class="form-group">
-                                <label class="bold" id="role" for="role">New Role</label>
-                                <input type="text" class="form-control" name="role" placeholder="New Role" value = "" required>
+                                <label class="" id="" for="">New Role</label>
+                                <input type="text" class="form-control" name="" placeholder="" value = "" required>
                             </div>
 
                             <div class="form-group">
-                                <label class="bold" id="handle" for="handle">New Handle</label>
-                                <input type="text" class="form-control" name="handle" placeholder="New Handle" value = "" required>
+                                <label class="bold" id="" for="">New Handle</label>
+                                <input type="text" class="form-control" name="" placeholder="" value = "" required>
                             </div>
         
                             <div class="modalButtons">
                                 <button type="submit" class="btn btn-primary modalButton submit-button">
                                     Save
                                 </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary modalButton cancelButton"
-                                    data-bs-dismiss="modal"
-                                >
+                                <button type="button" class="btn btn-secondary modalButton cancelButton" data-bs-dismiss="modal">
                                     Cancel
                                 </button>
                             </div>
@@ -321,8 +313,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        Details Modal -->
+        </div> -->
+
+
 
     </main>
 
@@ -339,7 +332,15 @@
              $("#edit-name-modal").modal("show");
           });
         });
+
+        // $(function(){
+        //   $(".open-users-details-modal").click(function(){
+        //      $('#user-id').val($(this).data('id'));
+        //      $("#users-details-modal").modal("show");
+        //   });
+        // });
     </script>
+
 
 </body>
 

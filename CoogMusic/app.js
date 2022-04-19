@@ -450,7 +450,9 @@ app.post("/runquery", (req, res, next) => {
     FROM ${select_type} 
     ORDER BY ${sort_type} ${order_type}`;
 
-    console.log(sql);
+    var sql1 = `SELECT ${whattoselect}`;
+    var sql2 = `FROM ${select_type}`;
+    var sql3 = `ORDER BY ${sort_type} ${order_type}`;
 
     connection.query(`${sql}`, function (error, results) {
         if (error) {
@@ -461,13 +463,13 @@ app.post("/runquery", (req, res, next) => {
             res.send("<h1>There were no results</h1>");
         }
         else if (select_type == "playlist") {
-            res.render("playlist-report", { playlistreport: results, slqquery: sql });
+            res.render("playlist-report", { playlistreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
         }
         else if (select_type == "user") {
-            res.render("user-report", { userreport: results, slqquery: sql });
+            res.render("user-report", { userreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
         }
         else if (select_type == "notifications") {
-            res.render("notifications-report", { notificationsreport: results, slqquery: sql });
+            res.render("notifications-report", { notificationsreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
         }
     });
 });

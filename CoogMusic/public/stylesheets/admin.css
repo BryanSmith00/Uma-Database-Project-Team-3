@@ -251,3 +251,12 @@ select {
     width: 3.5rem;
     z-index: 100;
 }
+
+.quero {
+    justify-content: center;
+    justify-items: center;
+}
+
+.query-box {
+    padding: 20px 0px 0px 0px;
+}

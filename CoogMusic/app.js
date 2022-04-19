@@ -429,17 +429,28 @@ app.post("/runquery", (req, res, next) => {
     let select_type = req.body.selecttype;
     let order_type = req.body.ordertype;
 
-    if (select_type == "playlists") {
+    if (select_type == "user") {
+        if (req.body.sorttype == "id") var sort_type = "user_id";
+        if (req.body.sorttype == "name") var sort_type = "username";
+        if (req.body.sorttype == "date") var sort_type = "date_created";
+        var whattoselect = "user_id, username, handle, date_created";
+    }else if (select_type == "playlist") {
         if (req.body.sorttype == "id") var sort_type = "playlist_ID";
         if (req.body.sorttype == "name") var sort_type = "playlist_name";
         if (req.body.sorttype == "date") var sort_type = "created_at";
+        var whattoselect = "playlist_id, playlist_name, user_username, full_length, created_at";
     } else if (select_type == "notifications") {
         if (req.body.sorttype == "id") var sort_type = "alert_id";
         if (req.body.sorttype == "name") var sort_type = "message";
         if (req.body.sorttype == "date") var sort_type = "date_added";
+        var whattoselect = "alert_id, message, attached_user, date_made";
     } 
 
-    var sql = `SELECT * FROM ${select_type}`;
+    var sql = `SELECT ${whattoselect} 
+    FROM ${select_type} 
+    ORDER BY ${sort_type} ${order_type}`;
+
+    console.log(sql);
 
     connection.query(`${sql}`, function (error, results) {
         if (error) {
@@ -450,7 +461,13 @@ app.post("/runquery", (req, res, next) => {
             res.send("<h1>There were no results</h1>");
         }
         else if (select_type == "playlist") {
-            res.render("playlist-report", { playlistreport: results });
+            res.render("playlist-report", { playlistreport: results, slqquery: sql });
+        }
+        else if (select_type == "user") {
+            res.render("user-report", { userreport: results, slqquery: sql });
+        }
+        else if (select_type == "notifications") {
+            res.render("notifications-report", { notificationsreport: results, slqquery: sql });
         }
     });
 });
@@ -499,6 +516,18 @@ app.post("/delete-playlist", (req, res, next) => {
     });
 
     res.redirect("/my-playlists");
+});
+
+app.post("/delete-notification", (req, res, next) => {
+    var alert_id = req.body.alert_id;
+
+    let sql = `DELETE FROM notifications WHERE alert_id = \"${alert_id}\"`;
+
+    connection.query(sql, function (error, results) {
+        if (error) throw (error);
+    });
+
+    res.redirect("/queries");
 });
 
 app.post("/delete-playlist-admin", (req, res, next) => {

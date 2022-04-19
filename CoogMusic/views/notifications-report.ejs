@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 
+    <%
+    function pad2(n) {
+        return n.length == 2 ? n : "0" + n;
+    }
+
+    function length_prettify(song_len) {
+        var hour = Math.floor(song_len / 60).toString();
+
+        var min = Math.floor(song_len % 60).toString();
+        min = (hour === "0") ? min : pad2(min);
+
+        var sec = pad2(Math.floor(((song_len - Math.floor(song_len)) * 60)).toString());
+
+        return hour === "0" ? `${min}:${sec}` : `${hour}:${min}:${sec}`;
+    }
+  %>
+
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
@@ -64,37 +81,27 @@
         <table class="table table-hover table-striped table-borderless">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Created By</th>
+                    <th scope="col">Notification ID</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Intended User</th>
                     <th scope="col">Date Created</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody> 
+                <% if(notificationsreport.length!=0){
 
-                
-                <% if(playlistreport.length!=0){
-
-                    playlistreport.forEach(function(playlist){ 
-                    let pl_form_id = "open-playlist-" + playlist.playlist_id;
+                    notificationsreport.forEach(function(notification){ 
+                    let pl_form_id = notification.alert_id;
                 %>
                 <tr>
-                    <td><%=playlist.playlist_id%></td>
-                    <td ><%=playlist.playlist_name%></th>
-                    <td><%=playlist.user_username%></td>
-                    <td><%=playlist.created_at%></td>
+                    <td><%=notification.alert_id%></td>
+                    <td ><%=notification.message%></th>
+                    <td ><%=notification.attached_user%></th>
+                    <td><%=notification.date_made%></td>
                     <td> 
-                        <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
-                            <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
-                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
-                            <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
-                            <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success">
-                                Open
-                            </button>
-                        </form>
-                        <form id="<%=pl_form_id%>" action="/delete-playlist-admin" method="post">
-                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                        <form id="<%=pl_form_id%>" action="/delete-notification" method="post">
+                            <input type="hidden" name="alert_id" value="<%=notification.alert_id%>">
                             <button type="submit" class="btn btn-outline-danger btn-circle">
                                 <i class="fa fa-minus"></i>
                             </button>
@@ -103,7 +110,7 @@
                 </tr>
                 <% });} else { %>
                     <tr>
-                        <th scope="row" colspan="4">There are no playlists.</th>
+                        <th scope="row" colspan="4">There are no notifications.</th>
                     </tr>
                     <% } %>
                 </tbody>

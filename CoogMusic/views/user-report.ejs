@@ -59,42 +59,31 @@
     </header>
 
     <main>
-
         <!-- Playlist report table -->
         <table class="table table-hover table-striped table-borderless">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Created By</th>
+                    <th scope="col">User ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Handle</th>
                     <th scope="col">Date Created</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody> 
+                <% if(userreport.length!=0){
 
-                
-                <% if(playlistreport.length!=0){
-
-                    playlistreport.forEach(function(playlist){ 
-                    let pl_form_id = "open-playlist-" + playlist.playlist_id;
+                    userreport.forEach(function(user){ 
+                    let pl_form_id = user.user_id;
                 %>
                 <tr>
-                    <td><%=playlist.playlist_id%></td>
-                    <td ><%=playlist.playlist_name%></th>
-                    <td><%=playlist.user_username%></td>
-                    <td><%=playlist.created_at%></td>
+                    <td><%=user.user_id%></td>
+                    <td ><%=user.username%></th>
+                    <td><%=user.handle%></td>
+                    <td><%=user.date_created%></td>
                     <td> 
-                        <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
-                            <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
-                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
-                            <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
-                            <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success">
-                                Open
-                            </button>
-                        </form>
-                        <form id="<%=pl_form_id%>" action="/delete-playlist-admin" method="post">
-                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                        <form id="<%=pl_form_id%>" action="/delete-user" method="post">
+                            <input type="hidden" name="user_id" value="<%=user.user_id%>">
                             <button type="submit" class="btn btn-outline-danger btn-circle">
                                 <i class="fa fa-minus"></i>
                             </button>
@@ -103,7 +92,7 @@
                 </tr>
                 <% });} else { %>
                     <tr>
-                        <th scope="row" colspan="4">There are no playlists.</th>
+                        <th scope="row" colspan="4">There are no users.</th>
                     </tr>
                     <% } %>
                 </tbody>

@@ -47,6 +47,7 @@ main {
   position: absolute;
   float: left;
   left: 20%;
+  top: 8%;
 }
 
 .listener-table {
@@ -85,7 +86,7 @@ tr{
 }
 
 .table {
-  width: 99%;
+  width: 100%;
   top: 0;
   bottom: 0;
   margin-top: 20px;
@@ -328,4 +329,19 @@ select{
     left: 50vw;
     width: 3.5rem;
     z-index: 100;
+}
+
+.search-bar {
+  width: 77%;
+  position: absolute;
+  top: 2%;
+  margin: 5px;
+  float: left;
+  left: 21%;
+  background-color: #212529;
+  /*color: rgb(199, 67, 67);*/
+}
+
+.form-control-lg {
+  border-width: 0px;
 }

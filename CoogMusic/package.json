@@ -4,6 +4,7 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.0.2",
     "express": "^4.17.3",

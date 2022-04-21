@@ -11,6 +11,8 @@ const session = require("express-session");
 const file_upload = require("express-fileupload");
 const music_metadata = require("music-metadata");
 
+var flash = require("connect-flash");
+
 //---------------Session setup---------------//
 
 const isProd = process.env.NODE_ENV || 'development'
@@ -33,6 +35,8 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(flash());
 
 //Additional middleware
 app.use(express.static(__dirname));
@@ -110,6 +114,8 @@ app.get("/listener", function (req, res, next) {
                        && playlist_playlist_id = personal_playlist_id
                        && username = \"${req.session.passport.user}\")`;
 
+    var msg = req.flash("message");
+
     connection.query(`${sql1}; ${sql2}; ${sql3}`, function (error, results, fields) {
 
         if (error) throw error;
@@ -127,7 +133,7 @@ app.get("/listener", function (req, res, next) {
             data: JSON.stringify(results[1]),
             pl_data: results[0],
             fav_data: fav_data,
-            //fav_data: Object.keys(results[2]),
+            message: msg,
             user: req.session.passport.user,
             curr_route: (isProd == 'development') ? devRoute : prodRoute
         }
@@ -511,13 +517,18 @@ app.post("/add-to-playlist", (req, res, next) => {
                        \"${playlist_id}\");`;
 
     connection.query(sql, function (error, results) {
+        var msg = {type: 0, msg: "Successfully added"};
+
         if (error) {
-            if (error.errno == 1062) return; //duplicate entry
-            else throw error;
+            if (error.errno !=  1062) throw error;
+            
+            msg = {type: 1, msg: "Song is already in playlist"};
         }
+
+        req.flash("message", msg);
+        res.redirect("/listener");
     });
- 
-    res.redirect("/listener");
+    
 });
 
 app.post("/delete-playlist", (req, res, next) => {
@@ -705,9 +716,11 @@ app.post("/remove-from-favorites", function (req, res, next) {
 
         connection.query(sql1, function (error, results, fields) {
             if (error) throw error;
+            
+            var msg = {type: 0,  msg: "Successfully removed"};
+            req.flash("message", msg);
+            res.redirect("/listener");
         });
-
-        res.redirect("/listener");
 
     } else {
         res.redirect("/login");

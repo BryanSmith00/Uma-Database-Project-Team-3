@@ -104,7 +104,13 @@ app.get("/listener", function (req, res, next) {
 
     var sql2 = "SELECT * FROM track";
 
-    connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
+    var sql3 = `SELECT song_id 
+                FROM (user, track, contains_tracks) 
+                WHERE (song_id = track_song_id 
+                       && playlist_playlist_id = personal_playlist_id
+                       && username = \"${req.session.passport.user}\")`;
+
+    connection.query(`${sql1}; ${sql2}; ${sql3}`, function (error, results, fields) {
 
         if (error) throw error;
         var personal_pl_id;
@@ -112,10 +118,16 @@ app.get("/listener", function (req, res, next) {
             if (playlist.is_private === 1) personal_pl_id = playlist.playlist_id;
         });
 
+        var fav_data = results[2].map(function (e) {
+            return e.song_id;
+        });
+
         res.render("listener", {
             personal_pl_id: personal_pl_id,
             data: JSON.stringify(results[1]),
             pl_data: results[0],
+            fav_data: fav_data,
+            //fav_data: Object.keys(results[2]),
             user: req.session.passport.user,
             curr_route: (isProd == 'development') ? devRoute : prodRoute
         }
@@ -677,6 +689,26 @@ app.post("/remove-from-playlist", function (req, res, next) {
                 curr_route: route
             });
         });
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.post("/remove-from-favorites", function (req, res, next) {
+    if (req.isAuthenticated()) {
+        var song_id = req.body.song_id;
+        var playlist_id = req.body.playlist_id;
+
+        var sql1 = `DELETE FROM contains_tracks
+                    WHERE (playlist_playlist_ID = \"${playlist_id}\"
+                          && track_song_id = ${song_id});`;
+
+        connection.query(sql1, function (error, results, fields) {
+            if (error) throw error;
+        });
+
+        res.redirect("/listener");
+
     } else {
         res.redirect("/login");
     }

@@ -460,7 +460,7 @@ app.post("/runquery", (req, res, next) => {
     } else if (select_type == "notifications") {
         if (req.body.sorttype == "id") var sort_type = "alert_id";
         if (req.body.sorttype == "name") var sort_type = "message";
-        if (req.body.sorttype == "date") var sort_type = "date_added";
+        if (req.body.sorttype == "date") var sort_type = "date_made";
         var whattoselect = "alert_id, message, attached_user, date_made";
     } 
 

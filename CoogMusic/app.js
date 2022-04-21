@@ -293,6 +293,7 @@ app.get("/admin", function (req, res) {
     }
 });
 
+
 app.get("/queries", (req, res, next) => {
     if (req.isAuthenticated() && req.user[0].user_type === 2) {
         res.render("queries", { user_type: req.user[0].user_type });
@@ -301,6 +302,14 @@ app.get("/queries", (req, res, next) => {
     }
 });
 
+
+app.get("/reports", (req, res, next) => {
+    if (req.isAuthenticated() && req.user[0].user_type === 2) {
+        res.render("reports", { user_type: req.user[0].user_type });
+    } else {
+        res.redirect("/login");
+    }
+});
 
 app.get("/songs", function (req, res) {
     res.statusCode = 200;
@@ -341,43 +350,8 @@ app.get("/admin-playlist", function (req, res, next) {
     }
 });
 
-app.get("/songReport", (req, res, next) => {
-    if (req.isAuthenticated() && req.user[0].user_type === 2) {
-        connection.query(
-            "SELECT song_id, song_name, date_added, length, number_of_plays FROM track",
-            function (error, results, fields) {
-                if (error) throw error;
 
-                if (results.length > 0) {
-                    res.send(results);
-                } else {
-                    res.send("<H1>There were no tracks in the table</H1>");
-                }
-            }
-        );
-    } else {
-        res.redirect("/");
-    }
-});
-//
-app.get("/albumReport", (req, res, next) => {
-    if (req.isAuthenticated() && req.user[0].user_type === 2) {
-        connection.query(
-            "SELECT album_id, album_title, release_date FROM album ORDER BY album_id ASC",
-            function (error, results, fields) {
-                if (error) throw error;
 
-                if (results.length > 0) {
-                    res.send(results);
-                } else {
-                    res.send("<H1>There were no albums in the table</H1>");
-                }
-            }
-        );
-    } else {
-        res.redirect("/");
-    }
-});
 // ------------ END Admin -------------- //
 
 /* --------------------- POST Routes --------------------- */
@@ -442,7 +416,7 @@ app.post("/plays", (req, _) => {
     });
 });
 
-//More reports, playlists and notifications
+//Queries, users, playlists, and notifications
 app.post("/runquery", (req, res, next) => {
     let select_type = req.body.selecttype;
     let order_type = req.body.ordertype;
@@ -481,16 +455,17 @@ app.post("/runquery", (req, res, next) => {
             res.send("<h1>There were no results</h1>");
         }
         else if (select_type == "playlist") {
-            res.render("playlist-report", { playlistreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
+            res.render("playlist-query", { playlistreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
         }
         else if (select_type == "user") {
-            res.render("user-report", { userreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
+            res.render("user-query", { userreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
         }
         else if (select_type == "notifications") {
-            res.render("notifications-report", { notificationsreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
+            res.render("notifications-query", { notificationsreport: results, sql1: sql1, sql2: sql2, sql3: sql3 });
         }
     });
 });
+
 
 app.post("/my-playlists", (req, res, next) => {
     var playlist_name = req.body.playlistname;

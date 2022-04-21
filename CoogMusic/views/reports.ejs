@@ -16,6 +16,7 @@
         crossorigin="anonymous"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="../public/stylesheets/reports.css" />
     <link rel="stylesheet" href="../public/stylesheets/admin.css" />
 
 </head>
@@ -47,7 +48,11 @@
                         &nbsp;&nbsp;Playlists</a>
                 </li>
                 <li>
-                    <a class="nav-link text-white active" href="/queries"><i class="fa fa-ellipsis-h"></i>
+                    <a class="nav-link text-white active" href="/reports"><i class="fa fa-chart-bar"></i>
+                        &nbsp;&nbsp;Reports</a>
+                </li>
+                <li>
+                    <a class="nav-link text-white" href="/queries"><i class="fa fa-ellipsis-h"></i>
                         &nbsp;&nbsp;Queries</a>
                 </li>
                 <li>
@@ -55,64 +60,62 @@
                         &nbsp;&nbsp;Log out</a>
                 </li>
             </ul>
+            
         </div>
     </header>
 
     <main>
-        <p class="query-box">SQL Query</p>
-        <div class="dark-box">
-            <p class="quero"><%= sql1 %></p>
-            <p class="quero"><%= sql2 %></p>
-            <p class="quero"><%= sql3 %></p><br>
-        </div>
+        <div class="container">
+            <form id="reports-form" class="reports-form" action="" method="post">
+                <h3 class="form-group">Report Request</h3>
+                <div class="form-group">
+                    <label for="selecttype">Select Report</label><br />
+                    <select name="selecttype" id="selecttype">
+                        <option value="user">Users</option>
+                        <option value="playlist">Playlists</option>
+                        <option value="notifications">Notifications</option>
+                    </select>
+                </div>
+
+                
+                <div class="form-group">
+                    <label for="sorttype">Sort by</label><br />
+                    <select name="sorttype" id="sorttype">
+                        <option value="id">ID</option>
+                        <option value="name">Name</option>
+                        <option value="date">Date Added</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ordertype">Order by</label><br />
+                    <select name="ordertype" id="ordertype">
+                        <option value="ASC">Ascending</option>
+                        <option value="DESC">Descending</option>
+                    </select>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="run-query" id="run-query" class="input-submit btn submit-button">
+                        Run Query
+                    </button>
+                </div>
+            </form>
+            </div>
 
         
-         <!-- Users report table -->
-         <table class="table table-hover table-striped table-borderless playlist-table caption-top">
-            <caption class="admin-caption">
-                Users
-            </caption>
-            <thead>
-                <tr>
-                    <th scope="col">User ID</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Handle</th>
-                    <th scope="col">Date Created</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody> 
-                <% if(userreport.length!=0){
 
-                    userreport.forEach(function(user){ 
-                    let pl_form_id = user.user_id;
-                %>
-                <tr>
-                    <td><%=user.user_id%></td>
-                    <td ><%=user.username%></th>
-                    <td><%=user.handle%></td>
-                    <td><%=user.date_created%></td>
-                    <td> 
-                        <form id="<%=pl_form_id%>" action="/delete-user" method="post">
-                            <input type="hidden" name="user_id" value="<%=user.user_id%>">
-                            <button type="submit" class="btn btn-outline-danger delete">
-                                <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <% });} else { %>
-                    <tr>
-                        <th scope="row" colspan="4">There are no users.</th>
-                    </tr>
-                    <% } %>
-                </tbody>
-        </table>
+
+
     </main>
+
     <script>
         $(window).on("load", function () {
             $("#loading").hide();
         });
     </script>
+
+
 </body>
+
 </html>

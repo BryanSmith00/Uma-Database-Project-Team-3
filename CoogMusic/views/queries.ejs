@@ -50,6 +50,10 @@
                         &nbsp;&nbsp;Playlists</a>
                 </li>
                 <li>
+                    <a class="nav-link text-white" href="/reports"><i class="fa fa-chart-bar"></i>
+                        &nbsp;&nbsp;Reports</a>
+                </li>
+                <li>
                     <a class="nav-link text-white active" href="/queries"><i class="fa fa-ellipsis-h"></i>
                         &nbsp;&nbsp;Queries</a>
                 </li>
@@ -64,9 +68,9 @@
         <main>
             <div class="container">
             <form id="form-queries" class="form-queries" action="/runquery" method="post">
-                <h3 class="form-group">Create a new report</h3>
+                <h3 class="form-group">New Query </h3>
                 <div class="form-group">
-                    <label for="selecttype">Select Report</label><br />
+                    <label for="selecttype">Select query type</label><br />
                     <select name="selecttype" id="selecttype">
                         <option value="user">Users</option>
                         <option value="playlist">Playlists</option>
@@ -94,7 +98,7 @@
 
                 <div class="form-buttons">
                     <button type="run-query" id="run-query" class="input-submit btn submit-button">
-                        Generate Report
+                        Run Query
                     </button>
                 </div>
             </form>

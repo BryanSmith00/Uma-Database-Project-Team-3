@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <%
-    function pad2(n) {
-        return n.length == 2 ? n : "0" + n;
-    }
-
-    function length_prettify(song_len) {
-        var hour = Math.floor(song_len / 60).toString();
-
-        var min = Math.floor(song_len % 60).toString();
-        min = (hour === "0") ? min : pad2(min);
-
-        var sec = pad2(Math.floor(((song_len - Math.floor(song_len)) * 60)).toString());
-
-        return hour === "0" ? `${min}:${sec}` : `${hour}:${min}:${sec}`;
-    }
-  %>
-
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
@@ -64,6 +47,10 @@
                         &nbsp;&nbsp;Playlists</a>
                 </li>
                 <li>
+                    <a class="nav-link text-white" href="/reports"><i class="fa fa-chart-bar"></i>
+                        &nbsp;&nbsp;Reports</a>
+                </li>
+                <li>
                     <a class="nav-link text-white active" href="/queries"><i class="fa fa-ellipsis-h"></i>
                         &nbsp;&nbsp;Queries</a>
                 </li>
@@ -87,40 +74,52 @@
         <!-- Playlist report table -->
         <table class="table table-hover table-striped table-borderless playlist-table caption-top">
             <caption class="admin-caption">
-                Notifications
+                Playlists
             </caption>
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th class="truncate"scope="col">Message</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Date</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Created By</th>
+                    <th scope="col">Date Created</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody> 
-                <% if(notificationsreport.length!=0){
+            <tbody>
 
-                    notificationsreport.forEach(function(notification){ 
-                    let pl_form_id = notification.alert_id;
+                
+                <% if(playlistreport.length!=0){
+
+                    playlistreport.forEach(function(playlist){ 
+                    let pl_form_id = "open-playlist-" + playlist.playlist_id;
                 %>
                 <tr>
-                    <td><%=notification.alert_id%></td>
-                    <td class="truncate"><%=notification.message%></th>
-                    <td ><%=notification.attached_user%></th>
-                    <td><%=notification.date_made%></td>
+                    <td><%=playlist.playlist_id%></td>
+                    <td ><%=playlist.playlist_name%></th>
+                    <td><%=playlist.user_username%></td>
+                    <td><%=playlist.created_at%></td>
                     <td> 
-                        <form id="<%=pl_form_id%>" action="/delete-notification" method="post">
-                            <input type="hidden" name="alert_id" value="<%=notification.alert_id%>">
-                            <button type="submit" class="btn btn-outline-danger delete"> 
-                                <i class="fa fa-minus"></i>
+                        <div class="buttons-row">
+                        <form id="<%=pl_form_id%>" action="/open-playlist" method="post">
+                            <input type="hidden" name="playlist_creator" value="<%=playlist.user_username%>">
+                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>">
+                            <input type="hidden" name="playlist_name" value="<%=playlist.playlist_name%>">
+                            <button type="submit" form="<%=pl_form_id%>" class="btn btn-outline-success open-button">
+                                Open
                             </button>
                         </form>
+                        <form id="<%=pl_form_id%>" action="/delete-playlist-admin" method="post">
+                            <input type="hidden" name="playlist_id" value="<%=playlist.playlist_ID%>"> 
+                            <button type="submit" class="btn btn-outline-danger delete">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
                     </td>
                 </tr>
                 <% });} else { %>
                     <tr>
-                        <th scope="row" colspan="4">There are no notifications.</th>
+                        <th scope="row" colspan="4">There are no playlists.</th>
                     </tr>
                     <% } %>
                 </tbody>

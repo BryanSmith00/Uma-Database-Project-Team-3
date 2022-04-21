@@ -24,6 +24,7 @@ h3 {
     font-weight: bold;
     text-align: center;
     margin-bottom: 5px;
+    color: rgb(60, 60, 60);
 }
 
 h2{
@@ -135,6 +136,8 @@ td{
 .submit-button {
     width: 200px;
     background-color: #13b47b;
+    display: flex;
+    justify-content: center;
     color: white;
     font-weight: bold;
     font-size: 18px;
@@ -226,7 +229,7 @@ select {
 
 .container{
     position: relative;
-    background-color: #bfbfbf;
+    background-color: #dcdcdc;
     float: left;
     left: 180px;
     width: 40em;
@@ -234,7 +237,8 @@ select {
 }
 
 .form-buttons{
-    display: block;
+    display: flex;
+    justify-content: center;
     width: 100%;
     margin: 0 auto 1rem auto;
     box-sizing: border-box;

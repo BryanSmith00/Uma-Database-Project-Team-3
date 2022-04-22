@@ -92,14 +92,14 @@
       </div>
     </header>
 
-    <form id="search" action="/search" method="post">
       <input 
           type="text" 
-          placeholder="Search" 
+          placeholder="Search artists or tracks..." 
           name="song_search" 
           class="search-bar form-control-lg text-muted" 
-          tabindex="1" >
-    </form>
+          tabindex="1" 
+          id="search-music"
+          >
 
     <main>
       <table class="table table-dark table-hover table-borderless listener-table">
@@ -119,7 +119,7 @@
         <tbody>
           <% if(data.length!=0){ JSON.parse(data).forEach(function(track, ind){ %>
           <%let form_id = "add-to-playlist-" + track.song_id;%>
-              <tr>
+              <tr class="all-tracks">
                 <td>
                   <% if (!fav_data.includes(track.song_id)) { %>
                     <form id="<%=personal_pl_id%>" action="/add-to-playlist" method="post">
@@ -272,6 +272,20 @@
         </main>
 
         <script>
+
+            const searchBar = document.getElementById('search-music');
+            const all_tracks = Array.from(document.getElementsByClassName('all-tracks'))
+            searchBar.addEventListener('change', function (event){
+                const search_query = (event.target.value).toLowerCase()
+                all_tracks.forEach((row) => {
+                  const song = row.children[1].innerHTML.toLowerCase();
+                  const artist = row.children[2].innerHTML.toLowerCase()
+                  if(song.includes(search_query) || artist.includes(search_query))
+                    row.style.display = "table-row"
+                  else
+                    row.style.display = "none"
+                })
+            })
             $(window).on("load", function () {
                 $("#loading").hide();
             });

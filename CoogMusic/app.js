@@ -311,6 +311,7 @@ app.get("/reports", (req, res, next) => {
     }
 });
 
+
 app.get("/songs", function (req, res) {
     res.statusCode = 200;
 
@@ -403,6 +404,7 @@ app.post("/addtrack", async (req, res, next) => {
     });
 });
 
+
 app.post("/plays", (req, _) => {
     const plays = req.body;
     const song_ids = Object.keys(plays);
@@ -465,6 +467,53 @@ app.post("/runquery", (req, res, next) => {
         }
     });
 });
+
+
+//Reports for users, top artists, media, and playlists
+app.post("/run-reports", (req, res, next) => {
+    let select_report = req.body.report_selection;
+    let start_date = req.body.report_start;
+    let end_date = req.body.report_end;
+
+
+
+    if (select_report == "users") {
+        
+        
+    } 
+    else if (select_report == "media"){
+        
+    } 
+    else if (select_report == "top_artists"){
+        if (req.body.start_date == "id") var sort_type = "user_id";
+        if (req.body.sorttype == "name") var sort_type = "username";
+        if (req.body.sorttype == "date") var sort_type = "date_created";
+        var whattoselect = "user_id, username, handle, date_created";
+    } 
+    else if (select_report == "playlists"){
+    }
+
+
+    //users activity
+
+
+    //media
+
+
+    //top artists
+    var sql = `SELECT username, SUM(number_of_plays) 
+               FROM user, track
+               WHERE track.published_by = username AND
+               user.date_created BETWEEN  ${start_date} AND ${end_date}
+               GROUP BY (username);`   
+
+
+    //playlists
+
+})
+
+
+
 
 
 app.post("/my-playlists", (req, res, next) => {

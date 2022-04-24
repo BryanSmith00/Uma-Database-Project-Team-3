@@ -532,8 +532,23 @@ app.post("/run-reports", (req, res, next) => {
     WHERE playlist.created_at BETWEEN '${start_date}' AND '${end_date}' 
     AND track.date_added BETWEEN '${start_date}' AND '${end_date}'`;
 
+    //temp table test
+    // var sql3 = `CREATE TEMPORARY TABLE top_artists (id INT PRIMARY KEY, a_name CHAR(32) UNIQUE, plays INT )`;
     
-    connection.query(sql2, function (error, results) {
+    // var sql4 = `INSERT INTO top_artists (id, a_name, plays)
+    // SELECT user_id, username, SUM(number_of_plays) plays
+    // FROM track INNER JOIN user ON user.username = published_by
+    // WHERE user.date_created BETWEEN '${start_date}' AND '${end_date}' 
+    // GROUP BY user.username
+    // ORDER BY SUM(number_of_plays) DESC`;
+    
+    // var sql5 = `SELECT * FROM top_artists
+    // ORDER BY plays DESC`;
+    
+    // var sql6 = `DROP TEMPORARY TABLE top_artists`;
+
+    
+    connection.query(sql, function (error, results) {
         if (error) {
             res.send(error);
             throw error;
@@ -545,7 +560,7 @@ app.post("/run-reports", (req, res, next) => {
             res.render("media-report", { media_report: results, sql2: sql2 });
         }
         else if (select_report == "top_artists") {
-            res.render("top-artists", { artists_report: results, sql: sql });
+            res.render("top-artists", { artists_report: results, sql: sql});
         }
     });
 

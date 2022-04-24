@@ -526,11 +526,10 @@ app.post("/run-reports", (req, res, next) => {
 
 
     //media
-    var sql2 = `SELECT COUNT(song_file) as total_tracks, SUM(track.length) as total_tracks_length, 
-    COUNT(playlist_ID) as total_playlists, SUM(playlist.full_length) as total_playlists_length
+    var sql2 = `SELECT COUNT(DISTINCT track.song_file) as total_tracks, SUM(DISTINCT track.length) as total_tracks_length, 
+    COUNT(DISTINCT playlist.playlist_ID) as total_playlists, SUM(DISTINCT playlist.full_length) as total_playlists_length
     FROM track, playlist
-    WHERE song_id = song_id AND playlist_ID = playlist_ID 
-    AND playlist.created_at BETWEEN '${start_date}' AND '${end_date}'
+    WHERE playlist.created_at BETWEEN '${start_date}' AND '${end_date}' 
     AND track.date_added BETWEEN '${start_date}' AND '${end_date}'`;
 
     
@@ -552,9 +551,6 @@ app.post("/run-reports", (req, res, next) => {
 
 
 });
-
-
-
 
 
 app.post("/my-playlists", (req, res, next) => {

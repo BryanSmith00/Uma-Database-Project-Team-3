@@ -501,70 +501,51 @@ app.post("/runquery", (req, res, next) => {
 });
 
 
-
-//Reports: users, top artists, media, and playlists
+//Reports: users, top artists, media
 app.post("/run-reports", (req, res, next) => {
-    let select_report = req.body.report_selection;
-    let start_date = req.body.report_start;
-    let end_date = req.body.report_end;
 
-    //top artists
-    var sql = `SELECT user_id, username, SUM(number_of_plays) AS total_plays
-    FROM user, track
-    WHERE track.published_by = username AND
-    user.date_created BETWEEN '${start_date}' AND '${end_date}'
-    GROUP BY username
-    ORDER BY total_plays DESC`;
+    var select_report = req.body.report_selection;
+    var start_date = req.body.report_start;
+    var end_date = req.body.report_end;
 
+    if (select_report == "top_artists") {
+        var sql = `SELECT user_id, username, SUM(number_of_plays) AS total_plays
+        FROM user, track
+        WHERE track.published_by = username AND
+        user.date_created BETWEEN '${start_date}' AND '${end_date}'
+        GROUP BY username
+        ORDER BY total_plays DESC`;
 
-    //users activity
-    var sql1 = `SELECT user_type, COUNT(user_id) AS total_users
-    FROM user WHERE user_id = user_id AND user_type = user_type 
-    AND user.date_created BETWEEN '${start_date}' AND '${end_date}'
-    GROUP BY user_type
-    ORDER BY total_users`;
+    } else if (select_report == "users") {
+        var sql = `SELECT user_type, COUNT(user_id) AS total_users
+        FROM user WHERE user_id = user_id AND user_type = user_type 
+        AND user.date_created BETWEEN '${start_date}' AND '${end_date}'
+        GROUP BY user_type
+        ORDER BY total_users`;
 
+    } else if (select_report == "media") {
+        var sql = `SELECT COUNT(DISTINCT track.song_file) as total_tracks, SUM(DISTINCT track.length) as total_tracks_length, 
+        COUNT(DISTINCT playlist.playlist_ID) as total_playlists, SUM(DISTINCT playlist.full_length) as total_playlists_length
+        FROM track, playlist
+        WHERE playlist.created_at BETWEEN '${start_date}' AND '${end_date}' 
+        AND track.date_added BETWEEN '${start_date}' AND '${end_date}'`;
+    }
 
-    //media
-    var sql2 = `SELECT COUNT(DISTINCT track.song_file) as total_tracks, SUM(DISTINCT track.length) as total_tracks_length, 
-    COUNT(DISTINCT playlist.playlist_ID) as total_playlists, SUM(DISTINCT playlist.full_length) as total_playlists_length
-    FROM track, playlist
-    WHERE playlist.created_at BETWEEN '${start_date}' AND '${end_date}' 
-    AND track.date_added BETWEEN '${start_date}' AND '${end_date}'`;
-
-    //temp table test
-    // var sql3 = `CREATE TEMPORARY TABLE top_artists (id INT PRIMARY KEY, a_name CHAR(32) UNIQUE, plays INT )`;
-    
-    // var sql4 = `INSERT INTO top_artists (id, a_name, plays)
-    // SELECT user_id, username, SUM(number_of_plays) plays
-    // FROM track INNER JOIN user ON user.username = published_by
-    // WHERE user.date_created BETWEEN '${start_date}' AND '${end_date}' 
-    // GROUP BY user.username
-    // ORDER BY SUM(number_of_plays) DESC`;
-    
-    // var sql5 = `SELECT * FROM top_artists
-    // ORDER BY plays DESC`;
-    
-    // var sql6 = `DROP TEMPORARY TABLE top_artists`;
-
-    
-    connection.query(sql, function (error, results) {
+    connection.query(`${sql}`, function (error, results) {
         if (error) {
             res.send(error);
             throw error;
         }
-        if (select_report == "users") {
-            res.render("users-report", { users_report: results, sql1: sql1});
+        if (select_report == "top_artists") {
+            res.render("top-artists", { artists_report: results, sql: sql });
+        }
+        else if (select_report == "users") {
+            res.render("users-report", { users_report: results, sql: sql });
         }
         else if (select_report == "media") {
-            res.render("media-report", { media_report: results, sql2: sql2 });
-        }
-        else if (select_report == "top_artists") {
-            res.render("top-artists", { artists_report: results, sql: sql});
+            res.render("media-report", { media_report: results, sql: sql });
         }
     });
-
-
 });
 
 

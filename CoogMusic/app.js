@@ -1,7 +1,6 @@
 const express = require("express");
 const bp = require("body-parser");
 var passport = require("passport");
-var usersRouter = require("./public/js/users");
 const connection = require("./public/js/database");
 
 var app = express();
@@ -197,7 +196,6 @@ app.get("/my-playlists", function (req, res, next) {
     }
 });
 
-
 app.get("/my-favorites", function (req, res, next) {
     res.statusCode = 200;
 
@@ -275,7 +273,7 @@ app.get("/cover_art/:file_name", (req, res) => {
 
 // --------- END Listener & Musician Routes ---------- //
 
-// ------------- Admin  ------------- //
+// ------------- Admin Dashboard ------------- //
 app.get("/admin", function (req, res) {
     res.statusCode = 200;
 
@@ -351,15 +349,49 @@ app.get("/admin-playlist", function (req, res, next) {
     }
 });
 
+app.get("/songReport", (req, res, next) => {
+    if (req.isAuthenticated() && req.user[0].user_type === 2) {
+        connection.query(
+            "SELECT song_id, song_name, date_added, length, number_of_plays FROM track",
+            function (error, results, fields) {
+                if (error) throw error;
 
+                if (results.length > 0) {
+                    res.send(results);
+                } else {
+                    res.send("<H1>There were no tracks in the table</H1>");
+                }
+            }
+        );
+    } else {
+        res.redirect("/");
+    }
+});
 
+app.get("/albumReport", (req, res, next) => {
+    if (req.isAuthenticated() && req.user[0].user_type === 2) {
+        connection.query(
+            "SELECT album_id, album_title, release_date FROM album ORDER BY album_id ASC",
+            function (error, results, fields) {
+                if (error) throw error;
+
+                if (results.length > 0) {
+                    res.send(results);
+                } else {
+                    res.send("<H1>There were no albums in the table</H1>");
+                }
+            }
+        );
+    } else {
+        res.redirect("/");
+    }
+});
 // ------------ END Admin -------------- //
 
 /* --------------------- POST Routes --------------------- */
 //POST
 
 //Login page route
-//app.post("/login", passport.authenticate('local'), (req, res, next) => {});
 app.post(
     "/login",
     passport.authenticate("local", {

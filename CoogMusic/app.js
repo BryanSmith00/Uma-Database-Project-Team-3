@@ -99,49 +99,49 @@ app.get("/login-failure", (req, res, next) => {
 // ---------- Listener & Musician Routes ---------- //
 
 app.get("/listener", function (req, res, next) {
-  res.statusCode = 200;
+    res.statusCode = 200;
 
-  if (req.isAuthenticated() && req.user[0].user_type === 0) {
-    var sql1 = `SELECT playlist_id, playlist_name, is_private 
+    if (req.isAuthenticated() && req.user[0].user_type === 0) {
+        var sql1 = `SELECT playlist_id, playlist_name, is_private 
                 FROM playlist WHERE user_username=\'${req.session.passport.user}\' 
                 ORDER BY created_at`;
 
-    var sql2 = "SELECT * FROM track";
+        var sql2 = "SELECT * FROM track";
 
-    var sql3 = `SELECT song_id 
+        var sql3 = `SELECT song_id 
                 FROM (user, track, contains_tracks) 
                 WHERE (song_id = track_song_id 
                        && playlist_playlist_id = personal_playlist_id
                        && username = \"${req.session.passport.user}\")`;
 
-    var msg = req.flash("message");
+        var msg = req.flash("message");
 
-    connection.query(`${sql1}; ${sql2}; ${sql3}`, function (error, results, fields) {
+        connection.query(`${sql1}; ${sql2}; ${sql3}`, function (error, results, fields) {
 
-        if (error) throw error;
-        var personal_pl_id;
-        results[0].forEach(function (playlist) {
-            if (playlist.is_private === 1) personal_pl_id = playlist.playlist_id;
+            if (error) throw error;
+            var personal_pl_id;
+            results[0].forEach(function (playlist) {
+                if (playlist.is_private === 1) personal_pl_id = playlist.playlist_id;
+            });
+
+            var fav_data = results[2].map(function (e) {
+                return e.song_id;
+            });
+
+            res.render("listener", {
+                personal_pl_id: personal_pl_id,
+                data: JSON.stringify(results[1]),
+                pl_data: results[0],
+                fav_data: fav_data,
+                message: msg,
+                user: req.session.passport.user,
+                curr_route: (isProd == 'development') ? devRoute : prodRoute
+            }
+            );
         });
-
-        var fav_data = results[2].map(function (e) {
-            return e.song_id;
-        });
-
-        res.render("listener", {
-            personal_pl_id: personal_pl_id,
-            data: JSON.stringify(results[1]),
-            pl_data: results[0],
-            fav_data: fav_data,
-            message: msg,
-            user: req.session.passport.user,
-            curr_route: (isProd == 'development') ? devRoute : prodRoute
-        }
-      );
-    });
-  } else {
-    res.redirect("/");
-  }
+    } else {
+        res.redirect("/");
+    }
 });
 
 app.get("/musician-tracks", function (req, res, next) {
@@ -175,12 +175,12 @@ app.get("/my-playlists", function (req, res, next) {
     res.statusCode = 200;
 
 
-  if (req.isAuthenticated() && req.user[0].user_type === 0) {
-      var sql1 = `SELECT * FROM playlist 
+    if (req.isAuthenticated() && req.user[0].user_type === 0) {
+        var sql1 = `SELECT * FROM playlist 
                   WHERE user_username=\'${req.session.passport.user}\' && is_private=0
                   ORDER BY created_at`;
 
-      var sql2 = `SELECT * FROM playlist 
+        var sql2 = `SELECT * FROM playlist 
                   WHERE NOT user_username=\'${req.session.passport.user}\' && is_private=0`;
 
         connection.query(`${sql1}; ${sql2}`, function (error, results, fields) {
@@ -377,7 +377,7 @@ app.post("/addtrack", async (req, res, next) => {
     if (req.user[0].user_type !== 1 || !req.isAuthenticated())
         res.redirect('/login');
     const mp3_file = req.files.trackfile;
-   
+
     const mp3_path = `${__dirname}/music/${mp3_file.name}`;
     await mp3_file.mv(mp3_path);
     const duration_minutes = (
@@ -390,13 +390,13 @@ app.post("/addtrack", async (req, res, next) => {
             "${req.body.trackname}", 
             ${duration_minutes}, 
             "${req.user[0].username}"
-            ${(cover_art) ?  `, "${route + "cover_art/" + cover_art.name}"` : ""} 
+            ${(cover_art) ? `, "${route + "cover_art/" + cover_art.name}"` : ""} 
             );`;
-    if(cover_art){
-      const cover_art_path = `${__dirname}/cover_art/${cover_art.name}`;
-      cover_art.mv(cover_art_path);
-    }        
-    
+    if (cover_art) {
+        const cover_art_path = `${__dirname}/cover_art/${cover_art.name}`;
+        cover_art.mv(cover_art_path);
+    }
+
 
     connection.query(sql, function (error, results) {
         if (error) throw error;
@@ -428,7 +428,7 @@ app.post("/runquery", (req, res, next) => {
         if (req.body.sorttype == "name") var sort_type = "username";
         if (req.body.sorttype == "date") var sort_type = "date_created";
         var whattoselect = "user_id, username, handle, date_created";
-    }else if (select_type == "playlist") {
+    } else if (select_type == "playlist") {
         if (req.body.sorttype == "id") var sort_type = "playlist_ID";
         if (req.body.sorttype == "name") var sort_type = "playlist_name";
         if (req.body.sorttype == "date") var sort_type = "created_at";
@@ -438,7 +438,7 @@ app.post("/runquery", (req, res, next) => {
         if (req.body.sorttype == "name") var sort_type = "message";
         if (req.body.sorttype == "date") var sort_type = "date_made";
         var whattoselect = "alert_id, message, attached_user, date_made";
-    } 
+    }
 
     var sql = `SELECT ${whattoselect} 
     FROM ${select_type} 
@@ -469,48 +469,57 @@ app.post("/runquery", (req, res, next) => {
 });
 
 
-//Reports for users, top artists, media, and playlists
+
+//Reports: users, top artists, media, and playlists
 app.post("/run-reports", (req, res, next) => {
     let select_report = req.body.report_selection;
     let start_date = req.body.report_start;
     let end_date = req.body.report_end;
 
-
-
-    if (select_report == "users") {
-        
-        
-    } 
-    else if (select_report == "media"){
-        
-    } 
-    else if (select_report == "top_artists"){
-        if (req.body.start_date == "id") var sort_type = "user_id";
-        if (req.body.sorttype == "name") var sort_type = "username";
-        if (req.body.sorttype == "date") var sort_type = "date_created";
-        var whattoselect = "user_id, username, handle, date_created";
-    } 
-    else if (select_report == "playlists"){
-    }
+    //top artists
+    var sql = `SELECT user_id, username, SUM(number_of_plays) AS total_plays
+    FROM user, track
+    WHERE track.published_by = username AND
+    user.date_created BETWEEN '${start_date}' AND '${end_date}'
+    GROUP BY username
+    ORDER BY total_plays DESC`;
 
 
     //users activity
+    var sql1 = `SELECT user_type, COUNT(user_id) AS total_users
+    FROM user WHERE user_id = user_id AND user_type = user_type 
+    AND user.date_created BETWEEN '${start_date}' AND '${end_date}'
+    GROUP BY user_type
+    ORDER BY total_users`;
 
 
     //media
+    var sql2 = `SELECT COUNT(song_file) as total_tracks, SUM(track.length) as total_tracks_length, 
+    COUNT(playlist_ID) as total_playlists, SUM(playlist.full_length) as total_playlists_length
+    FROM track, playlist
+    WHERE song_id = song_id AND playlist_ID = playlist_ID 
+    AND playlist.created_at BETWEEN '${start_date}' AND '${end_date}'
+    AND track.date_added BETWEEN '${start_date}' AND '${end_date}'`;
+
+    
+    connection.query(sql2, function (error, results) {
+        if (error) {
+            res.send(error);
+            throw error;
+        }
+        if (select_report == "users") {
+            res.render("users-report", { users_report: results, sql1: sql1});
+        }
+        else if (select_report == "media") {
+            res.render("media-report", { media_report: results, sql2: sql2 });
+        }
+        else if (select_report == "top_artists") {
+            res.render("top-artists", { artists_report: results, sql: sql });
+        }
+    });
 
 
-    //top artists
-    var sql = `SELECT username, SUM(number_of_plays) 
-               FROM user, track
-               WHERE track.published_by = username AND
-               user.date_created BETWEEN  ${start_date} AND ${end_date}
-               GROUP BY (username);`   
-
-
-    //playlists
-
-})
+});
 
 
 
@@ -541,18 +550,18 @@ app.post("/add-to-playlist", (req, res, next) => {
                        \"${playlist_id}\");`;
 
     connection.query(sql, function (error, results) {
-        var msg = {type: 0, msg: "Successfully added"};
+        var msg = { type: 0, msg: "Successfully added" };
 
         if (error) {
-            if (error.errno !=  1062) throw error;
-            
-            msg = {type: 1, msg: "Song is already in playlist"};
+            if (error.errno != 1062) throw error;
+
+            msg = { type: 1, msg: "Song is already in playlist" };
         }
 
         req.flash("message", msg);
         res.redirect("/listener");
     });
-    
+
 });
 
 app.post("/delete-playlist", (req, res, next) => {
@@ -740,8 +749,8 @@ app.post("/remove-from-favorites", function (req, res, next) {
 
         connection.query(sql1, function (error, results, fields) {
             if (error) throw error;
-            
-            var msg = {type: 0,  msg: "Successfully removed"};
+
+            var msg = { type: 0, msg: "Successfully removed" };
             req.flash("message", msg);
             res.redirect("/listener");
         });

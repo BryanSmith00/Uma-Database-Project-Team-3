@@ -16,7 +16,6 @@
         crossorigin="anonymous"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="../public/stylesheets/reports.css" />
     <link rel="stylesheet" href="../public/stylesheets/admin.css" />
 
 </head>
@@ -60,59 +59,51 @@
                         &nbsp;&nbsp;Log out</a>
                 </li>
             </ul>
-            
         </div>
     </header>
 
     <main>
-        <div class="container">
-            <form id="reports-form" class="reports-form" action="/run-reports" method="post">
-                <h3 class="form-group">Report Request</h3>
-                <div class="form-group">
-                    <label for="report_selection">Select Report</label><br />
-                    <select name="report_selection" id="report_selection">
-                        <option value="top_artists">Top Artists</option>
-                        <option value="users">Users Activity </option>
-                        <option value="media">Media</option>
-                    </select>
-                </div>
+
+        <!-- Users Activity report -->
+        <table class="table table-hover table-striped table-borderless playlist-table caption-top">
+            <caption class="admin-caption">
+                Media added
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Tracks</th>
+                    <th scope="col">Total track length</th>
+                    <th scope="col">Playlist</th>
+                    <th scope="col">Total playlist length</th>
+                </tr>
+            </thead>
+            <tbody>
 
                 
-                <div class="form-group" id="date-group">
-                    <div>
-                        <label for="report_start">From date</label>
-                        <input type="date" id="report_start" name="report_start">   
-                    </div>
-                    <div>
-                        <label for="report_end">To date</label>
-                        <input type="date" id="report_end" name="report_end" > 
-                    </div>
-                </div>
+                <% if(media_report.length!=0){
 
-                <div class="form-group">     
-                </div>
+                    media_report.forEach(function(track){
+                        media_report.forEach(function(playlist){
 
-                <div class="form-buttons">
-                    <button type="run-query" id="run-query" class="input-submit btn submit-button">
-                        Create Report
-                    </button>
-                </div>
-            </form>
-            </div>
-
-        
-
-
-
+                %>
+                <tr>
+                    <td><%=track.total_tracks%></td>
+                    <td ><%=track.total_tracks_length%></th>
+                    <td><%=playlist.total_playlists%></td>
+                    <td ><%=playlist.total_playlists_length%></th>
+                </tr>
+                <% });} );} else { %>
+                    <tr>
+                        <th scope="row" colspan="4">There were no media added during this timeframe.</th>
+                    </tr>
+                    <% } %>
+                </tbody>
+        </table>
     </main>
-
     <script>
         $(window).on("load", function () {
             $("#loading").hide();
         });
     </script>
-
-
 </body>
-
 </html>

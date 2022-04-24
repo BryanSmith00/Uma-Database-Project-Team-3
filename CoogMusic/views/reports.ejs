@@ -66,38 +66,37 @@
 
     <main>
         <div class="container">
-            <form id="reports-form" class="reports-form" action="" method="post">
+            <form id="reports-form" class="reports-form" action="/run-reports" method="post">
                 <h3 class="form-group">Report Request</h3>
                 <div class="form-group">
-                    <label for="selecttype">Select Report</label><br />
-                    <select name="selecttype" id="selecttype">
-                        <option value="user">Users</option>
-                        <option value="playlist">Playlists</option>
-                        <option value="notifications">Notifications</option>
+                    <label for="report_selection">Select Report</label><br />
+                    <select name="report_selection" id="report_selection">
+                        <option value="users">Users Activity </option>
+                        <option value="media">Media</option>
+                        <option value="top_artists">Top Artists</option>
+                        <option value="playlists">Playlists</option>
                     </select>
                 </div>
 
                 
-                <div class="form-group">
-                    <label for="sorttype">Sort by</label><br />
-                    <select name="sorttype" id="sorttype">
-                        <option value="id">ID</option>
-                        <option value="name">Name</option>
-                        <option value="date">Date Added</option>
-                    </select>
+                <div class="form-group" id="date-group">
+                    <div>
+                        <label for="report_start">From date</label>
+                        <input type="date" id="report_start" name="report_start" value="report_start" max="">   
+                    </div>
+                    <div>
+                        <label for="report_end">To date</label>
+                        <input type="date" id="report_end" name="report_end" value="report_end" max=""> 
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="ordertype">Order by</label><br />
-                    <select name="ordertype" id="ordertype">
-                        <option value="ASC">Ascending</option>
-                        <option value="DESC">Descending</option>
-                    </select>
+                     
                 </div>
 
                 <div class="form-buttons">
                     <button type="run-query" id="run-query" class="input-submit btn submit-button">
-                        Run Query
+                        Create Report
                     </button>
                 </div>
             </form>

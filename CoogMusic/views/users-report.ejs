@@ -67,7 +67,7 @@
         <!-- Users Activity report -->
         <table class="table table-hover table-striped table-borderless playlist-table caption-top">
             <caption class="admin-caption">
-                New accounts created
+                New accounts created from <%= start_date %> to <%= end_date %>
             </caption>
             <thead>
                 <tr>
@@ -84,7 +84,14 @@
 
                 %>
                 <tr>
-                    <td><%=user.user_type%></td>
+                    <% if(user.user_type == 0){%>
+                        <td>Listener Accounts (Permission: 0)</td>
+                    <% }else if(user.user_type == 1){%>
+                        <td>Musician Accounts (Permission: 1)</td>
+                    <% } else {%>
+                        <td>Admin Accounts (Permission: 2)</td>
+                    <% } %>
+
                     <td ><%=user.total_users%></td>
                 </tr>
                 <% });} else { %>

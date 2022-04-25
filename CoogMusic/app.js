@@ -537,13 +537,13 @@ app.post("/run-reports", (req, res, next) => {
             throw error;
         }
         if (select_report == "top_artists") {
-            res.render("top-artists", { artists_report: results, sql: sql });
+            res.render("top-artists", { artists_report: results, sql: sql, start_date: start_date, end_date: end_date });
         }
         else if (select_report == "users") {
-            res.render("users-report", { users_report: results, sql: sql });
+            res.render("users-report", { users_report: results, sql: sql, start_date: start_date, end_date: end_date });
         }
         else if (select_report == "media") {
-            res.render("media-report", { media_report: results, sql: sql });
+            res.render("media-report", { media_report: results, sql: sql, start_date: start_date, end_date: end_date });
         }
     });
 });
